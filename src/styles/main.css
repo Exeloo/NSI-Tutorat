@@ -8,8 +8,43 @@ body,
   padding: 0;
 }
 
+html {
+  --main-background: #ffffff;
+  --main-text-color: #555555;
+
+  --ui-checkbox-icon-before-background-a: #ffffff;
+  --ui-checkbox-icon-before-background-b: #e3e3e3;
+  --ui-checkbox-icon-after-background: #a9a9a9;
+  --ui-checkbox-iconbox-background-a: #e1e0e5;
+  --ui-checkbox-iconbox-background-b: #c5c9d2;
+  --ui-checkbox-icon-color-on: #00ffe2;
+  --ui-checkbox-bar-color: #444444;
+
+  --searchbox-searchbox-before-background-a: #ececec;
+  --searchbox-searchbox-before-background-b: #d2d2d2;
+  --searchbox-searchbox-after-background: #cecece;
+  --searchbox-searchbox-background-a: #e7e7e8;
+  --searchbox-searchbox-background-b: #d8d8dc;
+}
+
 html.dark {
-  background: #121212;
+  --main-background: #121212;
+  --main-text-color: #cbcbcb;
+
+  --ui-checkbox-icon-before-background-a: #212121;
+  --ui-checkbox-icon-before-background-b: #1c1c1c;
+  --ui-checkbox-icon-after-background: #111111;
+  --ui-checkbox-iconbox-background-a: #1c1b1b;
+  --ui-checkbox-iconbox-background-b: #151515;
+  --ui-checkbox-icon-color-on: #00ffe2;
+  --ui-checkbox-bar-color: #444444;
+
+  --searchbox-searchbox-before-background-a: #1a1a1a;
+  --searchbox-searchbox-before-background-b: #171717;
+  --searchbox-searchbox-after-background: #151515;
+  --searchbox-searchbox-background-a: #1c1b1b;
+  --searchbox-searchbox-background-b: #151515;
+
 }
 
 #nprogress {

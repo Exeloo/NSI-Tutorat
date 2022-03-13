@@ -56,6 +56,7 @@ const { t } = useI18n()
       </button>
     </div>
   </div>
+  <GoogleAuth />
 </template>
 
 <route lang="yaml">
