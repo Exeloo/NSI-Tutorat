@@ -1,15 +1,15 @@
 {
-  "cSpell.words": ["Vitesse"],
-  "i18n-ally.sourceLanguage": "en",
+  "cSpell.words": ["Tutorat"],
+  "i18n-ally.sourceLanguage": "fr",
   "i18n-ally.keystyle": "nested",
   "i18n-ally.localesPaths": "locales",
   "i18n-ally.sortKeys": true,
   "prettier.enable": false,
   "editor.codeActionsOnSave": {
-    "source.fixAll.eslint": true,
+    "source.fixAll.eslint": true
   },
   "files.associations": {
-    "*.css": "postcss",
+    "*.css": "postcss"
   },
-  "editor.formatOnSave": false,
+  "editor.formatOnSave": false
 }

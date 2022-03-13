@@ -1,4 +1,8 @@
 {
+  "author": "Exelo",
+  "version": "0.0.2",
+  "description": "Website for the François d'Estaing's tutorat",
+  "readme": "README.md",
   "private": true,
   "packageManager": "pnpm@6.32.3",
   "scripts": {
