@@ -20,7 +20,6 @@ const router = useRouter()
 main {
   text-align: center;
   padding-top: 10vh;
-  
   color: var(--main-text-color);
 }
 
