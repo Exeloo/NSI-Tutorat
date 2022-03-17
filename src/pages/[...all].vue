@@ -1,10 +1,11 @@
-<script setup lang="ts">
-const { t } = useI18n()
-</script>
+<script setup lang="ts"></script>
 
 <template>
-  <div>
-    {{ t('not-found') }}
+  <div class="title">
+    404
+  </div>
+  <div class="text">
+    La page que vous cherchez n'éxiste pas !
   </div>
 </template>
 
@@ -12,3 +13,15 @@ const { t } = useI18n()
 meta:
   layout: 404
 </route>
+
+<style scoped>
+.title {
+  font-size: 3vh;
+}
+
+.text {
+  font-size: 2vh;
+  padding: 2vh;
+}
+
+</style>

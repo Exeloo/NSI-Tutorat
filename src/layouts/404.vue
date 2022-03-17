@@ -1,18 +1,30 @@
 <script setup lang="ts">
 const router = useRouter()
-const { t } = useI18n()
 </script>
 
 <template>
-  <main p="x4 y10" text="center teal-700 dark:gray-200">
+  <main>
     <div text-4xl>
-      <div i-carbon-warning inline-block />
+      <div i="ic-round-warning-amber" class="icon" />
     </div>
     <router-view />
     <div>
       <button btn text-sm m="3 t8" @click="router.back()">
-        {{ t('button.back') }}
+        Retour
       </button>
     </div>
   </main>
 </template>
+
+<style scoped>
+main {
+  text-align: center;
+  padding-top: 10vh;
+  color: var(--main-text-color);
+}
+
+.icon {
+  display: inline-block;
+  font-size: 8vh;
+}
+</style>
