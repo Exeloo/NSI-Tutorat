@@ -4,7 +4,7 @@
       <Loading />
     </div>
     <div v-else-if="!user" class="login">
-      <button class="bg-gray-100 rounded p-3 flex items-center" @click="login">
+      <button class="rounded p-3 flex items-center" @click="login">
         <div class="icon" i="carbon-logo-google" />
         <div class="text">
           Se connecter avec Google
@@ -25,7 +25,7 @@
 <script lang="ts" setup>
 import { GoogleAuthProvider, signInWithRedirect } from 'firebase/auth'
 import { auth, authLoading, user } from '~/logic/data/firebase'
-
+authLoading.value = true
 const provider = new GoogleAuthProvider()
 const logout = () => {
   auth.signOut()
@@ -46,6 +46,10 @@ const login = () => {
 .login {
   display: flex;
   gap: 2rem;
+}
+
+.login button {
+  background: var(--secondary-background);
 }
 
 .login .icon {
