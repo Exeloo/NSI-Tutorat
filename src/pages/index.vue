@@ -1,5 +1,6 @@
 <script setup lang="ts">
 import { useUserStore } from '~/stores/user'
+import TopBar from "~/components/TopBar.vue";
 
 const user = useUserStore()
 const name = ref(user.savedName)
@@ -14,6 +15,7 @@ const { t } = useI18n()
 </script>
 
 <template>
+  <TopBar />
   <div>
     <div text-4xl>
       <div i="ic-outline-school" inline-block />
