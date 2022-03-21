@@ -25,7 +25,7 @@
 <script lang="ts" setup>
 import { GoogleAuthProvider, signInWithRedirect } from 'firebase/auth'
 import { auth, authLoading, user } from '~/logic/data/firebase'
-authLoading.value = true
+
 const provider = new GoogleAuthProvider()
 const logout = () => {
   auth.signOut()
@@ -46,6 +46,7 @@ const login = () => {
 .login {
   display: flex;
   gap: 2rem;
+  color: var(--main-text-color);
 }
 
 .login button {
