@@ -1,6 +1,5 @@
 <script setup lang="ts">
 import { useUserStore } from '~/stores/user'
-import TopBar from "~/components/TopBar.vue";
 
 const user = useUserStore()
 const name = ref(user.savedName)
