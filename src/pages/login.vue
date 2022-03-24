@@ -1,5 +1,10 @@
 <template>
-  <div v-if="false">
+  <div v-if="true">
+    <div>
+      <label>Nom Prénom</label>
+      <input type="text">
+    </div>
+
 
 
   </div>
@@ -10,7 +15,6 @@
 </template>
 
 <script setup lang="ts">
-import Loading from "~/components/style/Loading.vue";
 
 const router = useRouter()
 </script>

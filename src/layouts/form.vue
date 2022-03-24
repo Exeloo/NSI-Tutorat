@@ -1,17 +1,26 @@
 <template>
   <main>
-    <router-view />
-
+    <div class="form">
+      <router-view />
+    </div>
   </main>
   <Footer />
 </template>
 
 <style>
 main {
-  display: grid;
-  justify-items: center;
-  margin-top: 6vw;
-  width: min(90%, 600px);
+  display: flex;
+  justify-content: center;
+  margin-top: 8vw;
+  width: 100%;
+}
+
+.form {
+  padding-top: max(3vw, 10px);
+  width: min(90%, 700px);
   background: var(--secondary-background);
+  display: flex;
+  justify-content: center;
+
 }
 </style>
