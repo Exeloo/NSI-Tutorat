@@ -23,14 +23,8 @@
   color: var(--secondary-text-color);
 }
 
-
 .bar .title {
   font-size: min(4vw, 22px);
   margin-left: 0.5rem;
-}
-
-.bar * {
-  align-self: flex-end;
-
 }
 </style>
