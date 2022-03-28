@@ -49,6 +49,11 @@ button {
   display: flex;
 }
 
+.TopBar .title {
+  font-size: min(4vw, 22px);
+  margin-left: 0.5rem;
+}
+
 .TopBar .text {
   font-size: min(4vw, 18px);
   margin-left: 0.5rem;
