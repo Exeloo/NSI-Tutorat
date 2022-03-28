@@ -5,19 +5,19 @@
   <div class="TopBar">
     <div class="rounded p-3 flex items-center">
       <div class="icon" i="ic-outline-school" />
-      <div class="title">
+      <div class="text">
         Tutorat Fde
       </div>
     </div>
     <div>
-      <button class="rounded p-3 flex items-center">
+      <button class="">
         <div class="icon" i="carbon-notification" />
         <div class="text">
           Notifications
         </div>
       </button>
 
-      <button class="rounded p-3 flex items-center">
+      <button class="">
         <div class="icon" i="ic-round-account-circle" />
         <div class="text">
           Nom Prenom
@@ -39,12 +39,14 @@
   color: var(--secondary-text-color);
 }
 
-button * {
-  display: inline-block;
+button {
+  display: flex;
+  align-items: center;
+  padding: 0.75rem;
 }
 
-.TopBar * * {
-  display: inline-block;
+.TopBar * {
+  display: flex;
 }
 
 .TopBar .text {
