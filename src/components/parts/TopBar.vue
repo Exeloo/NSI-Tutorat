@@ -5,7 +5,7 @@
   <div class="TopBar">
     <div class="rounded p-3 flex items-center">
       <div class="icon" i="ic-outline-school" />
-      <div class="text">
+      <div class="title">
         Tutorat Fde
       </div>
     </div>
@@ -51,4 +51,11 @@ button * {
   font-size: min(4vw, 18px);
   margin-left: 0.5rem;
 }
+
+@media screen and (max-width: 520px){
+  .TopBar .text{
+    font-size: 0;
+  }
+}
+
 </style>
