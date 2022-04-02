@@ -18,9 +18,8 @@ main {
 .form {
   padding-top: max(3vw, 10px);
   width: min(90%, 700px);
-  background: var(--secondary-background);
-  display: flex;
+  background: var(--main-background);
+  display: grid;
   justify-content: center;
-
 }
 </style>

@@ -3,7 +3,7 @@
 html,
 body,
 #app {
-  background: var(--main-background);
+  background: var(--secondary-background);
   height: 100%;
   margin: 0;
   padding: 0;
@@ -31,6 +31,9 @@ html {
   --searchbox-searchbox-after-background: #cecece;
   --searchbox-searchbox-background-a: #e7e7e8;
   --searchbox-searchbox-background-b: #d8d8dc;
+
+
+  
 }
 
 html.dark {
