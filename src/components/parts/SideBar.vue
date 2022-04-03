@@ -16,7 +16,7 @@ const changeRoute = (route: string) => {
           <div class="i" i="ic-baseline-computer" />Dashboard
         </div>
         <div class="item" @click="changeRoute('planning')">
-          <div class="i" i="ic-baseline-calendar-month" />Planing
+          <div class="i" i="ic-baseline-calendar-month" />Planning
         </div>
         <div class="item" @click="changeRoute('relations')">
           <div class="i" i="ic-baseline-people-alt" />Relations
