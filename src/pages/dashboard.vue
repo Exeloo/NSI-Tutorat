@@ -1,4 +1,5 @@
 <template>
+  <SideBar />
   <div v-if="true">
     <div>
       <label>Nom Prénom</label>
