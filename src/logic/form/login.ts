@@ -1,3 +1,25 @@
+interface Models {
+  niveau: string
+  classe: string
+  spe: {
+    a: string
+    b: string
+    c: string
+  }
+  lv: {
+    a: string
+    b: string
+  }
+  option: string
+  section: {
+    lang: string
+    dnl: string
+  }
+  goodSubject: string[]
+  badSubject: string[]
+  goodTutoratSubject: string[]
+  badTutoratSubject: string[]
+}
 
 interface Option { value: string; label: string }
 interface Options {
@@ -13,6 +35,7 @@ interface Options {
   }
   option: undefined | Option[]
   section: Option[]
+  subject: undefined | Option[]
 }
 
 export const selectOptions = {
@@ -61,21 +84,21 @@ export const selectOptions = {
     ]],
   ]),
   spe: [
-    { value: 'art', label: 'Art' },
-    { value: 'geopo', label: 'Histoire-Géographie, Géopolitique et Science Poilitique' },
-    { value: 'hlp', label: 'Humanité, Littérature et Philosophie' },
-    { value: 'llce', label: 'Langues, Littératures et Cultures Etrangère' },
-    { value: 'llca', label: 'Littératures, Langues et Cultures de l\'Antiquité' },
-    { value: 'maths', label: 'Mathématiques' },
-    { value: 'nsi', label: 'Numérique et Science de l\'Informatique' },
-    { value: 'pc', label: 'Physique-Chimie' },
-    { value: 'svt', label: 'Science de la Vie et de la Terre' },
-    { value: 'ses', label: 'Science Economique et Sociales' },
+    { value: 'art-spe', label: 'Art' },
+    { value: 'geopo-spe', label: 'Histoire-Géographie, Géopolitique et Science Poilitique' },
+    { value: 'hlp-spe', label: 'Humanité, Littérature et Philosophie' },
+    { value: 'llce-spe', label: 'Langues, Littératures et Cultures Etrangère' },
+    { value: 'llca-spe', label: 'Littératures, Langues et Cultures de l\'Antiquité' },
+    { value: 'maths-spe', label: 'Mathématiques' },
+    { value: 'nsi-spe', label: 'Numérique et Science de l\'Informatique' },
+    { value: 'pc-spe', label: 'Physique-Chimie' },
+    { value: 'svt-spe', label: 'Science de la Vie et de la Terre' },
+    { value: 'ses-spe', label: 'Science Economique et Sociales' },
   ],
   lv: [
-    { value: 'alld', label: 'Allemand' },
-    { value: 'angl', label: 'Anglais' },
-    { value: 'esp', label: 'Espagnol' },
+    { value: 'alld-lv', label: 'Allemand' },
+    { value: 'angl-lv', label: 'Anglais' },
+    { value: 'esp-lv', label: 'Espagnol' },
   ],
   option: new Map([
     ['seconde', [
@@ -88,27 +111,59 @@ export const selectOptions = {
       { value: '?', label: '?' },
     ]],
     ['terminal-g', [
-      { value: 'droit', label: 'Droit ?' },
+      { value: 'droit-opt', label: 'Droit ?' },
     ]],
     ['terminal-t', [
       { value: '?', label: '?' },
     ]],
     ['default', [
-      { value: 'chinois', label: 'Chinois' },
+      { value: 'art-opt', label: 'Art' },
+      { value: 'chinois-opt', label: 'Chinois' },
     ]],
   ]),
   section: {
     lang: [
-      { value: 'alld', label: 'Allemand' },
-      { value: 'angl', label: 'Anglais' },
-      { value: 'esp', label: 'Espagnol' },
+      { value: 'alld-euro', label: 'Allemand' },
+      { value: 'angl-euro', label: 'Anglais' },
+      { value: 'esp-euro', label: 'Espagnol' },
     ],
     dnl: [
-      { value: 'eps', label: 'EPS' },
-      { value: 'hist', label: 'Histoire-Géographie' },
-      { value: 'maths', label: 'Mathématiques' },
+      { value: 'eps-dnl', label: 'Education Physique et Sportive' },
+      { value: 'hist-dnl', label: 'Histoire-Géographie' },
+      { value: 'maths-dnl', label: 'Mathématiques' },
     ],
   },
+  subject: new Map([
+    ['seconde', [
+      { value: 'fr', label: 'Français' },
+      { value: 'maths', label: 'Mathématiques' },
+      { value: 'pc', label: 'Physique-Chimie' },
+      { value: 'ses', label: 'Sciences Economique et Sociale' },
+      { value: 'snt', label: 'Sciences Numérique et Technologique' },
+      { value: 'svt', label: 'Sciences de la Vie et de la Terre' },
+    ]],
+    ['premiere-g', [
+      { value: 'es', label: 'Enseignement Scientifique' },
+      { value: 'fr', label: 'Français' },
+    ]],
+    ['premiere-t', [
+      { value: 'fr', label: 'Français' },
+      { value: 'maths', label: 'Mathématiques' },
+    ]],
+    ['terminal-g', [
+      { value: 'es', label: 'Enseignement Scientifique' },
+      { value: 'philo', label: 'Philosophie' },
+    ]],
+    ['terminal-t', [
+      { value: 'maths', label: 'Mathématiques' },
+      { value: 'philo', label: 'Philosophie' },
+    ]],
+    ['default', [
+      { value: 'emc', label: 'Enseignement Morale et Civique' },
+      { value: 'eps', label: 'Education Physique et Sportive' },
+      { value: 'hist', label: 'Histoire-Géographie' },
+    ]],
+  ]),
 }
 
 const getDefaultOptions = () => {
@@ -138,15 +193,46 @@ export const getOption = (niveau: string, spe: { a?: string; b?: string; c?: str
     copyOptions.push(defaultOption)
 
   if (niveau === 'terminal-g' && spe) {
-    if (spe.c === 'maths')
-      copyOptions.push({ value: 'maths-compl', label: 'Mathématiques Complémentaires' })
-    else if (spe.a === 'maths' || spe.b === 'maths')
-      copyOptions.push({ value: 'maths-expert', label: 'Mathématiques Expertes' })
+    if (spe.c === 'maths-spe')
+      copyOptions.push({ value: 'maths-compl-opt', label: 'Mathématiques Complémentaires' })
+    else if (spe.a === 'maths-spe' || spe.b === 'maths-spe')
+      copyOptions.push({ value: 'maths-expert-opt', label: 'Mathématiques Expertes' })
   }
   return copyOptions
 }
 
-export const models = reactive({
+export const getSubjects = (models: Models) => {
+  const options: Option[] = []
+  console.log(1)
+  const isTerminalG = models.niveau === 'terminal-g'
+
+  const speSubjects = selectOptions.spe.filter((v: any) => {
+    const isSpe = Object.values(models.spe).includes(v.value)
+    const isLastSpe = models.spe.c === v.value
+    const isLostSpe = isTerminalG && isLastSpe
+    return isSpe && !isLostSpe
+  })
+  options.push(...speSubjects.map((e) => { return { ...e, label: `Spécialité ${e.label}` } }))
+
+  const niveauSubjects = selectOptions.subject.get(models.niveau)
+  const defaultSubjects = selectOptions.subject.get('default')
+  if (!niveauSubjects || !defaultSubjects) return options
+  options.push(...defaultSubjects, ...niveauSubjects)
+
+  const niveauOptions = selectOptions.subject.get(models.niveau)
+  const defaultOptions = selectOptions.subject.get('default')
+  if (!niveauOptions || !defaultOptions) return options
+  const optionSubjects = [...defaultOptions, ...niveauOptions].filter(
+    opt => models.option.includes(opt.value),
+  )
+  options.push(...optionSubjects.map((e) => { return { ...e, label: `Option ${e.label}` } }))
+
+  const section
+
+  console.log(options)
+}
+
+export const models = reactive<Models>({
   niveau: '',
   classe: '',
   spe: {
@@ -164,6 +250,9 @@ export const models = reactive({
     dnl: '',
   },
   goodSubject: [],
+  badSubject: [],
+  goodTutoratSubject: [],
+  badTutoratSubject: [],
 })
 
 export const errors = reactive({

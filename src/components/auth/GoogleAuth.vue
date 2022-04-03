@@ -50,7 +50,7 @@ const login = () => {
 }
 
 .login button {
-  background: var(--secondary-background);
+  background: var(--main-background);
 }
 
 .login .icon {
