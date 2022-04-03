@@ -12,6 +12,7 @@ body,
 html {
   --main-background: #ffffff;
   --main-text-color: #010101;
+  --main-bar-color: #504F4F;
 
   --secondary-background: #dcdcdc;
   --secondary-text-color: #1e1e1e;
