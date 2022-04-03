@@ -1,20 +1,34 @@
-<script lang="ts">
+<script setup lang="ts">
+
+const router = useRouter()
+
+const changeRoute = (route: string) => {
+  router.push(`/${encodeURIComponent(route)}`)
+}
+
 </script>
-<meta content="width=device-width, initial-scale=1.0">
+
 <template>
   <div class="SideBar">
     <div class="menu">
       <div class="item">
-        <div class="item"><a href="#"><div class="i" i="ic-baseline-computer"></div>Dashboard</a></div>
-        <div class="item"><a href="#"><div class="i" i="ic-baseline-calendar-month"></div>Planing</a></div>
-        <div class="item"><a href="#"><div class="i" i="ic-baseline-people-alt"></div>Relations</a></div>
-        <div class="item"><a href="#"><div class="i" i="ic-baseline-settings"></div>Parametres</a></div>
+        <div class="item" @click="changeRoute('dashboard')">
+          <div class="i" i="ic-baseline-computer" />Dashboard
+        </div>
+        <div class="item" @click="changeRoute('planning')">
+          <div class="i" i="ic-baseline-calendar-month" />Planing
+        </div>
+        <div class="item" @click="changeRoute('relations')">
+          <div class="i" i="ic-baseline-people-alt" />Relations
+        </div>
+        <div class="item" @click="changeRoute('settings')">
+          <div class="i" i="ic-baseline-settings" />Parametres
+        </div>
       </div>
     </div>
   </div>
 </template>
 
 <style scoped >
-
 
 </style>

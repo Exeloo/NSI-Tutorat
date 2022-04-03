@@ -219,15 +219,15 @@ export const getSubjects = (models: Models) => {
   if (!niveauSubjects || !defaultSubjects) return options
   options.push(...defaultSubjects, ...niveauSubjects)
 
-  const niveauOptions = selectOptions.subject.get(models.niveau)
-  const defaultOptions = selectOptions.subject.get('default')
+  const niveauOptions = selectOptions.option.get(models.niveau)
+  const defaultOptions = selectOptions.option.get('default')
   if (!niveauOptions || !defaultOptions) return options
   const optionSubjects = [...defaultOptions, ...niveauOptions].filter(
     opt => models.option.includes(opt.value),
   )
   options.push(...optionSubjects.map((e) => { return { ...e, label: `Option ${e.label}` } }))
 
-  const section
+  const sectionSubjects = 
 
   console.log(options)
 }

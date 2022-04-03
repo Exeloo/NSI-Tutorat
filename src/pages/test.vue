@@ -1,6 +1,5 @@
 <template>
-  <SideBar/>
-
+  <SideBar />
 </template>
 
 <script setup lang="ts">
@@ -9,3 +8,8 @@
 <style scoped>
 
 </style>
+
+<route lang="yaml">
+meta:
+  layout: test
+</route>
