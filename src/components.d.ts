@@ -14,6 +14,7 @@ declare module 'vue' {
     README: typeof import('./components/README.md')['default']
     SearchBox: typeof import('./components/all-components/SearchBox.vue')['default']
     Select: typeof import('./components/input/Select.vue')['default']
+    SideBar: typeof import('./components/parts/SideBar.vue')['default']
     TopBar: typeof import('./components/parts/TopBar.vue')['default']
     UICheckbox: typeof import('./components/all-components/UICheckbox.vue')['default']
   }
