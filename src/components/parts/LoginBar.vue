@@ -27,9 +27,11 @@
 .bar .title {
   font-size: min(4vw, 22px);
   margin-left: 0.5rem;
+  display: flex;
 }
 
 .bar * {
+  display: flex;
   align-self: flex-end;
 
 }
