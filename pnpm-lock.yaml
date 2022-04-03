@@ -3,6 +3,7 @@ lockfileVersion: 5.3
 specifiers:
   '@antfu/eslint-config': ^0.18.8
   '@iconify-json/carbon': ^1.1.1
+  '@iconify-json/healthicons': ^1.1.1
   '@iconify-json/ic': ^1.1.1
   '@intlify/vite-plugin-vue-i18n': ^3.3.1
   '@types/markdown-it-link-attributes': ^3.0.1
@@ -47,6 +48,7 @@ specifiers:
   vue-tsc: ^0.32.1
 
 dependencies:
+  '@iconify-json/healthicons': 1.1.1
   '@vueuse/core': 8.0.0_vue@3.2.31
   '@vueuse/head': 0.7.5_vue@3.2.31
   firebase: 9.6.8
@@ -1899,6 +1901,12 @@ packages:
       '@iconify/types': 1.0.12
     dev: true
 
+  /@iconify-json/healthicons/1.1.1:
+    resolution: {integrity: sha512-5/IYakEYdsbsyNfw7DoT33zom5h+sDwLoOq5Ka6FDQfK9k3WW02kMmukULT5GmOsqPg//zOXwHpFux3dqv5MCA==}
+    dependencies:
+      '@iconify/types': 1.0.12
+    dev: false
+
   /@iconify-json/ic/1.1.1:
     resolution: {integrity: sha512-HR2m3Rsel5Zp3T98Vsai+tw6ip7DKYq9xLUv3NXgZE0aSHlQw9MpQdzdW0xkdfZEnX8gfIOpW2XZy1p2YAwxSA==}
     dependencies:
@@ -1907,7 +1915,6 @@ packages:
 
   /@iconify/types/1.0.12:
     resolution: {integrity: sha512-6er6wSGF3hgc1JEZqiGpg21CTCjHBYOUwqLmb2Idzkjiw6ogalGP0ZMLVutCzah+0WB4yP+Zd2oVPN8jvJ+Ftg==}
-    dev: true
 
   /@iconify/utils/1.0.23:
     resolution: {integrity: sha512-Ktdmpe4mkMXQAnnDUz3s6s5aY/BeVPwHC1d5IhG1bgrWVNWFQNUj8cQPMbHpNCSD9MRC5yGxm9/PGPpOWGJLAg==}

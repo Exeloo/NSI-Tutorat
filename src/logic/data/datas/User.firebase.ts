@@ -6,7 +6,7 @@ export class User {
   public ref: DocumentReference | undefined
 
   constructor(id: string | undefined = undefined) {
-    this.ref = id ? doc(db, 'user', id) : undefined
+    this.ref = id ? doc(db, 'users', id) : undefined
   }
 
   get get() {

@@ -1,17 +1,3 @@
-<script setup lang="ts">
-
-const router = useRouter()
-
-const changeRoute = (route: string) => {
-  router.push(`/${encodeURIComponent(route)}`)
-}
-
-const toggleSide = () => {
-
-}
-
-</script>
-
 <template>
   <div class="SideBar">
     <div class="menu">
@@ -27,7 +13,7 @@ const toggleSide = () => {
       </div>
       <div class="item">
         <a class="sub-btn" @click="toggleSide"><div class="i" i="ic-baseline-people-alt" />Relation<div class="dropdown" i="ic-baseline-keyboard-arrow-right" /></a>
-        <div class="sub-menu">
+        <div v-if="subMenu" class="sub-menu">
           <div class="sub-item" @click="changeRoute('chat')">
             <div class="a">
               <div class="i" i="ic-baseline-chat" />
@@ -57,9 +43,25 @@ const toggleSide = () => {
   </div>
 </template>
 
+<script setup lang="ts">
+
+const router = useRouter()
+
+const subMenu = ref(false)
+
+const changeRoute = (route: string) => {
+  router.push(`/${encodeURIComponent(route)}`)
+}
+
+const toggleSide = () => {
+  subMenu.value = !subMenu.value
+}
+
+</script>
+
 <style scoped >
 
-*{
+* {
   margin: 0;
   padding: 0;
   box-sizing: border-box;
@@ -95,7 +97,6 @@ body {
 
 .SideBar .menu .item .a {
   color: var(--main-text-color);
-  background: var(--main-bar-color);
   font-size: min(4vw, 18px);
   padding: 5px 30px;
   line-height: 60px;
@@ -103,7 +104,6 @@ body {
 }
 .SideBar .menu .item a {
   color: var(--main-text-color);
-  background: var(--main-bar-color);
   font-size: min(4vw, 18px);
   padding: 5px 30px;
   line-height: 60px;
@@ -133,12 +133,7 @@ body {
   transition: 0.5s ease;
 }
 
-.SideBar .menu .item .sub-menu {
-  display: none;
-}
-
 .SideBar .menu .item .sub-menu .a{
   padding-left: 50px;
 }
-
 </style>

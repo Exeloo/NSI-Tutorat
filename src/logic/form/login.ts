@@ -10,15 +10,21 @@ interface Models {
     a: string
     b: string
   }
-  option: string
+  option: string[]
   section: {
     lang: string
     dnl: string
   }
   goodSubject: string[]
   badSubject: string[]
-  goodTutoratSubject: string[]
-  badTutoratSubject: string[]
+  helper: {
+    wish: boolean
+    subjects: string[]
+  }
+  receiver: {
+    wish: boolean
+    subjects: string[]
+  }
 }
 
 interface Option { value: string; label: string }
@@ -180,6 +186,7 @@ const getDefaultOptions = () => {
     },
     option: undefined,
     section: selectOptions.section.lang,
+    subject: undefined,
   }
   return defaultOptions
 }
@@ -203,7 +210,6 @@ export const getOption = (niveau: string, spe: { a?: string; b?: string; c?: str
 
 export const getSubjects = (models: Models) => {
   const options: Option[] = []
-  console.log(1)
   const isTerminalG = models.niveau === 'terminal-g'
 
   const speSubjects = selectOptions.spe.filter((v: any) => {
@@ -219,6 +225,9 @@ export const getSubjects = (models: Models) => {
   if (!niveauSubjects || !defaultSubjects) return options
   options.push(...defaultSubjects, ...niveauSubjects)
 
+  const lvSubjects = selectOptions.lv.filter((v: any) => Object.values(models.lv).includes(v.value))
+  options.push(...lvSubjects)
+
   const niveauOptions = selectOptions.option.get(models.niveau)
   const defaultOptions = selectOptions.option.get('default')
   if (!niveauOptions || !defaultOptions) return options
@@ -227,9 +236,19 @@ export const getSubjects = (models: Models) => {
   )
   options.push(...optionSubjects.map((e) => { return { ...e, label: `Option ${e.label}` } }))
 
-  const sectionSubjects = 
+  const sectionSubjects = selectOptions.section.lang.filter(
+    section => models.section.lang === section.value,
+  )
+  options.push(...sectionSubjects.map((e) => { return { ...e, label: `Section Euro ${e.label}` } }))
 
-  console.log(options)
+  if (models.section.lang === 'angl-euro') {
+    const dnlSubjects = selectOptions.section.dnl.filter(
+      dnl => models.section.dnl === dnl.value,
+    )
+    options.push(...dnlSubjects.map((e) => { return { ...e, label: `DNL ${e.label}` } }))
+  }
+
+  return options
 }
 
 export const models = reactive<Models>({
@@ -244,15 +263,21 @@ export const models = reactive<Models>({
     a: '',
     b: '',
   },
-  option: '',
+  option: [],
   section: {
     lang: '',
     dnl: '',
   },
   goodSubject: [],
   badSubject: [],
-  goodTutoratSubject: [],
-  badTutoratSubject: [],
+  helper: {
+    wish: false,
+    subjects: [],
+  },
+  receiver: {
+    wish: false,
+    subjects: [],
+  },
 })
 
 export const errors = reactive({
