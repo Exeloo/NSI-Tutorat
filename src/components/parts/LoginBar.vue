@@ -19,7 +19,7 @@
   justify-content: space-between;
   text-align: center;
   font-size: min(4vw, 18px);
-  background-color: var(--secondary-background);
+  background-color: var(--main-background);
   color: var(--secondary-text-color);
 }
 

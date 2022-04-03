@@ -14,7 +14,7 @@
     <Select v-if="models.niveau && optionOptions" id="classe" v-model="models.option" label="Option" :options="optionOptions" />
     <div v-if="models.lv.a || models.lv.b">
       <Select id="euro" v-model="models.section.lang" label="Section Européenne" :options="options.section" />
-      <Select v-if="models.section.lang === 'angl' && models.niveau !== 'seconde'" id="dnl" v-model="models.section.dnl" label="DNL" :options="selectOptions.section.dnl" />
+      <Select v-if="models.section.lang === 'angl-euro' && models.niveau !== 'seconde'" id="dnl" v-model="models.section.dnl" label="DNL" :options="selectOptions.section.dnl" />
     </div>
     <div>
       <Select id="goodSubject" v-model="models.goodSubject" label="Les matières dans lesquelles vous êtes à l'aise" :options="selectOptions.spe" tags />
@@ -26,7 +26,7 @@
 </template>
 
 <script setup lang="ts">
-import { getOption, models, optionOptions, options, selectOptions } from '~/logic/form/login'
+import { getOption, getSubjects, models, optionOptions, options, selectOptions } from '~/logic/form/login'
 
 const hasSpe = (third: boolean) => {
   return models.niveau === 'premiere-g' || (models.niveau === 'terminal-g' && !third)
@@ -40,21 +40,27 @@ const onNiveauChange = () => {
 }
 
 const onSpeChange = () => {
-  options.spe.a = selectOptions.spe.filter(e => models.spe.b !== e.value && models.spe.c !== e.value)
-  options.spe.b = selectOptions.spe.filter(e => models.spe.a !== e.value && models.spe.c !== e.value)
-  options.spe.c = selectOptions.spe.filter(e => models.spe.a !== e.value && models.spe.b !== e.value)
+  options.spe.a = selectOptions.spe.filter(e => ![models.spe.b, models.spe.c].includes(e.value))
+  options.spe.b = selectOptions.spe.filter(e => ![models.spe.a, models.spe.c].includes(e.value))
+  options.spe.c = selectOptions.spe.filter(e => ![models.spe.a, models.spe.b].includes(e.value))
   optionOptions.value = getOption(models.niveau, models.spe)
 }
+
+const idToLang = (e: string) => e.split('-')[0]
 
 const onLvChange = () => {
   options.lv.a = selectOptions.lv.filter(e => models.lv.b !== e.value)
   options.lv.b = selectOptions.lv.filter(e => models.lv.a !== e.value)
-  options.section = selectOptions.section.lang.filter(e => models.lv.a === e.value || models.lv.b === e.value)
+  console.log(Object.values(models.lv))
+  options.section = selectOptions.section.lang.filter(
+    l => Object.values(models.lv)
+      .map(id => idToLang(id))
+      .includes(idToLang(l.value)),
+  )
+  options.subject = getSubjects(models)
 }
 
 </script>
-
-<style src="@vueform/multiselect/themes/default.css"></style>
 
 <style scoped>
 .entries * {
@@ -62,7 +68,7 @@ const onLvChange = () => {
 }
 
 .entries {
-    width: min(400px);
+    width: min(550px);
 }
 </style>
 

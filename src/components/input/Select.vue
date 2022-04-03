@@ -1,8 +1,11 @@
 <template>
   <div class="select">
     <label :for="`select-${props.id}`">{{ props.label }}</label>
-    <VSelect :id="`select-${props.id}`" v-model="value" :reduce="(e: any) => e.value" :options="options" :searchable="search" :multiple="tags" @update:modelValue="() => update('change', null)" />
-    {{ value }}
+    <VSelect 
+      :id="`select-${props.id}`" 
+      v-model="value" 
+      :reduce="(e: any) => e.value" :options="options" :searchable="search" :multiple="tags" @update:modelValue="() => update('change', null)" 
+    />
   </div>
 </template>
 
@@ -18,10 +21,11 @@ const props = defineProps({
     required: true,
   },
   options: {
+    type: Array,
     required: true,
   },
   modelValue: {
-    type: String,
+    type: [String, Array],
     required: true,
   },
   search: {
@@ -46,6 +50,8 @@ const value = computed({
     update('update:modelValue', v)
   },
 })
+
+
 </script>
 
 <style scoped>
