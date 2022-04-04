@@ -24,7 +24,7 @@
         <Select v-if="options.subject && models.helper.wish" id="helpSubjects" v-model="models.helper.subjects" label="Les matières dans lesquelles vous pourriez aider" :options="options.subject" tags search />
       </div>
       <div>
-        <Checkbox />
+        <UICheckBox />
         <Select v-if="options.subject && models.receiver.wish" id="receiveSubjects" v-model="models.receiver.subjects" label="Les matières dans lesquelles vous voudriez vous faire aider" :options="options.subject" tags search />
       </div>
     </div>
