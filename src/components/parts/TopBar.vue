@@ -3,7 +3,7 @@
 
 <template>
   <div class="TopBar">
-    <div class="rounded p-3 flex items-center">
+    <div class="title">
       <div class="icon" i="ic-outline-school" />
       <div class="text">
         Tutorat Fde
@@ -50,7 +50,9 @@ button {
 
 .TopBar .title {
   font-size: min(4vw, 22px);
-  margin-left: 0.5rem;
+  display: flex;
+  align-items: center;
+  padding: 0.75rem;
 }
 
 .TopBar .text {

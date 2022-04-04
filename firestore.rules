@@ -18,7 +18,7 @@ service cloud.firestore {
     }
     match /classLevels {
       allow read: if isUser();
-      allow create, update, delete: if isAdmin();
+      allow read, create, update, delete: if isAdmin();
     }
   }
 }
