@@ -15,8 +15,10 @@ interface Models {
     lang: string
     dnl: string
   }
-  goodSubject: string[]
-  badSubject: string[]
+  subjects: {
+    good: string[]
+    bad: string[]
+  }
   helper: {
     wish: boolean
     subjects: string[]
@@ -41,7 +43,10 @@ interface Options {
   }
   option: undefined | Option[]
   section: Option[]
-  subject: undefined | Option[]
+  subjects: {
+    good: undefined | Option[]
+    bad: undefined | Option[]
+  }
 }
 
 export const selectOptions = {
@@ -169,6 +174,14 @@ export const selectOptions = {
       { value: 'eps', label: 'Education Physique et Sportive' },
       { value: 'hist', label: 'Histoire-Géographie' },
     ]],
+    ['stl', [
+      { value: 'emc', label: 'Enseignement Morale et Civique' },
+      { value: 'eps', label: 'Education Physique et Sportive' },
+      { value: 'hist', label: 'Histoire-Géographie' },
+    ]],
+    ['sti2a', [
+      { value: 'emc', label: 'Spécialité Analyse et Méthodes en Design' },
+    ]],
   ]),
 }
 
@@ -186,10 +199,78 @@ const getDefaultOptions = () => {
     },
     option: undefined,
     section: selectOptions.section.lang,
-    subject: undefined,
+    subjects: {
+      good: undefined,
+      bad: undefined,
+    },
   }
   return defaultOptions
 }
+
+export const models = reactive<Models>({
+  niveau: '',
+  classe: '',
+  spe: {
+    a: '',
+    b: '',
+    c: '',
+  },
+  lv: {
+    a: '',
+    b: '',
+  },
+  option: [],
+  section: {
+    lang: '',
+    dnl: '',
+  },
+  subjects: {
+    good: [],
+    bad: [],
+  },
+  helper: {
+    wish: false,
+    subjects: [],
+  },
+  receiver: {
+    wish: false,
+    subjects: [],
+  },
+})
+
+export const errors = reactive({
+  niveau: null,
+  classe: null,
+  spe: {
+    a: null,
+    b: null,
+    c: null,
+  },
+  lv: {
+    a: null,
+    b: null,
+  },
+  option: null,
+  section: {
+    lang: null,
+    dnl: null,
+  },
+  subjects: {
+    good: null,
+    bad: null,
+  },
+  helper: {
+    wish: null,
+    subjects: null,
+  },
+  receiver: {
+    wish: null,
+    subjects: null,
+  },
+})
+
+export const options = reactive(getDefaultOptions())
+export const optionOptions = ref()
 
 export const getOption = (niveau: string, spe: { a?: string; b?: string; c?: string } | undefined) => {
   const options = selectOptions.option.get(niveau)
@@ -251,55 +332,22 @@ export const getSubjects = (models: Models) => {
   return options
 }
 
-export const models = reactive<Models>({
-  niveau: '',
-  classe: '',
-  spe: {
-    a: '',
-    b: '',
-    c: '',
-  },
-  lv: {
-    a: '',
-    b: '',
-  },
-  option: [],
-  section: {
-    lang: '',
-    dnl: '',
-  },
-  goodSubject: [],
-  badSubject: [],
-  helper: {
-    wish: false,
-    subjects: [],
-  },
-  receiver: {
-    wish: false,
-    subjects: [],
-  },
-})
+export const isValidForm = () => {
+  const hasLevel = !!models.niveau
+  const hasClasse = !!models.classe
+  const hasLv = !!models.lv.a && !!models.lv.b
+  const hasDnl = models.section.lang !== 'angl-euro' || !!models.section.dnl || models.classe === 'seconde'
 
-export const errors = reactive({
-  niveau: null,
-  classe: null,
-  spe: {
-    a: null,
-    b: null,
-    c: null,
-  },
-  lv: {
-    a: null,
-    b: null,
-  },
-  option: null,
-  section: {
-    lang: null,
-    dnl: null,
-  },
-  goodSubject: null,
-  badSubject: null,
-})
+  const needSpe = ['premiere-g', 'terminal-g'].includes(models.niveau)
+  const hasSpe = !needSpe || (!!models.spe.a && !!models.spe.b && !!models.spe.c)
 
-export const options = reactive(getDefaultOptions())
-export const optionOptions = ref()
+  const hasGoodSubjects = models.subjects.good.length !== 0
+  const hasBadSubjects = models.subjects.bad.length !== 0
+  const hasHelperSubjects = !models.helper.wish || models.helper.subjects.length !== 0
+  const hasReceiverSubjects = !models.receiver.wish || models.receiver.subjects.length !== 0
+  const hasSubjects = hasGoodSubjects && hasBadSubjects && hasHelperSubjects && hasReceiverSubjects
+
+  const askHelpOrReceive = !!models.helper.wish || !!models.receiver.wish
+
+  return hasLevel && hasClasse && hasLv && hasDnl && hasSpe && hasSubjects && askHelpOrReceive
+}

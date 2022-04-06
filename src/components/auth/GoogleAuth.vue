@@ -3,11 +3,18 @@
     <div v-if="authLoading" class="loading">
       <Loading />
     </div>
-    <div v-else-if="!user" class="login">
-      <button class="rounded p-3 flex items-center" @click="login">
-        <div class="icon" i="carbon-logo-google" />
-        <div class="text">
-          Se connecter avec Google
+    <div v-else-if="!user">
+      <button class="login" @click="() => router.push('login')">
+        <div class="large-screen button">
+          <div class="icon" i="carbon-logo-google" />
+          <div class="text">
+            Se connecter avec Google
+          </div>
+        </div>
+        <div class="small-screen button">
+          <div class="text">
+            Se connecter
+          </div>
         </div>
       </button>
     </div>
@@ -23,30 +30,29 @@
 </template>
 
 <script lang="ts" setup>
-import { GoogleAuthProvider, signInWithRedirect } from 'firebase/auth'
-import { auth, authLoading, user } from '~/logic/data/firebase'
-
-const provider = new GoogleAuthProvider()
-const logout = () => {
-  auth.signOut()
-}
-const login = () => {
-  authLoading.value = true
-  signInWithRedirect(auth, provider)
-}
+import { login, logout } from '~/logic/data/auth/auth-system'
+// () => router.push('login')
+const router = useRouter()
+const authLoading = ref(false)
+const user = ref(false)
 
 </script>
 
 <style scoped>
 
+.google-auth {
+  display: flex;
+  align-items: center;
+}
+
 .loading {
   display: flex;
+  transform: scale(1.5);
 }
 
 .login {
-  display: flex;
-  gap: 2rem;
-  color: var(--main-text-color);
+  padding: 10px;
+
 }
 
 .login button {
@@ -54,11 +60,10 @@ const login = () => {
 }
 
 .login .icon {
-  font-size: 2rem;
+  font-size: 1.8rem;
 }
 .login .text {
-  font-size: 1.1rem;
-  margin-left: 0.5rem;
+  font-size: 1.2rem;
 }
 
 .logout {
@@ -67,6 +72,30 @@ const login = () => {
   display: flex;
   align-items: center;
   border-radius: 10px;
+}
+
+.button {
+  gap: 0.5rem;
+  align-items: center;
+  color: var(--main-text-color);
+}
+
+.large-screen {
+  display: flex;
+}
+
+.small-screen {
+  display: none;
+}
+
+@media screen and (max-width: 520px){
+  .large-screen {
+    display: none;
+  }
+
+  .small-screen {
+    display: flex;
+  }
 }
 
 </style>

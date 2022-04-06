@@ -4,13 +4,15 @@ service cloud.firestore {
     let regex = '.*@pedagogiefde[.]org';
     return request.auth != null && request.auth.token.email.matches(regex);
   }
+  function isConcernUser(id) {
+    return isUser() && request.auth.uid == id
+  }
   function isAdmin() {
     return request.auth != null && exists(/databases/$(database)/documents/admins/$(request.auth.uid));
   }
   match /databases/{database}/documents {
     match /users/{userId} {
-      allow read: if request.auth != null && request.auth.uid == userId && isUser();
-      allow read, create, update, delete: if isAdmin();
+      allow read, create, update, delete: if isConcernUser(userId) || isAdmin();
     }
     match /subjects {
       allow read: if isUser();
@@ -19,6 +21,10 @@ service cloud.firestore {
     match /classLevels {
       allow read: if isUser();
       allow read, create, update, delete: if isAdmin();
+    }
+    match /publicUsers {
+      allow read: if isUser();
+      allow read, create, update: if isConcernUser(userId) || isAdmin();
     }
   }
 }

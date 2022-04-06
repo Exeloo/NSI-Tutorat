@@ -5,6 +5,7 @@
 declare module 'vue' {
   export interface GlobalComponents {
     AdSense: typeof import('./components/publicity/AdSense.vue')['default']
+    Button: typeof import('./components/input/Button.vue')['default']
     Checkbox: typeof import('./components/input/Checkbox.vue')['default']
     Counter: typeof import('./components/Counter.vue')['default']
     Entry: typeof import('./components/input/Entry.vue')['default']
