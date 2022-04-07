@@ -8,8 +8,11 @@
       <TopBar />
     </div>
   </div>
-  <div class="content" />
+  <div class="content">
+    <br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br />
+  </div>
   {{ isSideBarDeploy }}
+  <Footer />
 </template>
 
 <script setup lang="ts">
@@ -22,7 +25,7 @@ const isSideBarDeploy = ref(false)
 .layout {
   display: flex;
   width: 100%;
-  position: absolute;
+  position: fixed;
 }
 
 .top-bar {
