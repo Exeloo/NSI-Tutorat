@@ -142,8 +142,8 @@ body {
 
 .SideBar .menu {
   width: 100%;
-  height: 85%;
-  margin-top: 80px;
+  height: 80%;
+  margin-top: 130px;
   display: flex;
   flex-direction: column;
   justify-content: space-between;
