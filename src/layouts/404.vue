@@ -4,12 +4,12 @@ const router = useRouter()
 
 <template>
   <main>
-    <div text-4xl>
+    <div>
       <div i="ic-round-warning-amber" class="icon" />
     </div>
     <router-view />
     <div>
-      <button btn text-sm m="3 t8" @click="router.back()">
+      <button @click="router.back()">
         Retour
       </button>
     </div>

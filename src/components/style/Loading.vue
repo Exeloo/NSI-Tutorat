@@ -1,6 +1,6 @@
 <template>
   <div class="lds-ring">
-    <div /><div /><div /><div /><div /><div /><div /><div /><div />
+    <div /><div /><div /><div />
   </div>
 </template>
 
@@ -14,31 +14,31 @@
 .lds-ring {
   display: inline-block;
   position: relative;
-  width: 80px;
-  height: 80px;
+  width: 40px;
+  height: 40px;
 }
 .lds-ring div {
   box-sizing: border-box;
   display: block;
   position: absolute;
-  width: 64px;
-  height: 64px;
-  margin: 8px;
-  border: 8px solid;
+  width: 32px;
+  height: 32px;
+  margin: 4px;
+  border: 4px solid;
   border-radius: 50%;
-  animation: lds-ring 1.2s cubic-bezier(0.5, 0, 0.5, 1) infinite;
+  animation: lds-ring 1.8s cubic-bezier(0.5, 0, 0.5, 1) infinite;
   border-top-color: transparent;
   border-right-color: transparent;
   border-bottom-color: transparent;
 }
 .lds-ring div:nth-child(1) {
-  animation-delay: -0.45s;
+  animation-delay: -0.60s;
 }
 .lds-ring div:nth-child(2) {
-  animation-delay: -0.3s;
+  animation-delay: -0.4s;
 }
 .lds-ring div:nth-child(3) {
-  animation-delay: -0.15s;
+  animation-delay: -0.20s;
 }
 @keyframes lds-ring {
   0% {

@@ -2,19 +2,15 @@
   <label>
     <input type="checkbox">
     <div class="icon">
-      <div class="shadow"></div>
+      <div class="shadow" />
       <div class="iconBox">
-        <IcRoundPowerSettingsNew />
+        <div i="ic-round-power-settings-new" />
       </div>
     </div>
   </label>
-
 </template>
 
-<script>
-export default {
-  name: 'UICheckbox',
-}
+<script setup lang="ts">
 </script>
 
 <style scoped>

@@ -9,11 +9,6 @@
   </div>
 </template>
 
-<route lang="yaml">
-meta:
-  layout: 404
-</route>
-
 <style scoped>
 .title {
   font-size: 3vh;
@@ -25,3 +20,8 @@ meta:
 }
 
 </style>
+
+<route lang="yaml">
+meta:
+  layout: 404
+</route>

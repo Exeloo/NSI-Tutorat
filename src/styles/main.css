@@ -20,6 +20,11 @@ html {
 
   --complement-color: #676767;
 
+  --color-blurple: #5865f2;
+  --color-success: #43b581;
+  --color-gray: #747f8d;
+  --color-danger: #f04747;
+
   --ui-checkbox-icon-before-background-a: #ffffff;
   --ui-checkbox-icon-before-background-b: #e3e3e3;
   --ui-checkbox-icon-after-background: #a9a9a9;
@@ -63,7 +68,7 @@ html.dark {
 }
 
 #nprogress .bar {
-  background: rgb(13,148,136);
+  background-color: var(--color-blurple);
   opacity: 0.75;
   position: fixed;
   z-index: 1031;
@@ -71,4 +76,24 @@ html.dark {
   left: 0;
   width: 100%;
   height: 2px;
+}
+
+.blurple {
+  background-color: var(--color-blurple);
+  color: #ffffff;
+}
+
+.success {
+  background-color: var(--color-success);
+  color: #ffffff;
+}
+
+.danger {
+  background-color: var(--color-danger);
+  color: #ffffff;
+}
+
+.secondary {
+  background-color: var(--color-gray);
+  color: #ffffff;
 }
