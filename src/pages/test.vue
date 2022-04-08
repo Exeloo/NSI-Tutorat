@@ -1,7 +1,6 @@
 <template>
   <div class="layout">
     <div class="side-bar">
-      <SideBar v-model="isSideBarDeploy" />
     </div>
 
     <div class="top-bar">
@@ -11,7 +10,6 @@
   <div class="content">
     <br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br />
   </div>
-  {{ isSideBarDeploy }}
   <Footer />
 </template>
 
