@@ -9,7 +9,7 @@ declare module 'vue' {
     Checkbox: typeof import('./components/input/Checkbox.vue')['default']
     Counter: typeof import('./components/Counter.vue')['default']
     Entry: typeof import('./components/input/Entry.vue')['default']
-    Footer: typeof import('./components/Footer.vue')['default']
+    Footer: typeof import('./components/parts/Footer.vue')['default']
     GoogleAuth: typeof import('./components/auth/GoogleAuth.vue')['default']
     Loading: typeof import('./components/style/Loading.vue')['default']
     LoginBar: typeof import('./components/parts/LoginBar.vue')['default']

@@ -55,7 +55,7 @@ import { getOption, getSubjects, isValidForm, models, optionOptions, options, se
 const { t } = useI18n()
 
 const isButtonLoading = ref(false)
-const isPageLoading = ref(true)
+const isPageLoading = ref(false)
 const isError = ref(false)
 const error = ref<string>()
 
@@ -78,7 +78,6 @@ const log = async() => {
     console.log(isPageLoading.value, isError.value)
   }
 }
-log()
 
 const isNotValid = ref(true)
 

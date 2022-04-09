@@ -36,6 +36,7 @@
   font-size: min(4vw, 18px);
   background-color: var(--main-background);
   color: var(--secondary-text-color);
+  box-shadow: 0 2px 7px 0 rgba(0, 0, 0, 0.3);
 }
 
 button {
