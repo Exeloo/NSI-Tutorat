@@ -2,60 +2,112 @@ import { GoogleAuthProvider, signInWithPopup, signOut } from 'firebase/auth'
 import type { OAuthCredential, User } from 'firebase/auth'
 import { auth, provider } from '../firebase'
 
+/**
+ * * Class for manage Firebase authentication with Google.
+ *
+ * @export
+ * @class Auth
+ */
 export class Auth {
-  private credential: OAuthCredential | null | undefined
-  private token: string | undefined
-  private user: User | undefined
-  private error: { code: any; message: any } | undefined
-  private valid: { answer: boolean; reason: string } | undefined
+  private _credential: OAuthCredential | null | undefined
+  private _token: string | undefined
+  private _user: User | undefined
+  private _error: { code: any; message: any } | undefined
+  private _valid: { answer: boolean; reason: string } | undefined
 
+  /**
+   * * Creates an instance of Auth.
+   *
+   * @memberof Auth
+   */
   constructor() {
-    this.valid = undefined
+    this._valid = undefined
   }
 
-  private validation() {
-    if (!this.token || !this.user) {
-      const error = this.error ? this.error : { code: 'undefined', message: 'Erreur inconue' }
+  /**
+   * * Test if authentication work and if email is a pedagogiefde's one.
+   *
+   * @private
+   * @return { answer: boolean; reason: string }
+   * @memberof Auth
+   */
+  private validation(): { answer: boolean; reason: string } {
+    if (!this._token || !this._user) {
+      const error = this._error ? this._error : { code: 'undefined', message: 'Erreur inconue' }
       return { answer: false, reason: `Code : ${error.code}, Erreur : ${error.message}` }
     }
-    if (!this.getUser().email?.endsWith('@pedagogiefde.org'))
+    if (!this.user.email?.endsWith('@pedagogiefde.org'))
       return { answer: false, reason: 'Email invalide, veuillez mettre une adresse mail du lycée François d\'Estaing !' }
 
     return { answer: true, reason: 'Ok' }
   }
 
+  /**
+   * * SignIn with Google Authentication.
+   *
+   * @memberof Auth
+   */
   async signIn() {
     await signInWithPopup(auth, provider)
       .then((result) => {
-        this.credential = GoogleAuthProvider.credentialFromResult(result)
-        this.token = this.credential?.accessToken
-        this.user = result.user
+        this._credential = GoogleAuthProvider.credentialFromResult(result)
+        this._token = this._credential?.accessToken
+        this._user = result.user
       }).catch((e) => {
-        this.error = { code: e.code, message: e.message }
+        this._error = { code: e.code, message: e.message }
 
-        this.credential = GoogleAuthProvider.credentialFromError(e)
+        this._credential = GoogleAuthProvider.credentialFromError(e)
       })
-    this.valid = this.validation()
+    this._valid = this.validation()
   }
 
+  /**
+   * * SignOut the user.
+   *
+   * @memberof Auth
+   */
   async signOut() {
     await signOut(auth)
-    this.valid = { answer: false, reason: 'disconected' }
+    this._valid = { answer: false, reason: 'disconected' }
   }
 
-  getCredential() {
-    return <OAuthCredential> this.credential
+  /**
+   * * Get private credential.
+   *
+   * @readonly
+   * @memberof Auth
+   */
+  get credential() {
+    return <OAuthCredential> this._credential
   }
 
-  getToken() {
-    return <string> this.token
+  /**
+   * * Get private token.
+   *
+   * @readonly
+   * @memberof Auth
+   */
+  get token() {
+    return <string> this._token
   }
 
-  getUser() {
-    return <User> this.user
+  /**
+   * * Get private user.
+   *
+   * @readonly
+   * @memberof Auth
+   */
+  get user() {
+    return <User> this._user
   }
 
-  isValid() {
-    return <{ answer: boolean; reason: string }> this.valid
+  /**
+   * * Get private valid, this const is use to check if auth is valid.
+   *
+   * @readonly
+   * @memberof Auth
+   */
+  get valid() {
+    return <{ answer: boolean; reason: string }> this._valid
   }
 }

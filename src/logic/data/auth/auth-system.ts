@@ -1,15 +1,15 @@
-import type { Ref } from 'vue'
+// import type { Ref } from 'vue'
+// import { User } from './User'
 import { Auth } from './Auth'
-import { User } from './User'
 
 const auth = new Auth()
-const user = ref<User>()
+// const user = ref<User>()
 
 export const login = async() => {
   await auth.signIn()
-  const isValid = auth.isValid()
+  const isValid = auth.valid
   if (!isValid.answer) return isValid
-  user.value = new User(auth)
+  // user.value = new User(auth)
   return isValid
 }
 
@@ -17,6 +17,6 @@ export const logout = () => {
 
 }
 
-export const getUser = () => {
-  return <Ref<User>> user
-}
+// export const getUser = () => {
+//   return <Ref<User>> user
+// }

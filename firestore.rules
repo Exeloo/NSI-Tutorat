@@ -10,6 +10,9 @@ service cloud.firestore {
   function isAdmin() {
     return request.auth != null && exists(/databases/$(database)/documents/admins/$(request.auth.uid));
   }
+  function isConcernAdmin(id) {
+    return isAdmin() && request.auth.uid == id
+  }
   match /databases/{database}/documents {
     match /users/{userId} {
       allow read, create, update, delete: if isConcernUser(userId) || isAdmin();
@@ -22,9 +25,13 @@ service cloud.firestore {
       allow read: if isUser();
       allow read, create, update, delete: if isAdmin();
     }
-    match /publicUsers {
+    match /publicUsers/{userId} {
       allow read: if isUser();
       allow read, create, update: if isConcernUser(userId) || isAdmin();
+    }
+    match /admins/{userId} {
+      allow read, create: if isAdmin();
+      allow update, delete: if isConcernAdmin(userId)
     }
   }
 }

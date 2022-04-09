@@ -40,7 +40,7 @@ html {
   --searchbox-searchbox-background-b: #d8d8dc;
 }
 
-html.dark {
+/* html.dark {
   --main-background: #010101;
   --main-text-color: #ffffff;
 
@@ -61,7 +61,7 @@ html.dark {
   --searchbox-searchbox-background-a: #1c1b1b;
   --searchbox-searchbox-background-b: #151515;
 
-}
+} */
 
 #nprogress {
   pointer-events: none;
