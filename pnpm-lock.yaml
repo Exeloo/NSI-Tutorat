@@ -2,6 +2,7 @@ lockfileVersion: 5.3
 
 specifiers:
   '@antfu/eslint-config': ^0.18.8
+  '@iconify-json/arcticons': ^1.1.9
   '@iconify-json/carbon': ^1.1.1
   '@iconify-json/healthicons': ^1.1.1
   '@iconify-json/ic': ^1.1.1
@@ -48,7 +49,7 @@ specifiers:
   vue-tsc: ^0.32.1
 
 dependencies:
-  '@iconify-json/healthicons': 1.1.1
+  '@iconify-json/arcticons': 1.1.9
   '@vueuse/core': 8.0.0_vue@3.2.31
   '@vueuse/head': 0.7.5_vue@3.2.31
   firebase: 9.6.8
@@ -64,6 +65,7 @@ dependencies:
 devDependencies:
   '@antfu/eslint-config': 0.18.8_eslint@8.10.0+typescript@4.6.2
   '@iconify-json/carbon': 1.1.1
+  '@iconify-json/healthicons': 1.1.1
   '@iconify-json/ic': 1.1.1
   '@intlify/vite-plugin-vue-i18n': 3.3.1_vite@2.8.6+vue-i18n@9.1.9
   '@types/markdown-it-link-attributes': 3.0.1
@@ -1895,6 +1897,12 @@ packages:
     resolution: {integrity: sha512-ZnQMnLV4e7hDlUvw8H+U8ASL02SS2Gn6+9Ac3wGGLIe7+je2AeAOxPY+izIPJDfFDb7eDjev0Us8MO1iFRN8hA==}
     dev: true
 
+  /@iconify-json/arcticons/1.1.9:
+    resolution: {integrity: sha512-wVTv2RMWfkDWmsiocJctlHRYMNz7iyHXUO2ZwV7tvt5Syw6+mJ5UII3MnY+3rsXkyoRnej6Z6anAktN7e1ZmxQ==}
+    dependencies:
+      '@iconify/types': 1.0.12
+    dev: false
+
   /@iconify-json/carbon/1.1.1:
     resolution: {integrity: sha512-ClOYc+82CKlDAKH1tfDTJTzNz4oHhYD04ALA5uemw9PdWXg05yIJb9bxWjSz4UgdUbH5N/yd8s9hNPI3h6jnlg==}
     dependencies:
@@ -1905,7 +1913,7 @@ packages:
     resolution: {integrity: sha512-5/IYakEYdsbsyNfw7DoT33zom5h+sDwLoOq5Ka6FDQfK9k3WW02kMmukULT5GmOsqPg//zOXwHpFux3dqv5MCA==}
     dependencies:
       '@iconify/types': 1.0.12
-    dev: false
+    dev: true
 
   /@iconify-json/ic/1.1.1:
     resolution: {integrity: sha512-HR2m3Rsel5Zp3T98Vsai+tw6ip7DKYq9xLUv3NXgZE0aSHlQw9MpQdzdW0xkdfZEnX8gfIOpW2XZy1p2YAwxSA==}
@@ -1929,8 +1937,8 @@ packages:
       - supports-color
     dev: true
 
-  /@intlify/bundle-utils/2.2.1_vue-i18n@9.1.9:
-    resolution: {integrity: sha512-8n8zhYEKypS+KP22KUAC6BnQifJDDWUGcn3OVPqsThqMMucU22MShGvOuiKqQ4AeT7XQ5O4pudlJmxv3L91JrQ==}
+  /@intlify/bundle-utils/3.0.0_vue-i18n@9.1.9:
+    resolution: {integrity: sha512-y43Z5Q3ZJvxqtD8xUH6U3yrlZeay7ZTqkzv1GQ4b0mGQtk5uptOT9Ra4qvGuUv8QyPQsortrA/OHWUD5ax5ZNQ==}
     engines: {node: '>= 12'}
     peerDependencies:
       petite-vue-i18n: '*'
@@ -2022,7 +2030,7 @@ packages:
       vue-i18n:
         optional: true
     dependencies:
-      '@intlify/bundle-utils': 2.2.1_vue-i18n@9.1.9
+      '@intlify/bundle-utils': 3.0.0_vue-i18n@9.1.9
       '@intlify/shared': 9.2.0-beta.34
       '@rollup/pluginutils': 4.1.2
       debug: 4.3.3

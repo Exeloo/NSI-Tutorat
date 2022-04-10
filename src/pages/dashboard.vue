@@ -1,19 +1,4 @@
-<template>
-  <SideBar />
-  <div v-if="true">
-    <div>
-      <label>Nom Prénom</label>
-      <input type="text">
-    </div>
-
-
-
-  </div>
-  <div v-else>
-    <Loading />
-  </div>
-
-</template>
+<template />
 
 <script setup lang="ts">
 </script>
@@ -21,3 +6,8 @@
 <style scoped>
 
 </style>
+
+<route lang="yaml">
+meta:
+  layout: dashboard
+</route>

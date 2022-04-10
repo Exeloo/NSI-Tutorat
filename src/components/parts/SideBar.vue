@@ -1,68 +1,66 @@
 <template>
-  <div class="SideBar">
-    <div class="menu">
-      <div class="main">
-        <div class="item" @click="changeRoute('dashboard')">
-          <div class="a">
-            <div class="i" i="ic-baseline-computer" />
-            <div>
-              Dashboard
-            </div>
+  <div class="SideBar" :class="isMenuOpen ? 'sideBarEnable' : ''">
+    <div class="toggle-menu" @click="toggleSideBar">
+      <div v-if="isMenuOpen" class="toggle-on toggle-btn">
+        <div i="carbon-exit" />
+      </div>
+      <div v-else class="toggle-off toggle-btn">
+        <div i="ic-round-menu" />
+      </div>
+    </div>
+    <div class="menu" :class="isMenuOpen ? 'menuEnable' : ''">
+      <div>
+        <div class="item single-item" @click="changeRoute('')">
+          <div class="i" i="ic-baseline-computer" />
+          <div class="text">
+            Dashboard
           </div>
         </div>
-        <div class="item" @click="changeRoute('planning')">
-          <div class="a">
-            <div class="i" i="ic-baseline-calendar-month" />
-            <div>
-              Planning
-            </div>
+        <div class="item single-item" @click="changeRoute('planning')">
+          <div class="i" i="ic-baseline-calendar-month" />
+          <div class="text">
+            Planning
           </div>
         </div>
         <div class="item">
-          <div class="a sub-btn" @click="toggleSide">
+          <div class="sub-btn" @click="toggleSubMenu">
             <div>
               <div class="i" i="ic-baseline-people-alt" />
-              <div>
+              <div class="text">
                 Relations
               </div>
             </div>
             <div class="dropdown" :class="dropdownClass.relation" i="ic-baseline-keyboard-arrow-right" />
           </div>
           <div v-if="subMenu" class="sub-menu">
-            <div class="sub-item" @click="changeRoute('chat')">
-              <div class="a">
-                <div class="i" i="ic-baseline-chat" />
-                <div>
-                  Chat
-                </div>
+            <div class="sub-item single-item" @click="changeRoute('chat')">
+              <div class="i" i="ic-baseline-chat" />
+              <div class="text">
+                Chat
               </div>
             </div>
-            <div class="sub-item" @click="changeRoute('find-tutorant')">
-              <div class="a">
-                <div class="i" i="healthicons-magnifying-glass" />
-                <div>
-                  Trouver un tutorant
-                </div>
+
+            <div class="sub-item single-item" @click="changeRoute('find-tutorant')">
+              <div class="i" i="healthicons-magnifying-glass" />
+              <div class="text">
+                Trouver un tutorant
               </div>
             </div>
-            <div class="sub-item" @click="changeRoute('profile')">
-              <div class="a">
-                <div class="i" i="carbon-user" />
-                <div>
-                  Mon profil
-                </div>
+            <div class="sub-item single-item" @click="changeRoute('profile')">
+              <div class="i" i="carbon-user" />
+              <div class="text">
+                Mon profil
               </div>
             </div>
           </div>
         </div>
       </div>
-      <div class="settings">
-        <div class="item settings">
-          <div class="a">
-            <div class="i" i="ic-baseline-settings" />
-            <div>
-              Parametres
-            </div>
+
+      <div>
+        <div class="item  single-item">
+          <div class="i" i="ic-baseline-settings" />
+          <div class="text">
+            Parametres
           </div>
         </div>
       </div>
@@ -81,7 +79,13 @@ const props = defineProps({
 
 const router = useRouter()
 
+const isMenuOpen = ref(false)
+const sidebarClass = reactive({
+  sideBarEnable: false,
+})
+
 const subMenu = ref(false)
+
 const dropdownClass = reactive({
   relation: {
     rotate: false,
@@ -104,7 +108,7 @@ const value = computed({
   },
 })
 
-const toggleSide = (_: any, force: boolean | undefined = undefined) => {
+const toggleSubMenu = (_: any, force: boolean | undefined = undefined) => {
   if (force === undefined)
     subMenu.value = !subMenu.value
 
@@ -112,109 +116,164 @@ const toggleSide = (_: any, force: boolean | undefined = undefined) => {
     subMenu.value = force
 
   dropdownClass.relation.rotate = subMenu.value
-  value.value = subMenu.value
+  if (subMenu.value)
+    toggleSideBar(undefined, true)
+}
+
+const toggleSideBar = (_: any, force: boolean | undefined = undefined) => {
+  if (force === undefined)
+    isMenuOpen.value = !isMenuOpen.value
+
+  else
+    isMenuOpen.value = force
+  if (!isMenuOpen.value)
+    toggleSubMenu(undefined, false)
+  value.value = isMenuOpen.value
+  sidebarClass.sideBarEnable = isMenuOpen.value
 }
 
 </script>
 
 <style scoped >
 
-* {
-  margin: 0;
-  padding: 0;
-  box-sizing: border-box;
-}
-
-body {
-  min-height: 100vh;
-}
-
 .SideBar {
-  font-size: min(4vw, 18px);
+  font-size: 2.2vh;
   background-color: var(--main-bar-color);
   color: var(--secondary-text-color);
-  width: 290px;
+  width: 7.7vh;
   height: 100vh;
   top: 0;
   left: 0;
-  overflow-y: auto;
+  box-shadow: 0 0.3vh 1.2vh 0 rgba(0, 0, 0, 0.4);
+  overflow: hidden;
+  transition: 0.5s ease;
 }
 
-.SideBar .menu {
+.sideBarEnable {
+  width: 35vh;
+}
+
+.dropdown {
+  margin: 2vh;
+  transition: 0.5s ease;
+}
+
+.i {
+  position: fixed;
+}
+
+.item {
+  cursor: pointer;
+  color: var(--main-text-color);
+  line-height: 7vh;
+  transition: 0.5s ease;
+}
+
+.menu {
   width: 100%;
-  height: 80%;
-  margin-top: 130px;
+  height: 70%;
+  margin-top: 9vh;
   display: flex;
   flex-direction: column;
   justify-content: space-between;
-}
-
-.SideBar .main {
-  display: flex;
-  flex-direction: column;
-  justify-content: flex-start;
-}
-
-.SideBar .menu .item {
-  position: relative;
-  cursor: pointer;
-
-}
-
-.SideBar .menu .item .a {
-  color: var(--main-text-color);
-  font-size: min(4vw, 18px);
-  padding: 5px 30px;
-  line-height: 60px;
-  display: flex;
-  align-items: center;
-  gap: 1.25rem;
-}
-
-.SideBar .menu .item .a:hover {
-  background: var(--secondary-background);
-  transition: 0.5s ease;
-}
-
-.SideBar .menu .item .a .dropdown {
-  right: 0;
-  margin: 20px;
-  transition: 0.5s ease;
-  justify-self: flex-end;
-}
-
-.SideBar .menu .item .sub-menu .a{
-  padding-left: 50px;
-}
-
-.SideBar .menu .item {
-  transition: 0.5s ease;
-}
-
-.sub-menu {
-  background-color: var(--secondary-bar-color);
 }
 
 .rotate {
   transform: rotate(90deg);
 }
 
-.settings {
-  justify-self: flex-end;
-}
-
-.sub-items {
+.single-item {
+  padding: 5px 2.8vh;
   display: flex;
-  justify-content: space-between;
+  align-items: center;
 }
 
-.sub-btn {
-  justify-content: space-between;
+.single-item:hover {
+  background: var(--secondary-background);
+  transition: 0.5s ease;
 }
 
 .sub-btn div {
   align-items: center;
   display: flex;
-  gap: 1.25rem;
 }
+
+.sub-btn {
+  padding: 5px 2.8vh;
+  display: flex;
+  gap: 7vh;
+
+}
+
+.sub-btn:hover {
+  background: var(--secondary-background);
+  transition: 0.5s ease;
+}
+
+.sub-item {
+  padding-left: 50px;
+}
+
+.sub-menu {
+  width: 100%;
+  background-color: var(--secondary-bar-color);
+}
+
+.text {
+  padding-left: 5vh;
+}
+
+.toggle-btn {
+  padding: 10px;
+}
+
+.toggle-btn:hover {
+  background-color: var(--secondary-bar-color);
+  transition: 0.5s ease;
+  border-radius: 50%;
+}
+
+.toggle-menu {
+  width: 100%;
+  color: var(--main-text-color);
+  margin-top: 9vh;
+  font-size: 3.5vh;
+  display: flex;
+  flex-direction: column;
+}
+
+.toggle-off {
+  align-self: center;
+}
+
+.toggle-on {
+  margin-right: 2.2vh;
+  align-self: flex-end;
+}
+
+@media screen and (max-width: 520px){
+  .SideBar {
+    background-color: transparent;
+    box-shadow: none;
+  }
+
+  .sideBarEnable {
+    background-color: var(--main-bar-color);
+    box-shadow: 0 0.3vh 1.2vh 0 rgba(0, 0, 0, 0.4);
+  }
+
+  .menu {
+    display: none;
+  }
+
+  .menuEnable {
+    display: flex;
+  }
+
+  .toggle-menu {
+    margin-top: 6vh;
+  }
+
+}
+
 </style>

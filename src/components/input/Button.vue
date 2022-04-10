@@ -67,7 +67,6 @@ button {
 
 .click {
     transform: scale(0.9);
-    transition: 0.15s;
 }
 
 </style>

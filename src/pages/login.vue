@@ -59,25 +59,25 @@ const isPageLoading = ref(false)
 const isError = ref(false)
 const error = ref<string>()
 
-const log = async() => {
-  const loginResult = await login()
+// const log = async() => {
+//   const loginResult = await login()
 
-  if (loginResult.answer) {
-    console.log(1)
-    if (getUser().value.isValid()) {
-      console.log(2)
-      isPageLoading.value = false
-    }
-  }
-  else {
-    console.log(3)
-    isPageLoading.value = false
-    isError.value = true
-    error.value = loginResult.reason
-    console.log(error.value)
-    console.log(isPageLoading.value, isError.value)
-  }
-}
+//   if (loginResult.answer) {
+//     console.log(1)
+//     if (getUser().value.isValid()) {
+//       console.log(2)
+//       isPageLoading.value = false
+//     }
+//   }
+//   else {
+//     console.log(3)
+//     isPageLoading.value = false
+//     isError.value = true
+//     error.value = loginResult.reason
+//     console.log(error.value)
+//     console.log(isPageLoading.value, isError.value)
+//   }
+// }
 
 const isNotValid = ref(true)
 

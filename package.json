@@ -31,6 +31,7 @@
     "vue-select": "^4.0.0-beta.3"
   },
   "devDependencies": {
+    "@iconify-json/arcticons": "^1.1.9",
     "@antfu/eslint-config": "^0.18.8",
     "@iconify-json/carbon": "^1.1.1",
     "@iconify-json/healthicons": "^1.1.1",
