@@ -1,7 +1,8 @@
-import { CollectionReference, collection, doc } from 'firebase/firestore'
-import { db } from '../firebase'
+import type { Firestore } from 'firebase/firestore'
+import { db } from '../../firebase'
+import { FCollection } from './Collection'
 
-export class Firstore {
+export class Store {
   /**
    * Todo classe unique a appeler lorsque qu'on veut
    * * Method getCollection qui nous renvoie un object "Collection" dans interface
@@ -12,4 +13,18 @@ export class Firstore {
    * * -> Class qui prend en params la collection et le nom
    * * Les autres classes de datas appeleront cette classe
    */
+
+  private readonly _db: Firestore
+
+  constructor() {
+    this._db = db
+  }
+
+  getCollection(name: string) {
+    return new FCollection(this, name)
+  }
+
+  get db() {
+    return this._db
+  }
 }
