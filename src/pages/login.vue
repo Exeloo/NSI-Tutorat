@@ -45,11 +45,15 @@
     <div class="submit">
       <Button id="submit" label="Envoyer" styles="blurple" :options="buttonOptions" :loading="isButtonLoading" @click="onButtonClick" />
     </div>
+    <Button id="truc" label="Machin" styles="blurple" :options="{disabled: false}" :loading="isButtonLoading" @click="test" />
+    {{ c.get('truc') }}
+    <!-- {{ d.get('truc') }} -->
   </div>
 </template>
 
 <script setup lang="ts">
-import { getUser, login } from '~/logic/data/auth/auth-system'
+// import { getUser, login } from '~/logic/data/auth/auth-system'
+import { FCache } from '~/logic/data/firestore/cache/Cache'
 import { getOption, getSubjects, isValidForm, models, optionOptions, options, selectOptions } from '~/logic/form/login'
 
 const { t } = useI18n()
@@ -59,6 +63,8 @@ const isPageLoading = ref(false)
 const isError = ref(false)
 const error = ref<string>()
 
+const c = new FCache('user')
+const d = new FCache('user')
 // const log = async() => {
 //   const loginResult = await login()
 
@@ -78,6 +84,13 @@ const error = ref<string>()
 //     console.log(isPageLoading.value, isError.value)
 //   }
 // }
+
+const test = () => {
+  c.set('truc', {
+    a: 'b',
+  })
+  console.log(c.get('truc'))
+}
 
 const isNotValid = ref(true)
 
