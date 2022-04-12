@@ -49,7 +49,6 @@ specifiers:
   vue-tsc: ^0.32.1
 
 dependencies:
-  '@iconify-json/arcticons': 1.1.9
   '@vueuse/core': 8.0.0_vue@3.2.31
   '@vueuse/head': 0.7.5_vue@3.2.31
   firebase: 9.6.8
@@ -64,6 +63,7 @@ dependencies:
 
 devDependencies:
   '@antfu/eslint-config': 0.18.8_eslint@8.10.0+typescript@4.6.2
+  '@iconify-json/arcticons': 1.1.9
   '@iconify-json/carbon': 1.1.1
   '@iconify-json/healthicons': 1.1.1
   '@iconify-json/ic': 1.1.1
@@ -1901,7 +1901,7 @@ packages:
     resolution: {integrity: sha512-wVTv2RMWfkDWmsiocJctlHRYMNz7iyHXUO2ZwV7tvt5Syw6+mJ5UII3MnY+3rsXkyoRnej6Z6anAktN7e1ZmxQ==}
     dependencies:
       '@iconify/types': 1.0.12
-    dev: false
+    dev: true
 
   /@iconify-json/carbon/1.1.1:
     resolution: {integrity: sha512-ClOYc+82CKlDAKH1tfDTJTzNz4oHhYD04ALA5uemw9PdWXg05yIJb9bxWjSz4UgdUbH5N/yd8s9hNPI3h6jnlg==}
@@ -1923,6 +1923,7 @@ packages:
 
   /@iconify/types/1.0.12:
     resolution: {integrity: sha512-6er6wSGF3hgc1JEZqiGpg21CTCjHBYOUwqLmb2Idzkjiw6ogalGP0ZMLVutCzah+0WB4yP+Zd2oVPN8jvJ+Ftg==}
+    dev: true
 
   /@iconify/utils/1.0.23:
     resolution: {integrity: sha512-Ktdmpe4mkMXQAnnDUz3s6s5aY/BeVPwHC1d5IhG1bgrWVNWFQNUj8cQPMbHpNCSD9MRC5yGxm9/PGPpOWGJLAg==}

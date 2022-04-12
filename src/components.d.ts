@@ -6,10 +6,12 @@ declare module 'vue' {
   export interface GlobalComponents {
     AdSense: typeof import('./components/publicity/AdSense.vue')['default']
     Button: typeof import('./components/input/Button.vue')['default']
+    Chat: typeof import('./components/parts/Chat.vue')['default']
     Checkbox: typeof import('./components/input/Checkbox.vue')['default']
     Counter: typeof import('./components/Counter.vue')['default']
     Entry: typeof import('./components/input/Entry.vue')['default']
     Footer: typeof import('./components/parts/Footer.vue')['default']
+    FooterBis: typeof import('./components/parts/FooterBis.vue')['default']
     GoogleAuth: typeof import('./components/auth/GoogleAuth.vue')['default']
     Loading: typeof import('./components/style/Loading.vue')['default']
     LoginBar: typeof import('./components/parts/LoginBar.vue')['default']

@@ -2,7 +2,7 @@
   <div class="SideBar" :class="isMenuOpen ? 'sideBarEnable' : ''">
     <div class="toggle-menu" @click="toggleSideBar">
       <div v-if="isMenuOpen" class="toggle-on toggle-btn">
-        <div i="carbon-exit" />
+        <div class="exit-button" i="ic-round-arrow-forward-ios" />
       </div>
       <div v-else class="toggle-off toggle-btn">
         <div i="ic-round-menu" />
@@ -57,7 +57,7 @@
       </div>
 
       <div>
-        <div class="item  single-item">
+        <div class="item  single-item" @click="changeRoute('settings')">
           <div class="i" i="ic-baseline-settings" />
           <div class="text">
             Parametres
@@ -274,6 +274,11 @@ const toggleSideBar = (_: any, force: boolean | undefined = undefined) => {
     margin-top: 6vh;
   }
 
+}
+
+.exit-button {
+  transform: rotate(180deg);
+  font-size: 2.8vh;
 }
 
 </style>
