@@ -33,7 +33,7 @@
   display: flex;
   justify-content: space-between;
   text-align: center;
-  font-size: 18px;
+  font-size: 3vh;
   background-color: var(--main-background);
   color: var(--secondary-text-color);
   box-shadow: 0 2px 7px 0 rgba(0, 0, 0, 0.3);
@@ -42,7 +42,7 @@
 button {
   display: flex;
   align-items: center;
-  padding: 0.75rem;
+  padding: 2vh;
 }
 
 .TopBar * {
@@ -50,14 +50,14 @@ button {
 }
 
 .TopBar .title {
-  font-size: 22px;
+  font-size: 3vh;
   display: flex;
   align-items: center;
-  padding: 0.75rem;
+  padding: 1.5vh;
 }
 
 .TopBar .text {
-  margin-left: 0.5rem;
+  margin-left: 1vh;
 }
 
 @media screen and (max-width: 520px){

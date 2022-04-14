@@ -51,27 +51,27 @@ const openUrl = (r: string) => {
 
 .text {
   text-align: center;
-  font-size: 25px;
-  padding: 20px 0;
+  font-size: 4.3vh;
+  padding: 2vh 0;
 
 }
 
 .social-networks {
   display: flex;
   justify-content: space-around;
-  font-size: 40px;
+  font-size: 7vh;
   cursor: pointer;
-  padding: 20px 0;
+  padding: 3vh 0;
 }
 
 .other {
   display: flex;
   justify-content: center;
   gap: 1rem;
-  font-size: 20px;
+  font-size: 3vh;
   cursor: pointer;
   justify-items: flex-end;
-  padding: 20px 0;
+  padding: 3vh 0;
   flex-wrap: wrap;
 }
 

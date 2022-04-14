@@ -8,8 +8,9 @@
     <div class="side-bar">
       <SideBar v-model="isSideBarDeploy" />
     </div>
-    <div class="content">
+    <div class="main">
       <router-view />
+      <Footer />
     </div>
   </div>
 </template>
@@ -36,12 +37,9 @@ const isSideBarDeploy = ref(false)
   flex: 100%;
 }
 
-.body {
-  display: grid;
-}
-
-.content {
-  justify-self: flex-end;
+.main {
+  padding-left: 7.7vh;
+  width: 100%;
 
 }
 
