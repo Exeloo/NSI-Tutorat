@@ -11,7 +11,7 @@ declare module 'vue' {
     Counter: typeof import('./components/Counter.vue')['default']
     Entry: typeof import('./components/input/Entry.vue')['default']
     Footer: typeof import('./components/parts/Footer.vue')['default']
-    FooterBis: typeof import('./components/parts/FooterBis.vue')['default']
+    FooterBis: typeof import('./components/all-components/FooterBis.vue')['default']
     GoogleAuth: typeof import('./components/auth/GoogleAuth.vue')['default']
     Loading: typeof import('./components/style/Loading.vue')['default']
     LoginBar: typeof import('./components/parts/LoginBar.vue')['default']

@@ -1,6 +1,7 @@
 import type { Firestore } from 'firebase/firestore'
 import { db } from '../../firebase'
 import { FCollection } from './Collection'
+import {Query} from "~/logic/data/firestore/firestore-types";
 
 export class Store {
   /**
@@ -20,8 +21,8 @@ export class Store {
     this._db = db
   }
 
-  getCollection(name: string) {
-    return new FCollection(this, name)
+  getCollection(name: string, q?: Query) {
+    return new FCollection(this, name, q)
   }
 
   get db() {

@@ -4,5 +4,5 @@ Login:
 
 Firebase:
 - Refaire les class -> same que dans le killer
-- Principe de cache
+- Principe de firestoreCache
 - Add 
