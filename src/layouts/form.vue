@@ -5,6 +5,7 @@
     </div>
   </main>
   <Footer />
+  <UICheckbox />
 </template>
 
 <style>

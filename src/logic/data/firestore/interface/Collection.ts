@@ -1,26 +1,36 @@
-import type { CollectionReference, DocumentData, QuerySnapshot } from 'firebase/firestore'
+import type { CollectionReference, QuerySnapshot } from 'firebase/firestore'
 import { addDoc, collection, getDocs, onSnapshot, query, where } from 'firebase/firestore'
-
-import type { Query } from '../types'
-
+import type { Query } from '../firestore-types'
+import { getCache } from '../firestore-cache'
 import { FDocument } from './Document'
 import type { Store } from './Store'
 
-// Todo systeme de cache
+// Todo systeme de firestoreCache
 
 export class FCollection {
   private readonly _store: Store
   private readonly _name: string
   private readonly _document: FDocument | undefined
+  private readonly _cache: Map<string, Object>
 
-  private readonly _collection: CollectionReference
+  private readonly _ref: CollectionReference
 
-  constructor(store: Store, name: string, doc: FDocument | undefined = undefined) {
+  constructor(store: Store, name: string, q?: Query, doc?: FDocument) {
     this._store = store
     this._name = name
     this._document = doc
 
-    this._collection = collection(this._store.db, this._name)
+    this._ref = doc ? collection(doc.ref, this._name) : collection(this._store.db, this._name)
+    this._cache = getCache(name)
+
+    const snapshotQuery = q ? query(this._ref, where(q.param_1, q.comparator, q.param_2)) : query(this._ref)
+    onSnapshot(snapshotQuery, this._onSnapshot)
+  }
+
+  private _onSnapshot(snapshot: QuerySnapshot): void {
+    snapshot.forEach((snapDoc) => {
+      this._cache.set(snapDoc.id, snapDoc.data())
+    })
   }
 
   getDocument(name: string): FDocument {
@@ -28,16 +38,16 @@ export class FCollection {
   }
 
   async createDocument(data: Object): Promise<FDocument> {
-    const docRef = await addDoc(this._collection, data)
+    const docRef = await addDoc(this._ref, data)
     return new FDocument(this, docRef.id)
   }
 
-  queryDocuments(q: Query | undefined = undefined): Promise<QuerySnapshot<DocumentData>> {
-    return getDocs(q ? query(this._collection, where(q.param_1, q.comparator, q.param_2)) : query(this._collection))
+  queryDocuments(q?: Query): Promise<QuerySnapshot> {
+    return getDocs(q ? query(this._ref, where(q.param_1, q.comparator, q.param_2)) : query(this._ref))
   }
 
-  onChange(callback: (snapshot: QuerySnapshot<DocumentData>) => void): void {
-    onSnapshot(this._collection, callback)
+  onSnapshot(callback: (snapshot: QuerySnapshot) => void): void {
+    onSnapshot(this._ref, callback)
   }
 
   get store() {
@@ -52,7 +62,11 @@ export class FCollection {
     return this._document
   }
 
-  get collection() {
-    return this._collection
+  get ref() {
+    return this._ref
+  }
+
+  get cache() {
+    return this._cache
   }
 }

@@ -53,8 +53,10 @@
 
 <script setup lang="ts">
 // import { getUser, login } from '~/logic/data/auth/auth-system'
-import { FCache } from '~/logic/data/firestore/cache/Cache'
+import { getCache } from '~/logic/data/firestore/firestore-cache'
 import { getOption, getSubjects, isValidForm, models, optionOptions, options, selectOptions } from '~/logic/form/login'
+import { Store } from '~/logic/data/firestore/interface/Store'
+import { login } from '~/logic/data/auth/auth-system'
 
 const { t } = useI18n()
 
@@ -63,8 +65,10 @@ const isPageLoading = ref(false)
 const isError = ref(false)
 const error = ref<string>()
 
-const c = new FCache('user')
-const d = new FCache('user')
+const c = getCache('user')
+const d = getCache('user')
+const store = new Store()
+
 // const log = async() => {
 //   const loginResult = await login()
 
@@ -85,11 +89,15 @@ const d = new FCache('user')
 //   }
 // }
 
-const test = () => {
-  c.set('truc', {
-    a: 'b',
-  })
-  console.log(c.get('truc'))
+const test = async() => {
+  const log = await login()
+  const user = log.auth.user
+  if (log.authInfo.answer) {
+    console.log('truc')
+    console.log(user.email, user.displayName, user.uid)
+    const collection = store.getCollection('users', { param_1: 'uid', comparator: '==', param_2: '2eGKhAkOOyf497DYACiCrImxMRq2' })
+    console.log(collection.cache.get('truc'))
+  }
 }
 
 const isNotValid = ref(true)

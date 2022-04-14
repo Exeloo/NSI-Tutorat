@@ -8,9 +8,9 @@ const auth = new Auth()
 export const login = async() => {
   await auth.signIn()
   const isValid = auth.valid
-  if (!isValid.answer) return isValid
+  if (!isValid.answer) return { authInfo: isValid, auth }
   // user.value = new User(auth)
-  return isValid
+  return { authInfo: isValid, auth }
 }
 
 export const logout = () => {
