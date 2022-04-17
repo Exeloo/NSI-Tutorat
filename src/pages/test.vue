@@ -1,16 +1,8 @@
 <template>
-  <div class="layout">
-    <div class="side-bar">
-    </div>
-
-    <div class="top-bar">
-      <TopBar />
-    </div>
-  </div>
+  <Chat />
   <div class="content">
     <br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br />
   </div>
-  <Footer />
 </template>
 
 <script setup lang="ts">
@@ -20,19 +12,11 @@ const isSideBarDeploy = ref(false)
 </script>
 
 <style scoped>
-.layout {
-  display: flex;
-  width: 100%;
-  position: fixed;
-}
 
-.top-bar {
-  flex: 100%;
-}
 
 </style>
 
 <route lang="yaml">
 meta:
-  layout: test
+  layout: dashboard
 </route>
