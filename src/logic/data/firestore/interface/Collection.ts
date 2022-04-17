@@ -5,8 +5,6 @@ import { getCache } from '../firestore-cache'
 import { FDocument } from './Document'
 import type { Store } from './Store'
 
-// Todo systeme de firestoreCache
-
 export class FCollection {
   private readonly _store: Store
   private readonly _name: string
@@ -15,21 +13,24 @@ export class FCollection {
 
   private readonly _ref: CollectionReference
 
-  constructor(store: Store, name: string, q?: Query, doc?: FDocument) {
+  constructor(store: Store, name: string, isListen: boolean, document?: FDocument) {
     this._store = store
     this._name = name
-    this._document = doc
+    this._document = document
 
-    this._ref = doc ? collection(doc.ref, this._name) : collection(this._store.db, this._name)
+    this._ref = this._document ? collection(this._document.ref, this._name) : collection(this._store.db, this._name)
     this._cache = getCache(name)
 
-    const snapshotQuery = q ? query(this._ref, where(q.param_1, q.comparator, q.param_2)) : query(this._ref)
-    onSnapshot(snapshotQuery, this._onSnapshot)
+    // const snapshotQuery = q ? query(this._ref, where(q.param_1, q.comparator, q.param_2)) : query(this._ref)
+    if (isListen)
+      onSnapshot(this._ref, this._onSnapshot)
   }
 
-  private _onSnapshot(snapshot: QuerySnapshot): void {
-    snapshot.forEach((snapDoc) => {
-      this._cache.set(snapDoc.id, snapDoc.data())
+  private _onSnapshot(querySnapshot: QuerySnapshot): void {
+    querySnapshot.forEach((snapshot) => {
+      const data = snapshot?.data()
+      if (!data) return
+      getCache(snapshot.ref.parent.id).set(snapshot.id, data)
     })
   }
 

@@ -41,7 +41,7 @@ const isSideBarDeploy = ref(false)
 }
 
 .content {
-  justify-self: flex-end;
+  
 
 }
 

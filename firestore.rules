@@ -1,19 +1,19 @@
 rules_version = '2';
 service cloud.firestore {
-  function isUser() {
-    let regex = '.*@pedagogiefde[.]org';
-    return request.auth != null && request.auth.token.email.matches(regex);
-  }
-  function isConcernUser(id) {
-    return isUser() && request.auth.uid == id
-  }
-  function isAdmin() {
-    return request.auth != null && exists(/databases/$(database)/documents/admins/$(request.auth.uid));
-  }
-  function isConcernAdmin(id) {
-    return isAdmin() && request.auth.uid == id
-  }
   match /databases/{database}/documents {
+    function isUser() {
+      let regex = '.*@pedagogiefde[.]org';
+      return request.auth != null && request.auth.token.email.matches(regex);
+    }
+    function isConcernUser(id) {
+      return isUser() && request.auth.uid == id
+    }
+    function isAdmin() {
+      return request.auth != null && exists(/databases/$(database)/documents/admins/$(request.auth.uid));
+    }
+    function isConcernAdmin(id) {
+      return isAdmin() && request.auth.uid == id
+    }
     match /users/{userId} {
       allow read, create, update, delete: if isConcernUser(userId) || isAdmin();
     }

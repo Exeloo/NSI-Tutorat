@@ -48,16 +48,17 @@ export class Auth {
    * @memberof Auth
    */
   async signIn() {
-    await signInWithPopup(auth, provider)
-      .then((result) => {
-        this._credential = GoogleAuthProvider.credentialFromResult(result)
-        this._token = this._credential?.accessToken
-        this._user = result.user
-      }).catch((e) => {
-        this._error = { code: e.code, message: e.message }
+    try {
+      const result = await signInWithPopup(auth, provider)
+      this._credential = GoogleAuthProvider.credentialFromResult(result)
+      this._token = this._credential?.accessToken
+      this._user = result.user
+    }
+    catch (e) {
+      this._error = { code: e.code, message: e.message }
 
-        this._credential = GoogleAuthProvider.credentialFromError(e)
-      })
+      this._credential = GoogleAuthProvider.credentialFromError(e)
+    }
     this._valid = this.validation()
   }
 

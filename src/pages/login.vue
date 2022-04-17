@@ -45,18 +45,11 @@
     <div class="submit">
       <Button id="submit" label="Envoyer" styles="blurple" :options="buttonOptions" :loading="isButtonLoading" @click="onButtonClick" />
     </div>
-    <Button id="truc" label="Machin" styles="blurple" :options="{disabled: false}" :loading="isButtonLoading" @click="test" />
-    {{ c.get('truc') }}
-    <!-- {{ d.get('truc') }} -->
   </div>
 </template>
 
 <script setup lang="ts">
-// import { getUser, login } from '~/logic/data/auth/auth-system'
-import { getCache } from '~/logic/data/firestore/firestore-cache'
 import { getOption, getSubjects, isValidForm, models, optionOptions, options, selectOptions } from '~/logic/form/login'
-import { Store } from '~/logic/data/firestore/interface/Store'
-import { login } from '~/logic/data/auth/auth-system'
 
 const { t } = useI18n()
 
@@ -64,41 +57,6 @@ const isButtonLoading = ref(false)
 const isPageLoading = ref(false)
 const isError = ref(false)
 const error = ref<string>()
-
-const c = getCache('user')
-const d = getCache('user')
-const store = new Store()
-
-// const log = async() => {
-//   const loginResult = await login()
-
-//   if (loginResult.answer) {
-//     console.log(1)
-//     if (getUser().value.isValid()) {
-//       console.log(2)
-//       isPageLoading.value = false
-//     }
-//   }
-//   else {
-//     console.log(3)
-//     isPageLoading.value = false
-//     isError.value = true
-//     error.value = loginResult.reason
-//     console.log(error.value)
-//     console.log(isPageLoading.value, isError.value)
-//   }
-// }
-
-const test = async() => {
-  const log = await login()
-  const user = log.auth.user
-  if (log.authInfo.answer) {
-    console.log('truc')
-    console.log(user.email, user.displayName, user.uid)
-    const collection = store.getCollection('users', { param_1: 'uid', comparator: '==', param_2: '2eGKhAkOOyf497DYACiCrImxMRq2' })
-    console.log(collection.cache.get('truc'))
-  }
-}
 
 const isNotValid = ref(true)
 
@@ -109,7 +67,7 @@ const buttonOptions = reactive({
 const onButtonClick = () => {
   isNotValid.value = !isValidForm()
   if (isNotValid.value) return
-  isLoading.value = true
+  isButtonLoading.value = true
 }
 
 const hasSpe = (third: boolean) => {
