@@ -17,7 +17,6 @@
 <script setup lang="ts">
 const isSideBarDeploy = ref(false)
 
-
 </script>
 
 <style scoped>
@@ -41,7 +40,7 @@ const isSideBarDeploy = ref(false)
 }
 
 .content {
-  
+  justify-self: flex-end;
 
 }
 
