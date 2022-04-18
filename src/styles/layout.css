@@ -1,0 +1,14 @@
+.nav {
+  width: 100%;
+  position: fixed;
+  z-index: 4;
+}
+
+.main {
+  padding: 8.3vh 1vh 1vh 1vh;
+  z-index: 1;
+}
+
+.footer {
+  z-index: 2;
+}

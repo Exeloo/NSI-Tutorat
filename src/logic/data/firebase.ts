@@ -1,4 +1,4 @@
-import { initializeApp } from 'firebase/app'
+import { getApps, initializeApp } from 'firebase/app'
 import { GoogleAuthProvider, connectAuthEmulator, getAuth } from 'firebase/auth'
 import { connectFirestoreEmulator, getFirestore } from 'firebase/firestore'
 import { connectStorageEmulator, getStorage } from 'firebase/storage'
@@ -19,7 +19,7 @@ const app = initializeApp(firebaseConfig)
 export const provider = new GoogleAuthProvider()
 export const auth = getAuth(app)
 
-export const db = getFirestore()
+export const db = getFirestore(app)
 export const storage = getStorage(app)
 
 const isEmulated = false

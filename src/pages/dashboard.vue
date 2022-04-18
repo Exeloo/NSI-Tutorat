@@ -1,4 +1,6 @@
-<template />
+<template>
+  LUL
+</template>
 
 <script setup lang="ts">
 </script>

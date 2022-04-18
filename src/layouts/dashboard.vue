@@ -1,16 +1,20 @@
 <template>
-  <div class="nav">
+  <nav class="nav">
     <div class="top-bar">
       <TopBar />
     </div>
-  </div>
+  </nav>
   <div class="body">
     <div class="side-bar">
       <SideBar v-model="isSideBarDeploy" />
     </div>
-    <div class="main">
-      <router-view />
-      <Footer />
+    <div class="content" :class="{sideBarEnabled: isSideBarDeploy}">
+      <main class="main">
+        <router-view />
+      </main>
+      <footer class="footer">
+        <Footer />
+      </footer>
     </div>
   </div>
 </template>
@@ -21,25 +25,31 @@ const isSideBarDeploy = ref(false)
 </script>
 
 <style scoped>
-.nav {
-  display: flex;
-  width: 100%;
-  position: fixed;
-  z-index: 5;
-}
 
 .side-bar {
   position: fixed;
+  z-index: 3;
 }
 
 .top-bar {
   flex: 100%;
 }
 
-.main {
-  padding-left: 7.7vh;
+.content {
+  padding: 0.5vh 0 0 7.8vh;
   width: 100%;
+}
 
+.sideBarEnabled {
+  pointer-events: none;
+  background: rgb(0, 0, 0, 0.2);
+}
+
+@media screen and (max-width: 520px){
+  .content {
+    padding: 7.9vh 0 0 0;
+    width: 100%;
+  }
 }
 
 </style>

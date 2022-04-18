@@ -77,11 +77,20 @@ const props = defineProps({
   },
 })
 
+const value = computed({
+  get: () => {
+    return props.modelValue
+  },
+  set: (v: string) => {
+    update('update:modelValue', v)
+  },
+})
+
 const router = useRouter()
 
 const isMenuOpen = ref(false)
 const sidebarClass = reactive({
-  sideBarEnable: false,
+  sideBarEnable: value.value,
 })
 
 const subMenu = ref(false)
@@ -98,15 +107,6 @@ const changeRoute = (r: string, dashboard = true) => {
 }
 
 const update = defineEmits(['update:modelValue'])
-
-const value = computed({
-  get: () => {
-    return props.modelValue
-  },
-  set: (v: string) => {
-    update('update:modelValue', v)
-  },
-})
 
 const toggleSubMenu = (_: any, force: boolean | undefined = undefined) => {
   if (force === undefined)
@@ -172,7 +172,7 @@ const toggleSideBar = (_: any, force: boolean | undefined = undefined) => {
 .menu {
   width: 100%;
   height: 70%;
-  margin-top: 9vh;
+  margin-top: 25vh;
   display: flex;
   flex-direction: column;
   justify-content: space-between;
@@ -183,7 +183,7 @@ const toggleSideBar = (_: any, force: boolean | undefined = undefined) => {
 }
 
 .single-item {
-  padding: 5px 2.8vh;
+  padding: 0.6vh 2.8vh;
   display: flex;
   align-items: center;
 }
@@ -199,7 +199,7 @@ const toggleSideBar = (_: any, force: boolean | undefined = undefined) => {
 }
 
 .sub-btn {
-  padding: 5px 2.8vh;
+  padding: 0.6vh 2.8vh;
   display: flex;
   gap: 7vh;
 
@@ -221,10 +221,12 @@ const toggleSideBar = (_: any, force: boolean | undefined = undefined) => {
 
 .text {
   padding-left: 5vh;
+  white-space: nowrap;
+  text-overflow: ellipsis;
 }
 
 .toggle-btn {
-  padding: 10px;
+  padding: 1.3vh;
 }
 
 .toggle-btn:hover {
@@ -236,19 +238,22 @@ const toggleSideBar = (_: any, force: boolean | undefined = undefined) => {
 .toggle-menu {
   width: 100%;
   color: var(--main-text-color);
-  margin-top: 9vh;
+  margin-top: 10vh;
   font-size: 3.5vh;
   display: flex;
   flex-direction: column;
+  position: absolute;
 }
 
 .toggle-off {
   align-self: center;
+  cursor: pointer;
 }
 
 .toggle-on {
   margin-right: 2.2vh;
   align-self: flex-end;
+  cursor: pointer;
 }
 
 @media screen and (max-width: 520px){
@@ -264,14 +269,17 @@ const toggleSideBar = (_: any, force: boolean | undefined = undefined) => {
 
   .menu {
     display: none;
+    pointer-events: none;
   }
 
   .menuEnable {
     display: flex;
+    pointer-events: all;
   }
 
   .toggle-menu {
-    margin-top: 6vh;
+    margin-top: 9vh;
+    pointer-events: all;
   }
 
 }

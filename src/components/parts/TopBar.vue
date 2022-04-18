@@ -33,7 +33,7 @@
   display: flex;
   justify-content: space-between;
   text-align: center;
-  font-size: 3vh;
+  font-size: 2.5vh;
   background-color: var(--main-background);
   color: var(--secondary-text-color);
   box-shadow: 0 2px 7px 0 rgba(0, 0, 0, 0.3);
@@ -50,10 +50,10 @@ button {
 }
 
 .TopBar .title {
-  font-size: 3vh;
   display: flex;
   align-items: center;
   padding: 1.5vh;
+  cursor: default;
 }
 
 .TopBar .text {

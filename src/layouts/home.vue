@@ -1,15 +1,14 @@
 <template>
-  <LoginBar />
-  <main>
+  <nav class="nav">
+    <LoginBar />
+  </nav>
+  <main class="main">
     <router-view />
-    <Footer />
-    <div class="space" />
-    <FooterBis />
   </main>
+  <footer class="footer">
+    <Footer />
+  </footer>
 </template>
 
 <style scoped>
-.space {
-  padding-top: 40px;
-}
 </style>

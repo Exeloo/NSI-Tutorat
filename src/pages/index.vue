@@ -6,8 +6,10 @@
 </template>
 
 <script setup lang="ts">
+import { addDoc, collection, doc, getDoc, setDoc } from 'firebase/firestore'
 import { Store } from '~/logic/data/firestore/interface/Store'
 import { login } from '~/logic/data/auth/auth-system'
+import { db } from '~/logic/data/firebase'
 
 const store = new Store()
 const isButtonLoading = ref(false)
@@ -25,19 +27,19 @@ const log = async() => {
 
 const testUsers = async() => {
   const uid = user.value.uid ? user.value.uid : 'null'
-  const doc = store.getCollection('users', false).getDocument(uid)
-  doc.set({ uid: user.value.uid, displayName: user.value.displayName, email: user.value.email })
-  console.log(await doc.get())
+  const ref = doc(db, 'users', uid)
+  await setDoc(ref, { uid: user.value.uid, displayName: user.value.displayName, email: user.value.email })
+  console.log((await getDoc(ref)).data())
 }
 
 const testSubjects = async() => {
-  const col = store.getCollection('subjects', false)
-  const doc = await col.createDocument({ name: 'Français' })
-  console.log(await doc.get())
+  const ref = collection(db, 'subjects')
+  const docRef = await addDoc(ref, { name: 'Français' })
+  console.log((await getDoc(docRef)).data())
 }
 </script>
 
 <route lang="yaml">
 meta:
-  layout: dashboard
+  layout: home
 </route>
