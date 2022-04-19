@@ -24,7 +24,7 @@ const onClick = () => {
   isButtonLoading.value = true
   setTimeout(() => {
     router.back()
-  }, 1500)
+  }, 2000)
 }
 
 </script>
