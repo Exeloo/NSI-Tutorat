@@ -14,6 +14,11 @@
         <div>{{ activeChat.name }}</div>
         <button class="settings" i="ic-baseline-settings" />
       </div>
+
+      <div v-for="mess in activeChat.messages" :key="mess.id" >
+        {{ mess.content }}
+      </div>
+
       <div class="content">
         <form class="send-message">
           <button class="add-image" i="ic-baseline-image"/>
