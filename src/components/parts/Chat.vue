@@ -15,16 +15,18 @@
         <button class="settings" i="ic-baseline-settings" />
       </div>
 
-      <div v-for="mess in activeChat.messages" :key="mess.id" >
-        {{ mess.content }}
+      <div class="messages">
+        <div v-for="mess in activeChat.messages" :key="mess.id">
+          {{ mess.content }}
+        </div>
       </div>
 
       <div class="content">
         <form class="send-message">
-          <button class="add-image" i="ic-baseline-image"/>
+          <button class="add-image" i="ic-baseline-image" />
           <br>
           <textarea id="messageContent" class="box" /><br>
-          <input class="send-button" value="" i="ic-round-send" @click="sendMessage()" >
+          <input class="send-button" value="" i="ic-round-send" @click="sendMessage()">
         </form>
       </div>
     </div>
@@ -59,7 +61,7 @@ interface Conv { id: string; name: string; entrants: string[]; messages: Message
 const activeChat = ref<Conv>(convs.value[0])
 
 const sendMessage = (message: string) => {
-  console.log(document.getElementById("messageContent").value)
+  console.log(document.getElementById('messageContent').value)
 }
 
 const changeActiveChat = (id: string) => {
@@ -152,6 +154,5 @@ const changeActiveChat = (id: string) => {
 .send-button {
   font-size: 3.3vh;
 }
-
 
 </style>
