@@ -28,7 +28,7 @@ const isSideBarDeploy = ref(false)
 
 .side-bar {
   position: fixed;
-  z-index: 3;
+  z-index: 999;
 }
 
 .top-bar {

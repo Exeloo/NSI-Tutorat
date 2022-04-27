@@ -1,7 +1,7 @@
 .nav {
   width: 100%;
   position: fixed;
-  z-index: 4;
+  z-index: 1000;
 }
 
 .main {
@@ -10,5 +10,5 @@
 }
 
 .footer {
-  z-index: 2;
+  z-index: 998;
 }

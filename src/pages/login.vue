@@ -22,7 +22,7 @@
     <div v-if="hasSpe(false)" class="multi-entries">
       <Select id="spe-a" v-model="models.spe.a" label="Première spécialité" :options="options.spe.a" :search="true" @change="onSpeChange" />
       <Select id="spe-b" v-model="models.spe.b" label="Deuxième spécialité" :options="options.spe.b" :search="true" @change="onSpeChange" />
-      <Select id="spe-c" v-model="models.spe.c" :label="hasSpe(true) ? 'Troisième spécialité' : 'Spécialité arrêté cette année'" :options="options.spe.c" :search="true" @change="onSpeChange" />
+      <Select id="spe-c" v-model="models.spe.c" :label="hasSpe(true) ? 'Troisième spécialité' : 'Spécialité arrêté l\'année dernière" :options="options.spe.c" :search="true" @change="onSpeChange" />
     </div>
     <div class="multi-entries">
       <Select id="lva" v-model="models.lv.a" label="Langue Vivante A" :options="options.lv.a" @change="onLvChange" />
