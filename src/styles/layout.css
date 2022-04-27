@@ -5,7 +5,7 @@
 }
 
 .main {
-  padding: 8.3vh 1vh 1vh 1vh;
+  padding: max(8.3vh, 4.5rem) 1vh 1vh 1vh;
   z-index: 1;
 }
 

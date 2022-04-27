@@ -1,6 +1,9 @@
 <template>
-  <div v-if="isPageLoading">
+  <div v-if="!user" class="loading">
     <Loading />
+    <div class="loading-text">
+      Chargement en cours, veuillez patienter
+    </div>
   </div>
   <div v-else-if="isError">
     {{ error }}
@@ -49,9 +52,11 @@
 </template>
 
 <script setup lang="ts">
+import { login, user } from '~/logic/data/auth/auth-manager'
 import { getOption, getSubjects, isValidForm, models, optionOptions, options, selectOptions } from '~/logic/form/login'
 
 const { t } = useI18n()
+const router = useRouter()
 
 const isButtonLoading = ref(false)
 const isPageLoading = ref(false)
@@ -63,6 +68,11 @@ const isNotValid = ref(true)
 const buttonOptions = reactive({
   disabled: isNotValid,
 })
+
+setTimeout(() => {
+  if (!user.value || !user.value.validation().exist) login()
+  else router.push('dashboard')
+}, 10000)
 
 const onButtonClick = () => {
   isNotValid.value = !isValidForm()
@@ -137,10 +147,19 @@ const onLvChange = () => {
   margin-bottom: 50px;
 }
 
+.loading {
+  text-align: center;
+}
+
 .multi-entries {
   margin-top: 20px;
   margin-bottom: 20px;
 }
+
+.loading-text {
+  margin-top: 4vh
+}
+
 </style>
 
 <route lang="yaml">

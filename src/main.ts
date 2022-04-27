@@ -7,8 +7,11 @@ import '@unocss/reset/tailwind.css'
 import './styles/main.css'
 import './styles/layout.css'
 import 'uno.css'
+import { FirebaseSystem } from './logic/data/firebase-system'
 
 const routes = setupLayouts(generatedRoutes)
+
+FirebaseSystem()
 
 // https://github.com/antfu/vite-ssg
 export const createApp = ViteSSG(

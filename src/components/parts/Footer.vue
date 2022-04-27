@@ -64,15 +64,15 @@ const openUrl = (r: string) => {
 
 .text {
   text-align: center;
-  font-size: 3.8vh;
-  padding: 3vh 0;
+  font-size: 3vh;
+  padding: 4vh 0;
 
 }
 
 .social-networks {
   display: flex;
   justify-content: space-around;
-  font-size: 5vh;
+  font-size: 4vh;
   padding: 3vh 0;
 }
 
@@ -80,7 +80,7 @@ const openUrl = (r: string) => {
   display: flex;
   justify-content: center;
   gap: 1vh;
-  font-size: 2.3vh;
+  font-size: 2vh;
   justify-items: flex-end;
   padding: 3vh 0;
   flex-wrap: wrap;

@@ -1,4 +1,10 @@
 <script lang="ts">
+import { runAuth, user } from '~/logic/data/auth/auth-manager'
+
+const router = useRouter()
+
+if (!user.value || !user.value.validation().exist) runAuth(router)
+
 </script>
 
 <template>
@@ -20,7 +26,7 @@
       <button class="">
         <div class="icon" i="ic-round-account-circle" />
         <div class="text">
-          Nom Prenom
+          {{ user ? user.displayName : 'null' }}
         </div>
       </button>
     </div>

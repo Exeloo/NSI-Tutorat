@@ -1,10 +1,10 @@
 <template>
   <div class="google-auth">
-    <div v-if="authLoading" class="loading">
+    <!-- <div v-if="authLoading" class="loading">
       <Loading />
-    </div>
-    <div v-else-if="!user">
-      <button class="login" @click="() => router.push('login')">
+    </div> -->
+    <div>
+      <button class="login" @click="runAuth(router)">
         <div class="large-screen button">
           <div class="icon" i="carbon-logo-google" />
           <div class="text">
@@ -18,23 +18,21 @@
         </div>
       </button>
     </div>
-    <button
+    <!-- <button
       v-else
       class="logout"
       title="Se déconnecter"
       @click="logout"
     >
       <div i="ic-baseline-log-out" />
-    </button>
+    </button> -->
   </div>
 </template>
 
 <script lang="ts" setup>
-import { login, logout } from '~/logic/data/auth/auth-system'
-// () => router.push('login')
+import { runAuth } from '~/logic/data/auth/auth-manager'
+
 const router = useRouter()
-const authLoading = ref(false)
-const user = ref(false)
 
 </script>
 
