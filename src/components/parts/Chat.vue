@@ -8,10 +8,19 @@
       </div>
       <button class="add-chat" i="ic-outline-plus" />
     </div>
+
     <div class="right-side">
       <div class="chat-top-bar">
         <div>{{ activeChat.name }}</div>
         <button class="settings" i="ic-baseline-settings" />
+      </div>
+      <div class="content">
+        <form class="send-message">
+          <button class="add-image" i="ic-baseline-image"/>
+          <br>
+          <textarea id="messageContent" class="box" /><br>
+          <input class="send-button" value="" i="ic-round-send" @click="sendMessage()" >
+        </form>
       </div>
     </div>
   </div>
@@ -43,6 +52,10 @@ interface Message { id: string; content: string; author: string; timestamp: stri
 interface Conv { id: string; name: string; entrants: string[]; messages: Message[] }
 
 const activeChat = ref<Conv>(convs.value[0])
+
+const sendMessage = (message: string) => {
+  console.log(document.getElementById("messageContent").value)
+}
 
 const changeActiveChat = (id: string) => {
   const filter = convs.value.filter(v => v.id === id)
@@ -92,13 +105,13 @@ const changeActiveChat = (id: string) => {
 
 .chat-top-bar {
   display: flex;
+  padding: 1.5vh;
   justify-content: space-between;
   background-color: var(--main-background);
   color: var(--secondary-text-color);
   box-shadow: 0 2px 7px 0 rgba(0, 0, 0, 0.3);
   z-index: 3;
   font-size: 15.01px;
-
 
 }
 
@@ -107,6 +120,33 @@ const changeActiveChat = (id: string) => {
   display: flex;
   flex-direction: column;
   z-index: 2;
+  justify-content: space-between;
 }
+
+.send-message {
+  display: flex;
+  align-items: flex-end;
+  justify-content: center;
+  padding: 1.5vh;
+  gap: 7px;
+
+}
+
+.box {
+  box-shadow: 0 2px 7px 0 rgba(0, 0, 0, 0.3);
+  height: 25px;
+  width: 250px;
+  padding: 3px;
+
+}
+
+.add-image {
+  font-size: 3.3vh;
+}
+
+.send-button {
+  font-size: 3.3vh;
+}
+
 
 </style>
