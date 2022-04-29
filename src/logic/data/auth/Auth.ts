@@ -36,8 +36,8 @@ export class Auth {
       const error = this._error ? this._error : { code: 'undefined', message: 'Erreur inconue' }
       return { answer: false, reason: `Code : ${error.code}, Erreur : ${error.message}` }
     }
-    if (!this.user.email?.endsWith('@pedagogiefde.org'))
-      return { answer: false, reason: 'Email invalide, veuillez mettre une adresse mail du lycée François d\'Estaing !' }
+    // if (!this.user.email?.endsWith('@pedagogiefde.org'))
+    //   return { answer: false, reason: 'Email invalide, veuillez mettre une adresse mail du lycée François d\'Estaing !' }
 
     return { answer: true, reason: 'Ok' }
   }
@@ -54,7 +54,7 @@ export class Auth {
       this._token = this._credential?.accessToken
       this._user = result.user
     }
-    catch (e) {
+    catch (e: any) {
       this._error = { code: e.code, message: e.message }
 
       this._credential = GoogleAuthProvider.credentialFromError(e)

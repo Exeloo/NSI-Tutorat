@@ -5,8 +5,8 @@
 }
 
 .main {
-  padding: 8.3vh 1vh 1vh 1vh;
-  z-index: 0;
+  padding: max(8.3vh, 4.5rem) 1vh 1vh 1vh;
+  z-index: 1;
 }
 
 .footer {
