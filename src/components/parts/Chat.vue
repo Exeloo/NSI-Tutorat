@@ -35,6 +35,9 @@
 
 <script lang="ts" setup>
 
+interface Message { id: string; content: string; author: string; timestamp: string }
+interface Conv { id: string; name: string; entrants: string[]; messages: Message[] }
+
 const convs = ref<Conv[]>([
   {
     id: '1',
@@ -51,17 +54,15 @@ const convs = ref<Conv[]>([
     entrants: ['id_personne_1', 'id_personne_2', 'id_personne_3'], // Il y a 3 personnes, donc on pourrait mettre un nom de groupe (pas obligatoire)
     messages: [
       { id: '2-1', content: 'un message', author: 'id_personne_2', timestamp: 'je sais pas je connais toujours pas l\'heure d\'envoie du msg' },
-      { id: '2-2', content: 'un autre message', author: 'id_personne_3', timestamp: 'vous commencez vraiment à m\'emerder avec cet heure' },
+      { id: '2-2', content: 'un autre messages', author: 'id_personne_3', timestamp: 'vous commencez vraiment à m\'emerder avec cet heure' },
     ],
   },
 ])
-interface Message { id: string; content: string; author: string; timestamp: string }
-interface Conv { id: string; name: string; entrants: string[]; messages: Message[] }
 
 const activeChat = ref<Conv>(convs.value[0])
 
 const sendMessage = (message: string) => {
-  console.log(document.getElementById('messageContent').value)
+  console.log(document.getElementById('messageContent')?.value)
 }
 
 const changeActiveChat = (id: string) => {

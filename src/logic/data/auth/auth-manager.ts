@@ -36,9 +36,9 @@ export const defineRedirect = () => {
     })
 }
 
-export const runAuth = (router: any) => {
-  router.push('login')
-  setTimeout(() => {
-    login()
-  }, 1000)
-}
+// export const runAuth = (router: any) => {
+//   router.push('login')
+//   setTimeout(() => {
+//     login()
+//   }, 1000)
+// }

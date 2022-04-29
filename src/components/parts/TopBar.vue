@@ -1,9 +1,9 @@
 <script lang="ts">
-import { runAuth, user } from '~/logic/data/auth/auth-manager'
+// import { runAuth, user } from '~/logic/data/auth/auth-manager'
 
-const router = useRouter()
+// const router = useRouter()
 
-if (!user.value || !user.value.validation().exist) runAuth(router)
+// if (!user.value || !user.value.validation().exist) runAuth(router)
 
 </script>
 
