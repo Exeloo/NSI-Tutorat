@@ -14,17 +14,13 @@ export class Store {
    * * Les autres classes de datas appeleront cette classe
    */
 
-  private readonly _db: Firestore
+  public readonly db: Firestore
 
   constructor() {
-    this._db = db
+    this.db = db
   }
 
   getCollection(name: string, isListen: boolean) {
     return new FCollection(this, name, isListen)
-  }
-
-  get db() {
-    return this._db
   }
 }

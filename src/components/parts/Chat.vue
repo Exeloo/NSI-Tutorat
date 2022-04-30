@@ -16,8 +16,14 @@
       </div>
 
       <div class="messages">
-        <div v-for="mess in activeChat.messages" :key="mess.id">
-          {{ mess.content }}
+        <div
+          v-for="msg in activeChat.messages" :key="msg.id"
+          class="message"
+          :class="user.uid === msg.author ? 'selfMsg' : 'otherMsg'"
+        >
+          <div class="aMessage">
+            {{ msg.content }}
+          </div>
         </div>
       </div>
 
@@ -38,6 +44,11 @@
 interface Message { id: string; content: string; author: string; timestamp: string }
 interface Conv { id: string; name: string; entrants: string[]; messages: Message[] }
 
+const user = {
+  uid: 'wow je suis moi',
+  uname: 'quentin',
+}
+
 const convs = ref<Conv[]>([
   {
     id: '1',
@@ -45,7 +56,8 @@ const convs = ref<Conv[]>([
     entrants: ['id_personne_1', 'id_personne_2'], // Il n'y a que 2 personnes, donc il n'y a pas de nom
     messages: [
       { id: '1-1', content: 'un message', author: 'id_personne_2', timestamp: 'je sais pas je connais pas l\'heure d\'envoie du msg' },
-      { id: '1-2', content: 'un autre message', author: 'id_personne_1', timestamp: 'je sais pas je connais pas l\'heure d\'envoie du msg non plus' },
+      { id: '1-2', content: 'un autre message', author: 'wow je suis moi', timestamp: 'je sais pas je connais pas l\'heure d\'envoie du msg non plus' },
+      { id: '1-3', content: 'encore un message', author: 'id_personne_2', timestamp: 'je sais pas je connais pas l\'heure d\'envoie du msg non plus' },
     ],
   },
   {
@@ -63,6 +75,7 @@ const activeChat = ref<Conv>(convs.value[0])
 
 const sendMessage = (message: string) => {
   console.log(document.getElementById('messageContent')?.value)
+  activeChat.value.messages.push({ id: 'demerde toi', content: document.getElementById('messageContent')?.value, author: user.uid, timestamp: 'regarde ton horloge connard' })
 }
 
 const changeActiveChat = (id: string) => {
@@ -154,6 +167,29 @@ const changeActiveChat = (id: string) => {
 
 .send-button {
   font-size: 3.3vh;
+}
+
+.message {
+}
+
+.selfMsg {
+  display: flex;
+  width: fit-content;
+  margin-left: auto;
+  background-color: #296aa3;
+  padding: 7px;
+  border-radius: 10px;
+  margin-bottom: 15px;
+
+}
+
+.otherMsg {
+  background-color: #43b581;
+  padding: 7px;
+  width: fit-content;
+  border-radius: 10px;
+  margin-bottom: 15px;
+
 }
 
 </style>
