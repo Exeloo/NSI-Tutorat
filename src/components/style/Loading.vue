@@ -8,9 +8,6 @@
 .lds-ring div {
     border-left-color: #333;
 }
-.dark .lds-ring div {
-  border-left-color: #fff;
-}
 .lds-ring {
   display: inline-block;
   position: relative;

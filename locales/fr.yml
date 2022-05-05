@@ -2,4 +2,5 @@ firstLogin:
   title: Informations Complémentaires
   subTitle: Pour s'assurer du bon fonctionnement de la plateforme, nous avons besoin de quelques informations sur vous. Les informations que vous rentrerez pourront être modifiés plus tard.
 not-found: Page non trouvée
+paramRequired: "* Obligatoire"
 

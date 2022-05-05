@@ -1,12 +1,3 @@
-<script lang="ts">
-// import { runAuth, user } from '~/logic/data/auth/auth-manager'
-
-// const router = useRouter()
-
-// if (!user.value || !user.value.validation().exist) runAuth(router)
-
-</script>
-
 <template>
   <div class="TopBar">
     <div class="title">
@@ -26,12 +17,29 @@
       <button class="">
         <div class="icon" i="ic-round-account-circle" />
         <div class="text">
-          {{ user ? user.displayName : 'null' }}
+          {{ user.value.data.value.displayName }}
         </div>
       </button>
     </div>
   </div>
 </template>
+
+<script setup lang="ts" await>
+import { login, softLogin, user } from '~/logic/data/auth/auth-manager'
+const router = useRouter()
+
+if (!user.value || !user.value.exist || !user.value.valid) {
+  setTimeout(async() => {
+    await softLogin()
+    if (!user.value || !user.value.exist || !user.value.valid) {
+      router.push('login')
+      setTimeout(() => {
+        login()
+      }, 1000)
+    }
+  }, 500)
+}
+</script>
 
 <style scoped>
 

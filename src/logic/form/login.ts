@@ -1,33 +1,4 @@
-interface Models {
-  niveau: string
-  classe: string
-  spe: {
-    a: string
-    b: string
-    c: string
-  }
-  lv: {
-    a: string
-    b: string
-  }
-  option: string[]
-  section: {
-    lang: string
-    dnl: string
-  }
-  subjects: {
-    good: string[]
-    bad: string[]
-  }
-  helper: {
-    wish: boolean
-    subjects: string[]
-  }
-  receiver: {
-    wish: boolean
-    subjects: string[]
-  }
-}
+import type { SchoolPreferencesType } from '../profil/school/school-type'
 
 interface Option { value: string; label: string }
 interface Options {
@@ -105,6 +76,10 @@ export const selectOptions = {
     { value: 'pc-spe', label: 'Physique-Chimie' },
     { value: 'svt-spe', label: 'Science de la Vie et de la Terre' },
     { value: 'ses-spe', label: 'Science Economique et Sociales' },
+  ],
+  techno: [
+    { value: 'sti2a', label: 'STI2A' },
+    { value: 'stl', label: 'STL' },
   ],
   lv: [
     { value: 'alld-lv', label: 'Allemand' },
@@ -207,35 +182,42 @@ const getDefaultOptions = () => {
   return defaultOptions
 }
 
-export const models = reactive<Models>({
-  niveau: '',
-  classe: '',
-  spe: {
-    a: '',
-    b: '',
-    c: '',
+export const models = reactive<{ value: SchoolPreferencesType }>({
+  value: {
+    level: '',
+    class: '',
+    spe: {
+      a: '',
+      b: '',
+      c: '',
+    },
+    techno: '',
+    lv: {
+      a: '',
+      b: '',
+    },
+    option: [],
+    section: {
+      lang: '',
+      dnl: '',
+    },
+    subjects: {
+      good: [],
+      bad: [],
+    },
+    tutorat: {
+      helper: {
+        wish: false,
+        subjects: [],
+      },
+      receiver: {
+        wish: false,
+        subjects: [],
+      },
+    },
+
   },
-  lv: {
-    a: '',
-    b: '',
-  },
-  option: [],
-  section: {
-    lang: '',
-    dnl: '',
-  },
-  subjects: {
-    good: [],
-    bad: [],
-  },
-  helper: {
-    wish: false,
-    subjects: [],
-  },
-  receiver: {
-    wish: false,
-    subjects: [],
-  },
+
 })
 
 export const errors = reactive({
@@ -269,6 +251,10 @@ export const errors = reactive({
   },
 })
 
+export const setModels = (data: SchoolPreferencesType) => {
+  models.value = { ...models.value, ...data }
+}
+
 export const options = reactive(getDefaultOptions())
 export const optionOptions = ref()
 
@@ -289,9 +275,9 @@ export const getOption = (niveau: string, spe: { a?: string; b?: string; c?: str
   return copyOptions
 }
 
-export const getSubjects = (models: Models) => {
+export const getSubjects = (models: SchoolPreferencesType) => {
   const options: Option[] = []
-  const isTerminalG = models.niveau === 'terminal-g'
+  const isTerminalG = models.level === 'terminal-g'
 
   const speSubjects = selectOptions.spe.filter((v: any) => {
     const isSpe = Object.values(models.spe).includes(v.value)
@@ -301,7 +287,7 @@ export const getSubjects = (models: Models) => {
   })
   options.push(...speSubjects.map((e) => { return { ...e, label: `Spécialité ${e.label}` } }))
 
-  const niveauSubjects = selectOptions.subject.get(models.niveau)
+  const niveauSubjects = selectOptions.subject.get(models.level)
   const defaultSubjects = selectOptions.subject.get('default')
   if (!niveauSubjects || !defaultSubjects) return options
   options.push(...defaultSubjects, ...niveauSubjects)
@@ -309,7 +295,7 @@ export const getSubjects = (models: Models) => {
   const lvSubjects = selectOptions.lv.filter((v: any) => Object.values(models.lv).includes(v.value))
   options.push(...lvSubjects)
 
-  const niveauOptions = selectOptions.option.get(models.niveau)
+  const niveauOptions = selectOptions.option.get(models.level)
   const defaultOptions = selectOptions.option.get('default')
   if (!niveauOptions || !defaultOptions) return options
   const optionSubjects = [...defaultOptions, ...niveauOptions].filter(
@@ -330,24 +316,4 @@ export const getSubjects = (models: Models) => {
   }
 
   return options
-}
-
-export const isValidForm = () => {
-  const hasLevel = !!models.niveau
-  const hasClasse = !!models.classe
-  const hasLv = !!models.lv.a && !!models.lv.b
-  const hasDnl = models.section.lang !== 'angl-euro' || !!models.section.dnl || models.classe === 'seconde'
-
-  const needSpe = ['premiere-g', 'terminal-g'].includes(models.niveau)
-  const hasSpe = !needSpe || (!!models.spe.a && !!models.spe.b && !!models.spe.c)
-
-  const hasGoodSubjects = models.subjects.good.length !== 0
-  const hasBadSubjects = models.subjects.bad.length !== 0
-  const hasHelperSubjects = !models.helper.wish || models.helper.subjects.length !== 0
-  const hasReceiverSubjects = !models.receiver.wish || models.receiver.subjects.length !== 0
-  const hasSubjects = hasGoodSubjects && hasBadSubjects && hasHelperSubjects && hasReceiverSubjects
-
-  const askHelpOrReceive = !!models.helper.wish || !!models.receiver.wish
-
-  return hasLevel && hasClasse && hasLv && hasDnl && hasSpe && hasSubjects && askHelpOrReceive
 }

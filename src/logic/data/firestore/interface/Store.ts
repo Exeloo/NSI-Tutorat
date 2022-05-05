@@ -20,7 +20,7 @@ export class Store {
     this.db = db
   }
 
-  getCollection(name: string, isListen: boolean) {
+  getCollection(name: string, isListen?: boolean) {
     return new FCollection(this, name, isListen)
   }
 }

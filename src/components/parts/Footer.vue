@@ -59,7 +59,7 @@ const openUrl = (r: string) => {
   min-height: 35vh;
   background-color: var(--color-dark-gray);
   color: #ffffff;
-
+  position: absolute;
 }
 
 .text {

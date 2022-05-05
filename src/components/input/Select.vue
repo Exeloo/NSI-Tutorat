@@ -1,6 +1,6 @@
 <template>
   <div class="select">
-    <label :for="`select-${props.id}`">{{ props.label }}</label>
+    <label :for="`select-${props.id}`">{{ props.label }}<div v-if="required" class="required">*</div></label>
     <VSelect
       :id="`select-${props.id}`"
       v-model="value"
@@ -38,6 +38,11 @@ const props = defineProps({
     required: false,
     default: false,
   },
+  required: {
+    type: Boolean,
+    required: false,
+    default: true,
+  },
 })
 
 const update = defineEmits(['update:modelValue', 'change'])
@@ -56,5 +61,11 @@ const value = computed({
 <style scoped>
 .select {
   width: 90%;
+}
+
+.required {
+  color: var(--color-danger);
+  display: inline-block;
+  margin-left: 4px;
 }
 </style>

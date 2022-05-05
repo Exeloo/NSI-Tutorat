@@ -1,5 +1,6 @@
 import type { DocumentReference, DocumentSnapshot } from 'firebase/firestore'
 import { deleteDoc, doc, getDoc, onSnapshot, setDoc } from 'firebase/firestore'
+import { getCache } from '../firestore-cache'
 import { FCollection } from './Collection'
 
 export class FDocument {
@@ -7,7 +8,7 @@ export class FDocument {
   public ref: DocumentReference
   public name: string
 
-  constructor(collection: FCollection, name: string, isListen: boolean) {
+  constructor(collection: FCollection, name: string, isListen = false) {
     this.collection = collection
     this.ref = doc(collection.ref, name)
     this.name = name
@@ -32,20 +33,28 @@ export class FDocument {
   }
 
   async updateData() {
-    const doc = await getDoc(this.ref)
-    const data = doc.data()
-    if (!data) return
+    const refDoc = await getDoc(this.ref)
+    const data = refDoc.data()
+    if (!data) {
+      const defautDocRef = doc(this.collection.ref, 'default')
+      const defaultDoc = await getDoc(defautDocRef)
+      const defaultData = defaultDoc.data()
+      if (!defaultData) return
+      this.set(defaultData)
+      this.collection.cache.set(this.name, defaultData)
+      return
+    }
     this.collection.cache.set(this.name, data)
   }
 
-  getCollection(name: string, isListen: boolean): FCollection {
+  getCollection(name: string, isListen?: boolean): FCollection {
     return new FCollection(this.collection.store, name, isListen, this)
   }
 
   private _onSnapshot(snapshot: DocumentSnapshot): void {
     const data = snapshot?.data()
     if (!data) return
-    this.collection.cache.set(snapshot.id, data)
+    getCache(snapshot.ref.parent.id).set(snapshot.id, data)
   }
 
   onSnapshot(callback: (snapshot: DocumentSnapshot) => void): void {

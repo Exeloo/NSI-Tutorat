@@ -30,7 +30,14 @@
 </template>
 
 <script lang="ts" setup>
-import { runAuth } from '~/logic/data/auth/auth-manager'
+import { login } from '~/logic/data/auth/auth-manager'
+
+const runAuth = (router: any) => {
+  router.push('login')
+  setTimeout(() => {
+    login()
+  }, 1000)
+}
 
 const router = useRouter()
 

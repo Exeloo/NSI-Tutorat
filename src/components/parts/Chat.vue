@@ -75,7 +75,7 @@ const activeChat = ref<Conv>(convs.value[0])
 
 const sendMessage = (message: string) => {
   console.log(document.getElementById('messageContent')?.value)
-  activeChat.value.messages.push({ id: 'demerde toi', content: document.getElementById('messageContent')?.value, author: user.uid, timestamp: 'regarde ton horloge connard' })
+  activeChat.value.messages.push({ id: 'demerde toi', content: document.getElementById('messageContent').value, author: user.uid, timestamp: 'regarde ton horloge connard' })
 }
 
 const changeActiveChat = (id: string) => {

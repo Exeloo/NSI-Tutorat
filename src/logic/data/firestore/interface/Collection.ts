@@ -10,9 +10,11 @@ export class FCollection {
   public readonly ref: CollectionReference
   public cache: Map<string, Object>
 
-  constructor(store: Store, name: string, isListen: boolean, doc?: FDocument) {
+  public doc: FDocument | undefined
+
+  constructor(store: Store, name: string, isListen = false, doc?: FDocument) {
     this.store = store
-    this.ref = collection(store.db, name)
+    this.ref = doc ? collection(doc.ref, name) : collection(store.db, name)
     this.cache = getCache(name)
 
     if (isListen)
@@ -25,5 +27,22 @@ export class FCollection {
       if (!data) return
       getCache(snapshot.ref.parent.id).set(snapshot.id, data)
     })
+  }
+
+  getDocument(name: string, isListen?: boolean): FDocument {
+    return new FDocument(this, name, isListen)
+  }
+
+  async createDocument(data: Object, isListen?: boolean): Promise<FDocument> {
+    const docRef = await addDoc(this.ref, data)
+    return new FDocument(this, docRef.id, isListen)
+  }
+
+  queryDocuments(q?: Query): Promise<QuerySnapshot> {
+    return getDocs(q ? query(this.ref, where(q.param_1, q.comparator, q.param_2)) : query(this.ref))
+  }
+
+  onSnapshot(callback: (snapshot: QuerySnapshot) => void): void {
+    onSnapshot(this.ref, callback)
   }
 }
