@@ -1,4 +1,5 @@
 <script setup lang="ts">
+import { isLoading } from './main'
 useHead({
   title: 'Tutorat FdE',
   meta: [
@@ -8,5 +9,18 @@ useHead({
 </script>
 
 <template>
-  <router-view />
+  <router-view v-if="!isLoading" />
+  <div v-else class="l-app">
+    <Loading />
+    <div>
+      Chargement en cours, veuillez patienter...
+    </div>
+  </div>
 </template>
+
+<style>
+.l-app {
+  margin-top: 40vh;
+  text-align: center;
+}
+</style>

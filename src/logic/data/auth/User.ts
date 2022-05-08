@@ -10,7 +10,7 @@ export class User {
   private readonly _avatar: string
 
   public exist: boolean
-  public data: { value: UserData }
+  public data: UserData
   public valid: boolean
   private readonly _store: Users | undefined
 
@@ -23,12 +23,12 @@ export class User {
     this.exist = this._uid !== 'unkonwn' && this._displayName !== 'unknown' && this._email !== 'unknown' && this._email.endsWith('@pedagogiefde.org')
     if (this.exist)
       this._store = new Users(this._uid)
-    this.data = reactive({ value: <UserData>{ uid: this._uid, displayName: this._displayName, email: this._email, avatar: this._avatar } })
+    this.data = <UserData>{ uid: this._uid, displayName: this._displayName, email: this._email, avatar: this._avatar }
     this.valid = false
   }
 
   async get() {
-    this.data.value = <UserData> await this._store?.getUser()
+    this.data = <UserData> await this._store?.getUser()
     return this.data
   }
 
@@ -39,7 +39,7 @@ export class User {
   async validation() {
     await this.set({ uid: this._uid, displayName: this._displayName, email: this._email, avatar: this._avatar })
     const data = await this.get()
-    this.valid = isValidChoices(data.value.school)
+    this.valid = isValidChoices(data.school)
     return this.valid
   }
 }

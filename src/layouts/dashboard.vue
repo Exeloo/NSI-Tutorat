@@ -20,8 +20,18 @@
 </template>
 
 <script setup lang="ts">
+import { user } from '~/logic/data/auth/auth-manager';
+import { User } from '~/logic/data/auth/User';
+import { Conversations } from '~/logic/data/firestore/datas/Conversations';
+
 
 const isSideBarDeploy = ref(false)
+
+const convs = new Conversations(<User> user.value)
+const conv = convs.getConv('truc')
+// setTimeout(() => {
+//   conv.extandConv()
+// }, 3000)
 
 </script>
 

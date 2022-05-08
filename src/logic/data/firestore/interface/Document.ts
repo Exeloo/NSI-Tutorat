@@ -1,6 +1,7 @@
 import type { DocumentReference, DocumentSnapshot } from 'firebase/firestore'
 import { deleteDoc, doc, getDoc, onSnapshot, setDoc } from 'firebase/firestore'
 import { getCache } from '../firestore-cache'
+import type { Query } from '../firestore-types'
 import { FCollection } from './Collection'
 
 export class FDocument {
@@ -47,8 +48,8 @@ export class FDocument {
     this.collection.cache.set(this.name, data)
   }
 
-  getCollection(name: string, isListen?: boolean): FCollection {
-    return new FCollection(this.collection.store, name, isListen, this)
+  getCollection(name: string, isListen?: boolean, q?: Query): FCollection {
+    return new FCollection(this.collection.store, name, isListen, q, this)
   }
 
   private _onSnapshot(snapshot: DocumentSnapshot): void {

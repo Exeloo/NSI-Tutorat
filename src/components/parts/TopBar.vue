@@ -17,7 +17,7 @@
       <button class="">
         <div class="icon" i="ic-round-account-circle" />
         <div class="text">
-          {{ user.value.data.value.displayName }}
+          {{ user.value.data.displayName }}
         </div>
       </button>
     </div>
@@ -25,20 +25,8 @@
 </template>
 
 <script setup lang="ts" await>
-import { login, softLogin, user } from '~/logic/data/auth/auth-manager'
-const router = useRouter()
+import { user } from '~/logic/data/auth/auth-manager'
 
-if (!user.value || !user.value.exist || !user.value.valid) {
-  setTimeout(async() => {
-    await softLogin()
-    if (!user.value || !user.value.exist || !user.value.valid) {
-      router.push('login')
-      setTimeout(() => {
-        login()
-      }, 1000)
-    }
-  }, 500)
-}
 </script>
 
 <style scoped>
