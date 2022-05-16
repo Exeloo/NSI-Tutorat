@@ -1,6 +1,7 @@
 import type { CollectionReference, QueryConstraint, QuerySnapshot } from 'firebase/firestore'
 import { addDoc, collection, getDocs, limit, onSnapshot, orderBy, query, where } from 'firebase/firestore'
 
+import type { Unsubscribe } from 'firebase/auth'
 import type { Query } from '../firestore-types'
 import { getCache } from '../firestore-cache'
 import { FDocument } from './Document'
@@ -58,7 +59,7 @@ export class FCollection {
     return getDocs(qu)
   }
 
-  onSnapshot(callback: (snapshot: QuerySnapshot) => void, q?: Query): void {
+  onSnapshot(callback: (snapshot: QuerySnapshot) => void, q?: Query): Unsubscribe {
     const w = q && q.where ? where(q.where.param_1, q.where.comparator, q.where.param_2) : undefined
     const l = q && q.limit ? limit(q.limit) : undefined
     const o = q && q.orderBy ? orderBy(q.orderBy.name, q.orderBy.isDesc ? 'desc' : undefined) : undefined
@@ -66,6 +67,6 @@ export class FCollection {
     const params = <QueryConstraint[]> [w, l, o].filter(v => !!v)
 
     const qu = w || l || o ? query(this.ref, ...params) : this.ref
-    onSnapshot(qu, callback)
+    return onSnapshot(qu, callback)
   }
 }

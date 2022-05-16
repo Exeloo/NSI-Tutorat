@@ -2,8 +2,8 @@
   <div class="chat-box">
     <div class="chat-side-bar">
       <div class="discussions">
-        <button v-for="conv in convs" :key="conv.id" class="button" @click="changeActiveChat(conv.id)">
-          {{ conv.name }}
+        <button v-for="conv in convsCache" :key="conv[0]" class="button" @click="changeActiveChat(conv[0])">
+          {{ conv[1].name }}
         </button>
       </div>
       <button class="add-chat" i="ic-outline-plus" />
@@ -15,24 +15,31 @@
         <button class="settings" i="ic-baseline-settings" />
       </div>
 
-      <div class="messages">
+      <div v-if="activeChat" id="chat" class="messages" @scroll="onScrollChange()">
         <div
-          v-for="msg in activeChat.messages" :key="msg.id"
+          v-for="msg in activeChat.messages"
+          :key="msg.name"
           class="message"
-          :class="user.uid === msg.author ? 'selfMsg' : 'otherMsg'"
+          :class="user.value.data.uid === msg.author ? 'selfMsg' : 'otherMsg'"
         >
           <div class="aMessage">
             {{ msg.content }}
           </div>
         </div>
       </div>
-
+      <div v-else>
+        Lul
+      </div>
+      <div v-if="!scrollIsEnd" class="setScrollEnd" @click="setScrollEnd()">
+        <div class="scrollText">
+          Retour en bas du chat
+        </div>
+      </div>
       <div class="content">
         <form class="send-message">
           <button class="add-image" i="ic-baseline-image" />
-          <br>
-          <textarea id="messageContent" class="box" /><br>
-          <input class="send-button" value="" i="ic-round-send" @click="sendMessage()">
+          <Entry id="chat-entry" v-model="chatsValue[activeChat.id]" label="" type="text" placeholder="Envoyer un message" />
+          <input class="send-button" value="" i="ic-round-send" @click="newMessage()">
         </form>
       </div>
     </div>
@@ -40,48 +47,49 @@
 </template>
 
 <script lang="ts" setup>
+import { user } from '~/logic/data/auth/auth-manager'
+import type { Conversation } from '~/logic/data/firestore/datas/Conversations'
+import { convsCache, getFirstConvId, sendMessage } from '~/logic/data/firestore/datas/Conversations'
 
-interface Message { id: string; content: string; author: string; timestamp: string }
-interface Conv { id: string; name: string; entrants: string[]; messages: Message[] }
+// Todo corriger la touche entrée dans le chat
+// Ajouter le bouton et la fonction pour extand la conv
 
-const user = {
-  uid: 'wow je suis moi',
-  uname: 'quentin',
+const chatsValue = reactive({})
+
+const scrollIsEnd = ref(true)
+const scrollStart = ref(true)
+setTimeout(() => scrollStart.value = false, 700)
+
+const onScrollChange = () => {
+  const elem = document.getElementById('chat')
+  if (elem && !scrollStart.value)
+    scrollIsEnd.value = false
 }
 
-const convs = ref<Conv[]>([
-  {
-    id: '1',
-    name: 'une conv A',
-    entrants: ['id_personne_1', 'id_personne_2'], // Il n'y a que 2 personnes, donc il n'y a pas de nom
-    messages: [
-      { id: '1-1', content: 'un message', author: 'id_personne_2', timestamp: 'je sais pas je connais pas l\'heure d\'envoie du msg' },
-      { id: '1-2', content: 'un autre message', author: 'wow je suis moi', timestamp: 'je sais pas je connais pas l\'heure d\'envoie du msg non plus' },
-      { id: '1-3', content: 'encore un message', author: 'id_personne_2', timestamp: 'je sais pas je connais pas l\'heure d\'envoie du msg non plus' },
-    ],
-  },
-  {
-    id: '2',
-    name: 'une conv B',
-    entrants: ['id_personne_1', 'id_personne_2', 'id_personne_3'], // Il y a 3 personnes, donc on pourrait mettre un nom de groupe (pas obligatoire)
-    messages: [
-      { id: '2-1', content: 'un message', author: 'id_personne_2', timestamp: 'je sais pas je connais toujours pas l\'heure d\'envoie du msg' },
-      { id: '2-2', content: 'un autre messages', author: 'id_personne_3', timestamp: 'vous commencez vraiment à m\'emerder avec cet heure' },
-    ],
-  },
-])
-
-const activeChat = ref<Conv>(convs.value[0])
-
-const sendMessage = (message: string) => {
-  console.log(document.getElementById('messageContent')?.value)
-  activeChat.value.messages.push({ id: 'demerde toi', content: document.getElementById('messageContent').value, author: user.uid, timestamp: 'regarde ton horloge connard' })
+const setScrollEnd = () => {
+  const elem = document.getElementById('chat')
+  if (elem) {
+    scrollStart.value = true
+    setTimeout(() => scrollStart.value = false, 700)
+    elem.scrollTop = elem.scrollHeight
+    scrollIsEnd.value = true
+  }
 }
 
-const changeActiveChat = (id: string) => {
-  const filter = convs.value.filter(v => v.id === id)
-  if (filter.length !== 0) activeChat.value = filter[0]
+setTimeout(() => {
+  setScrollEnd()
+}, 100)
+
+const activeChat = ref<Conversation | undefined>(convsCache.get(getFirstConvId()))
+
+const newMessage = () => {
+  const msg = chatsValue[activeChat.value.id]
+  if (!activeChat.value || !msg) return
+  sendMessage(activeChat.value.id, msg)
+  chatsValue[activeChat.value.id] = ''
 }
+
+
 
 </script>
 
@@ -167,9 +175,19 @@ const changeActiveChat = (id: string) => {
 
 .send-button {
   font-size: 3.3vh;
+  cursor: pointer;
 }
 
 .message {
+  margin: 0 20px;
+  max-width: 45%;
+  width: fit-content;
+  overflow: hidden;
+}
+
+.messages {
+  overflow: auto;
+  scroll-behavior: smooth;
 }
 
 .selfMsg {
@@ -189,6 +207,24 @@ const changeActiveChat = (id: string) => {
   width: fit-content;
   border-radius: 10px;
   margin-bottom: 15px;
+
+}
+
+.setScrollEnd {
+  position: relative;
+  top: -40px;
+  left: 35%;
+  cursor: pointer;
+  width: 100%;
+  height: 0px;
+}
+
+.scrollText {
+  width: fit-content;
+  padding: 6px;
+  border-radius: 10px;
+  background-color: #0000001d;
+  font-size: 16px;
 
 }
 

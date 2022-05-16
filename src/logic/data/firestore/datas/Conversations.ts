@@ -1,74 +1,66 @@
 import { serverTimestamp } from 'firebase/firestore'
-import type { User } from '../../auth/User'
-import type { FCollection } from '../interface/Collection'
-import type { FDocument } from '../interface/Document'
+import { user } from '../../auth/auth-manager'
 import { Store } from '../interface/Store'
 
-export const convsCache = reactive(new Map<string, Array<{ content: string; author: string; timestamp: number }>>())
+export interface Message { content: string; author: string; timestamp: number }
+export interface Conversation { id: string; name: string; entrants: string[]; messages: Array<Message>}
 
-export class Conversations {
-  public user: User
-  public ref: FCollection
+export const convsCache = reactive(new Map<string, Conversation>())
 
-  constructor(user: User) {
-    this.user = user
-    // Todo remplacer le onSnapshot par un truc qui prend les messages dans l'ordre
-    this.ref = new Store().getCollection('conversations', true, { where: { param_1: 'users', comparator: 'array-contains', param_2: user.data.uid } })
-  }
+// ! récupère une fois les nouveaux messages et les mets au début car ne les tries pas !
+const ref = new Store().getCollection('conversations', true, { where: { param_1: 'entrants', comparator: 'array-contains', param_2: user.value.data.uid } })
 
-  getConv(id: string): Conversation {
-    return new Conversation(id, this)
-  }
-}
+export const initConvs = async() => {
+  const query = await ref.queryDocuments({ where: { param_1: 'entrants', comparator: 'array-contains', param_2: user.value.data.uid } })
+  query.docs.forEach((qDoc) => {
+    convsCache.set(qDoc.id, <Conversation>{ ...qDoc.data(), messages: new Array<Message>() })
+    console.log(convsCache.get(qDoc.id))
 
-export class Conversation {
-  public convs: Conversations
-  public ref: FDocument
-  public messagesRef: FCollection
-  private _id: string
-  // Todo method extandConv qui dont la query à la même tronche que le messageRef, sauf que il y a un where('timestamp', '<', messages[-1].timestamp)
-  constructor(id: string, convs: Conversations) {
-    this.convs = convs
-    this.ref = this.convs.ref.getDocument(id)
-    this._id = id
+    const fDoc = ref.getDocument(qDoc.id)
+    const msgsCol = fDoc.getCollection('messages')
 
-    if (!convsCache.has(id))
-      convsCache.set(id, new Array<{ content: string; author: string; timestamp: number }>())
-
-    this.messagesRef = this.ref.getCollection('messages')
-    this.messagesRef.onSnapshot((snapshot) => {
+    msgsCol.onSnapshot((snapshot) => {
       snapshot.docChanges().forEach(({ doc }) => {
-
+        const id = doc.ref.parent.parent?.id
+        const data = doc.data()
+        if (!id || !data) return
+        convsCache.get(id)?.messages.push({ author: data.author, content: data.content, timestamp: data.timestamp })
       })
-      convsCache.get(snapshot.docChanges()[0].doc.ref.parent.parent?.id ?? snapshot.docChanges()[0].doc.id)?.sort((a, b) => a.timestamp - b.timestamp)
+      convsCache.get(snapshot.docChanges()[0].doc.ref.parent.parent?.id ?? snapshot.docChanges()[0].doc.id)?.messages.sort((a, b) => a.timestamp - b.timestamp)
       console.log(convsCache.get(snapshot.docChanges()[0].doc.ref.parent.parent?.id ?? snapshot.docChanges()[0].doc.id))
     }, { orderBy: { name: 'timestamp', isDesc: true }, limit: 20 })
-  }
+  })
+}
 
-  async newMessage(content: string) {
-    const doc = await this.messagesRef.createDocument({
-      content,
-      author: this.convs.user.data.uid,
-      timestamp: serverTimestamp(),
-    })
-    return doc.ref.id
-  }
+export const getFirstConvId = () => {
+  // Todo changer pour mettre la vrai conv
+  return 'truc'
+}
 
-  async extandConv() {
-    const cache = convsCache.get(this._id)
-    const timestamp = cache ? cache[0].timestamp : serverTimestamp()
-    const docs = await this.messagesRef.queryDocuments({
-      orderBy: { name: 'timestamp', isDesc: true },
-      limit: 20,
-      where: { param_1: 'timestamp', comparator: '<', param_2: timestamp },
-    })
-    docs.docs.forEach((doc) => {
-      const data = doc.data()
-      if (!data) return
-      convsCache.get(this._id)?.push({ content: data.content, author: data.author, timestamp: data.timestamp })
-    })
-    convsCache.get(this._id)?.sort((a, b) => a.timestamp - b.timestamp)
-    console.log(convsCache.get(this._id))
-    return this.ref
-  }
+export const sendMessage = async(id: string, content: string) => {
+  const doc = await ref.getDocument(id).getCollection('messages').createDocument({
+    content,
+    author: user.value.data.uid,
+    timestamp: serverTimestamp(),
+  })
+  return doc.ref.id
+}
+
+export const extandConv = async(id: string) => {
+  const cache = convsCache.get(id)
+  if (!cache || !cache.messages[0]) return false
+  const timestamp = cache.messages[0].timestamp
+  const docs = await ref.getDocument(id).getCollection('messages').queryDocuments({
+    orderBy: { name: 'timestamp', isDesc: true },
+    limit: 20,
+    where: { param_1: 'timestamp', comparator: '<', param_2: timestamp },
+  })
+  docs.docs.forEach((doc) => {
+    const data = doc.data()
+    if (!data) return
+    convsCache.get(id)?.messages.push({ author: data.author, content: data.content, timestamp: data.timestamp })
+  })
+  convsCache.get(id)?.messages.sort((a, b) => a.timestamp - b.timestamp)
+  console.log(convsCache.get(id))
+  return true
 }

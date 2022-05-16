@@ -9,6 +9,8 @@ import './styles/layout.css'
 import 'uno.css'
 import { FirebaseSystem } from './logic/data/firebase-system'
 import { login, softLogin, user } from './logic/data/auth/auth-manager'
+import { convsCache, getFirstConvId, initConvs } from './logic/data/firestore/datas/Conversations'
+import type { User } from './logic/data/auth/User'
 
 const routes = setupLayouts(generatedRoutes)
 
@@ -26,27 +28,30 @@ export const createApp = ViteSSG(
 
 export const isLoading = ref(true)
 
-let i: NodeJS.Timeout
+export const firstConv = ref('')
 
-const clearI = () => {
-  clearInterval(i)
-}
 if (!['/', '/terms', '/contact', '/about-us', '/faq'].includes(window.location.pathname)) {
-  i = setInterval(async() => {
+  const i1 = setInterval(async() => {
     if (!user.value || !user.value.exist || !user.value.valid) {
       await softLogin()
       if (!user.value || !user.value.exist || !user.value.valid) {
         isLoading.value = false
         window.open(`${window.location.origin}/login`)
-        clearI()
+        clearInterval(i1)
         setTimeout(() => {
           login()
         }, 1000)
       }
     }
     else {
-      isLoading.value = false
-      clearI()
+      clearInterval(i1)
+      initConvs()
+      const i2 = setInterval(() => {
+        if (convsCache && convsCache.get(getFirstConvId())) {
+          isLoading.value = false
+          clearInterval(i2)
+        }
+      }, 1000)
     }
   }, 1000)
 }

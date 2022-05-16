@@ -1,14 +1,12 @@
 <template>
   <div class="entry">
-    <label :for="`entry-${entry.id}`">{{ entry.label }}</label>
-    <input :id="`entry-${entry.id}`" v-model="model" :type="entry.type" :placeholder="entry.placeholder">
-    {{ entry.model }}
-    {{ entry.placeholder }}
+    <label :for="`entry-${props.id}`">{{ props.label }}</label>
+    <input :id="`entry-${props.id}`" v-model="value" :type="props.type" :placeholder="props.placeholder">
   </div>
 </template>
 
 <script lang="ts" setup>
-const entry = defineProps({
+const props = defineProps({
   id: {
     type: String,
     required: true,
@@ -26,13 +24,22 @@ const entry = defineProps({
     required: false,
     default: '',
   },
-  model: {
-    type: ref,
+  modelValue: {
+    type: String,
     required: true,
   },
 })
 
-const model = entry.model
+const update = defineEmits(['update:modelValue'])
+
+const value = computed({
+  get: () => {
+    return props.modelValue
+  },
+  set: (v: string) => {
+    update('update:modelValue', v)
+  },
+})
 </script>
 
 <style scoped>
@@ -40,7 +47,18 @@ const model = entry.model
   display: block;
 }
 
-input {
-  background-color: var(--secondary-background);
+.entry {
+  width: 100%;
+  height: 2.5rem;
 }
+
+input {
+  background-color: var(--main-background);
+  font-size: 1rem;
+  width: 100%;
+  height: 100%;
+  padding: 0.5rem;
+  overflow: scroll;
+}
+
 </style>

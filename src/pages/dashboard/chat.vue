@@ -1,18 +1,15 @@
 <template>
   <div class="content">
     <Chat />
+    fjqsdbwjfbsjhbdfjbsjdbfjshdbfjlhbsjdhfbhjbdfjhbsdhjfbjshbfjhsb
   </div>
 </template>
 
 <script setup lang="ts">
-const isSideBarDeploy = ref(false)
 
 </script>
 
 <style scoped>
-.content {
-  margin-bottom: 50px;
-}
 
 </style>
 
