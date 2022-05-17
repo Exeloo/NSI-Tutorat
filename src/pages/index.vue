@@ -1,28 +1,39 @@
 <template>
-  <div class="gray row" >
+  <div class="gray row">
     <div class="row-content">
-        Bienvenue sur le site du <br/>tutorat de François d'Estaing
-        <img class="fde-logo" src="../../public/logo_fde.png">
+      <div class="row-text">
+        Bienvenue sur le site du tutorat de François d'Estaing
+      </div>
+      <div class="row-img">
+        <img class="fde-logo" src="/logo_fde.png">
+      </div>
     </div>
-
   </div>
-  <div class="white row" >
+  <div class="white row">
     <div class="row-content">
-      <img class="book" src="../../public/book.png">
-      Pour apprendre et <br/> progresser ensemble
+      <div class="row-img">
+        <img src="/book.png">
+      </div>
+      <div class="row-text">
+        Pour apprendre et progresser ensemble
+      </div>
     </div>
-
   </div>
-  <div class="gray row" >
+  <div class="gray row">
     <div class="row-content">
-      Trouver de l'aide <br/> et en donner
-      <img class="book" src="../../public/loupe.png">
+      <div class="row-text">
+        Trouver de l'aide <br> et en donner
+      </div>
+      <div class="row-img">
+        <img src="/loupe.png">
+      </div>
     </div>
-
   </div>
-  <div class="white row" >
+  <div class="white row">
     <div class="row-content last">
-      Pret a commencer ?
+      <div>
+        Prêt à commencer ?
+      </div>
       <GoogleAuth />
     </div>
   </div>
@@ -35,11 +46,11 @@
 <style scoped>
 .row {
   width: 100%;
-  display: flex;
-  justify-content: space-around;
-
   font-size: 5.5vh;
-  padding-top: 10vh;
+  height: 375px;
+  display: grid;
+  align-items: center;
+  grid-auto-flow: column;
 }
 
 .gray {
@@ -52,13 +63,27 @@
 
 .row-content{
   display: flex;
+  justify-content: space-around;
+  align-content: center;
 }
 
-.book {
- width: 300px;
-}
-last {
+.last {
+  flex-direction: column;
+  justify-self: center;
+  gap: 2rem;
   display: flex;
+  align-items: center;
+}
+
+.row-text {
+  width: 582px;
+  display: flex;
+  align-items: center;
+}
+
+.row-img {
+  width: 400px;
+}
 
 </style>
 

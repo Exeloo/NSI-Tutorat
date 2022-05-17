@@ -5,8 +5,12 @@
 }
 
 .main {
-  padding: max(8.3vh, 4.5rem) 1vh 1vh 1vh;
+  padding-top: max(8.3vh, 4.5rem); */
   z-index: 1;
+}
+
+.main-home {
+
 }
 
 .footer {
