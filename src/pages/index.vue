@@ -15,7 +15,7 @@
         <img src="/book.png">
       </div>
       <div class="row-text">
-        Pour apprendre et progresser ensemble. A travers ce site vous pouvez vous entraider, proposer votre aide et recevez en recevoir
+        Pour apprendre et progresser ensemble. A travers ce site vous pouvez vous entraider, proposer votre aide et en recevoir
       </div>
     </div>
   </div>
