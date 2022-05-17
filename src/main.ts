@@ -10,7 +10,6 @@ import 'uno.css'
 import { FirebaseSystem } from './logic/data/firebase-system'
 import { login, softLogin, user } from './logic/data/auth/auth-manager'
 import { convsCache, getFirstConvId, initConvs } from './logic/data/firestore/datas/Conversations'
-import type { User } from './logic/data/auth/User'
 
 const routes = setupLayouts(generatedRoutes)
 
@@ -32,7 +31,6 @@ export const firstConv = ref('')
 
 if (!['/', '/terms', '/contact', '/about-us', '/faq'].includes(window.location.pathname)) {
   const i1 = setInterval(async() => {
-    console.log(user.value)
     if (!user.value || !user.value.exist || !user.value.valid) {
       await softLogin()
       if (!user.value || !user.value.exist || !user.value.valid) {
@@ -47,11 +45,8 @@ if (!['/', '/terms', '/contact', '/about-us', '/faq'].includes(window.location.p
     else {
       clearInterval(i1)
       initConvs()
-      console.log('4')
       const i2 = setInterval(() => {
-        console.log('5')
         if (convsCache && convsCache.get(getFirstConvId())) {
-          console.log('6', convsCache)
           isLoading.value = false
           clearInterval(i2)
         }

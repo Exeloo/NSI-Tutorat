@@ -11,11 +11,8 @@ export const convsCache = reactive(new Map<string, Conversation>())
 const ref = new Store().getCollection('conversations', true, { where: { param_1: 'entrants', comparator: 'array-contains', param_2: user.value.data.uid } })
 
 export const initConvs = async() => {
-  console.log('1')
   const query = await ref.queryDocuments({ where: { param_1: 'entrants', comparator: 'array-contains', param_2: user.value.data.uid } })
-  console.log('2')
   query.docs.forEach((qDoc) => {
-    console.log('3', qDoc.id)
     convsCache.set(qDoc.id, <Conversation>{ ...qDoc.data(), messages: new Array<Message>() })
     console.log(convsCache.get(qDoc.id))
 

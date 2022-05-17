@@ -89,8 +89,6 @@ const newMessage = () => {
   chatsValue[activeChat.value.id] = ''
 }
 
-
-
 </script>
 
 <style scoped>

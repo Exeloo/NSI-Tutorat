@@ -1,5 +1,5 @@
 <template>
-  <div class="google-auth">
+  <div class="google-auth" :class="color">
     <!-- <div v-if="authLoading" class="loading">
       <Loading />
     </div> -->
@@ -32,6 +32,14 @@
 <script lang="ts" setup>
 import { login } from '~/logic/data/auth/auth-manager'
 
+const props = defineProps({
+  color: {
+    type: String,
+    default: 'white',
+    required: false,
+  },
+})
+
 const runAuth = (router: any) => {
   router.push('login')
   setTimeout(() => {
@@ -61,7 +69,7 @@ const router = useRouter()
 }
 
 .login button {
-  background: var(--main-background);
+  background: var(--google-auth-background);
 }
 
 .login .icon {
@@ -91,6 +99,14 @@ const router = useRouter()
 
 .small-screen {
   display: none;
+}
+
+.white {
+  --google-auth-background: var(--main-background);
+}
+
+.gray {
+  --google-auth-background: var(--color-light-gray);
 }
 
 @media screen and (max-width: 520px){
