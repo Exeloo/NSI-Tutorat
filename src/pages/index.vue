@@ -82,7 +82,7 @@
 }
 
 .row-img {
-  width: 400px;
+  width: 300px;
 }
 
 </style>

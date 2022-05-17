@@ -47,8 +47,11 @@ if (!['/', '/terms', '/contact', '/about-us', '/faq'].includes(window.location.p
     else {
       clearInterval(i1)
       initConvs()
+      console.log('4')
       const i2 = setInterval(() => {
+        console.log('5')
         if (convsCache && convsCache.get(getFirstConvId())) {
+          console.log('6', convsCache)
           isLoading.value = false
           clearInterval(i2)
         }
