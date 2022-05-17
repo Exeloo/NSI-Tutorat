@@ -15,14 +15,14 @@
         <img src="/book.png">
       </div>
       <div class="row-text">
-        Pour apprendre et progresser ensemble
+        Pour apprendre et progresser ensemble .A travers ce site vous pouvez vous entraider , proposer votre aide et recevez en recevoir
       </div>
     </div>
   </div>
   <div class="gray row">
     <div class="row-content">
       <div class="row-text">
-        Trouver de l'aide <br> et en donner
+        Trouver de l'aide  et en donner ,<br> s'aider pour avancer , le site vous met en relation avec des tutorants
       </div>
       <div class="row-img">
         <img src="/loupe.png">
