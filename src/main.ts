@@ -32,6 +32,7 @@ export const firstConv = ref('')
 
 if (!['/', '/terms', '/contact', '/about-us', '/faq'].includes(window.location.pathname)) {
   const i1 = setInterval(async() => {
+    console.log(user.value)
     if (!user.value || !user.value.exist || !user.value.valid) {
       await softLogin()
       if (!user.value || !user.value.exist || !user.value.valid) {
