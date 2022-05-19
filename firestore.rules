@@ -14,6 +14,10 @@ service cloud.firestore {
     function isConcernAdmin(id) {
       return isAdmin() && request.auth.uid == id
     }
+    function hasUser() {
+    	return isUser() && request.auth.uid in resource.data.entrants
+    }
+    
     match /users/{userId} {
       allow read, create, update, delete: if isConcernUser(userId) || isAdmin();
     }
@@ -32,6 +36,12 @@ service cloud.firestore {
     match /admins/{userId} {
       allow read, create: if isAdmin();
       allow update, delete: if isConcernAdmin(userId)
+    }
+    match /conversations/{convId} {
+    	allow read, create, update: if hasUser()
+    }
+    match /conversations/{convId}/messages {
+      allow read, create: if request.auth.uid in get(/databases/$(database)/documents/conversations/$(convId)).data.entrants
     }
   }
 }

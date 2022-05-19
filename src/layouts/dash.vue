@@ -43,7 +43,6 @@ const isSideBarDeploy = ref(false)
 
 .sideBarEnabled {
   pointer-events: none;
-  background: rgb(0, 0, 0, 0.2);
 }
 
 @media screen and (max-width: 520px){

@@ -1,12 +1,12 @@
+
 <template>
-  <div class="content">
-    <Chat />
-    This is a chat
+  <div class="">
+    This is a planning
   </div>
 </template>
 
 <script setup lang="ts">
-
+// https://antoniandre.github.io/vue-cal/?ref=madewithvuejs.com
 </script>
 
 <style scoped>

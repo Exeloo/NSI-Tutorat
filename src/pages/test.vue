@@ -18,5 +18,5 @@ const isSideBarDeploy = ref(false)
 
 <route lang="yaml">
 meta:
-  layout: dashboard
+  layout: dash
 </route>

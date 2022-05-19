@@ -25,12 +25,12 @@
       <div class="returnPipe">
         |
       </div>
-      <div class="link" @click="changeRoute('about-us')">
-        About-us
+      <div class="link" @click="changeRoute('about')">
+        À propos
       </div>
       <div>|</div>
-      <div class="link" @click="changeRoute('contact')">
-        Contact
+      <div class="link" @click="openUrl('https://francoisdestaing.fr/contactez-nous/')">
+        Contacts
       </div>
       <div>|</div>
       <div class="link" @click="changeRoute('faq')">

@@ -13,13 +13,14 @@ declare module 'vue' {
     Footer: typeof import('./components/parts/Footer.vue')['default']
     FooterBis: typeof import('./components/all-components/FooterBis.vue')['default']
     GoogleAuth: typeof import('./components/auth/GoogleAuth.vue')['default']
+    InfoBar: typeof import('./components/parts/NavBar/InfoBar.vue')['default']
     Loading: typeof import('./components/style/Loading.vue')['default']
-    LoginBar: typeof import('./components/parts/LoginBar.vue')['default']
+    LoginBar: typeof import('./components/parts/NavBar/LoginBar.vue')['default']
     README: typeof import('./components/README.md')['default']
     SearchBox: typeof import('./components/all-components/SearchBox.vue')['default']
     Select: typeof import('./components/input/Select.vue')['default']
-    SideBar: typeof import('./components/parts/SideBar.vue')['default']
-    TopBar: typeof import('./components/parts/TopBar.vue')['default']
+    SideBar: typeof import('./components/parts/NavBar/SideBar.vue')['default']
+    TopBar: typeof import('./components/parts/NavBar/TopBar.vue')['default']
     UICheckbox: typeof import('./components/all-components/UICheckbox.vue')['default']
   }
 }

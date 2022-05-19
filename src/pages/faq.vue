@@ -1,11 +1,11 @@
 <template>
-  <div class="content">
-    <Chat />
-    This is a chat
-  </div>
+  <div />
 </template>
 
 <script setup lang="ts">
+setTimeout(() => {
+  window.scrollTo({ top: 0 })
+}, 100)
 
 </script>
 
@@ -15,5 +15,5 @@
 
 <route lang="yaml">
 meta:
-  layout: dash
+  layout: info
 </route>
