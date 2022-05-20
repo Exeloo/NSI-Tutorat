@@ -23,7 +23,7 @@
     </div>
   </div>
 
-  <div class="notif-popup popup">
+  <div class="notif-popup popup" style="display: none;">
     <div class="notif-topbar">
       Dernieres notifications :
     </div>
@@ -32,7 +32,7 @@
     </div>
   </div>
 
-  <div class="profile-popup popup">
+  <div class="profile-popup popup" style="display: none;">
     <div class="profile-content">
       <div>content 1</div>
       <div>content 2</div>
@@ -43,20 +43,17 @@
       <div>content 7</div>
       <div>content 8</div>
     </div>
-
   </div>
-
-
 </template>
 
 <script setup lang="ts" await>
 import { user } from '~/logic/data/auth/auth-manager'
 
 const notifs = [
-  {id:"1",date:"",lvl:"1",name:"new-message",content:"Vous avez une nouveau message"},
-  {id:"2",date:"",lvl:"1",name:"new-class",content:"Cours ajouté pour le 16/09"},
-  {id:"3",date:"",lvl:"1",name:"class-cancel",content:"Votre cours du 15/03 a 10h est annulé"},
-  {id:"4",date:"",lvl:"1",name:"new-message",content:"Vous avez une nouveau message"}
+  { id: '1', date: '', lvl: '1', name: 'new-message', content: 'Vous avez une nouveau message' },
+  { id: '2', date: '', lvl: '1', name: 'new-class', content: 'Cours ajouté pour le 16/09' },
+  { id: '3', date: '', lvl: '1', name: 'class-cancel', content: 'Votre cours du 15/03 a 10h est annulé' },
+  { id: '4', date: '', lvl: '1', name: 'new-message', content: 'Vous avez une nouveau message' },
 ]
 </script>
 

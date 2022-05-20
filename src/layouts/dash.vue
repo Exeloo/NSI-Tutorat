@@ -1,4 +1,5 @@
 <template>
+  <div v-if="isSideBarDeploy" class="blackoverlay" />
   <nav class="nav">
     <div class="top-bar">
       <TopBar />

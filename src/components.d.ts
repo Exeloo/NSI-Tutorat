@@ -16,7 +16,6 @@ declare module 'vue' {
     InfoBar: typeof import('./components/parts/NavBar/InfoBar.vue')['default']
     Loading: typeof import('./components/style/Loading.vue')['default']
     LoginBar: typeof import('./components/parts/NavBar/LoginBar.vue')['default']
-    README: typeof import('./components/README.md')['default']
     SearchBox: typeof import('./components/all-components/SearchBox.vue')['default']
     Select: typeof import('./components/input/Select.vue')['default']
     SideBar: typeof import('./components/parts/NavBar/SideBar.vue')['default']
