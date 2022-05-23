@@ -11,11 +11,8 @@
       :time-from="7 * 60"
       :time-to="20 * 60"
       :special-hours="specialHours"
-    >
-      <template #today-button>
-        coucou
-      </template>
-    </VCal>
+      :events="events"
+    />
   </div>
 </template>
 
@@ -57,6 +54,30 @@ const specialHours = reactive({
   ],
 })
 
+const events = [
+  {
+    start: '2022-05-24 10:30',
+    end: '2022-05-24 13:30',
+    title: 'Need to go shopping',
+    content: '<i class="v-icon material-icons">shopping_cart</i>',
+    class: 'leisure',
+  },
+  {
+    start: '2022-05-24 15:00',
+    end: '2022-05-24 17:00',
+    title: 'Golf with John',
+    content: '<i class="v-icon material-icons">golf_course</i>',
+    class: 'sport',
+  },
+  {
+    start: '2022-05-23 16:30',
+    end: '2022-05-23 18:30',
+    title: 'Dad\'s birthday!',
+    content: '<i class="v-icon material-icons">cake</i>',
+    class: 'sport',
+  },
+]
+
 // https://antoniandre.github.io/vue-cal/?ref=madewithvuejs.com
 </script>
 
@@ -71,6 +92,9 @@ const specialHours = reactive({
   height: 660px;
   box-shadow: 0 0 5px 5px rgba(0, 0, 0, 0.05);
 }
+
+.vuecal__event.leisure {background-color: rgba(253, 156, 66, 0.9);border: 1px solid rgb(233, 136, 46);color: #fff;}
+.vuecal__event.sport {background-color: rgba(255, 102, 102, 0.9);border: 1px solid rgb(235, 82, 82);color: #fff;}
 
 </style>
 

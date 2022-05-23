@@ -14,11 +14,15 @@
       <div class="link" @click="openUrl('https://francoisdestaing.fr/pronote/')">
         Pronote
       </div>
-      <div>|</div>
+      <div class="returnPipe">
+        |
+      </div>
       <div class="link" @click="openUrl('https://francoisdestaing.fr/')">
         Site du lycée
       </div>
-      <div>|</div>
+      <div class="returnPipe">
+        |
+      </div>
       <div class="link" @click="changeRoute('terms')">
         CGU
       </div>
@@ -28,11 +32,15 @@
       <div class="link" @click="changeRoute('about')">
         À propos
       </div>
-      <div>|</div>
+      <div class="returnPipe">
+        |
+      </div>
       <div class="link" @click="openUrl('https://francoisdestaing.fr/contactez-nous/')">
         Contacts
       </div>
-      <div>|</div>
+      <div class="returnPipe">
+        |
+      </div>
       <div class="link" @click="changeRoute('faq')">
         FAQ
       </div>
@@ -56,10 +64,12 @@ const openUrl = (r: string) => {
 
 .Footer {
   width: 100%;
+  padding-left: 7.8vh;
   min-height: 35vh;
   background-color: var(--color-dark-gray);
   color: #ffffff;
   position: absolute;
+  overflow: hidden;
 }
 
 .text {
@@ -91,8 +101,15 @@ const openUrl = (r: string) => {
 }
 
 @media screen and (max-width: 520px){
+  .Footer {
+    padding-left: 0;
+  }
   .returnPipe {
     display: none;
+  }
+
+  .other {
+    gap: 1.5vh;
   }
 }
 
