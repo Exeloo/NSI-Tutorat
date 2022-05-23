@@ -7,23 +7,24 @@
       </div>
     </div>
     <div>
-      <button class="">
+      <button class="" @click="openPopup('notif')">
         <div class="icon" i="carbon-notification" />
         <div class="text">
           Notifications
         </div>
       </button>
 
-      <button class="">
+      <button class="" @click="openPopup('profil')">
         <div class="icon" i="ic-round-account-circle" />
         <div class="text">
           {{ user.value.data.displayName }}
         </div>
+        <div class="logout-button" i="ic-round-account-circle" @click="logout()"
       </button>
     </div>
   </div>
 
-  <div class="notif-popup popup">
+  <div v-if="activePopup === 'notif'"  class="notif-popup popup">
     <div class="notif-topbar">
       Dernieres notifications :
     </div>
@@ -32,7 +33,7 @@
     </div>
   </div>
 
-  <div class="profile-popup popup">
+  <div v-else-if="activePopup === 'profil'"  class="profile-popup popup">
     <div class="profile-content">
       <div>content 1</div>
       <div>content 2</div>
@@ -49,8 +50,15 @@
 
 </template>
 
-<script setup lang="ts" await>
-import { user } from '~/logic/data/auth/auth-manager'
+<script setup lang="ts">
+import {logout, user} from '~/logic/data/auth/auth-manager'
+
+const router = useRouter()
+
+const onLogout = () => {
+  logout()
+  router.push("/")
+}
 
 const notifs = [
   {id:"1",date:"",lvl:"1",name:"new-message",content:"Vous avez une nouveau message"},
@@ -58,6 +66,14 @@ const notifs = [
   {id:"3",date:"",lvl:"1",name:"class-cancel",content:"Votre cours du 15/03 a 10h est annulé"},
   {id:"4",date:"",lvl:"1",name:"new-message",content:"Vous avez une nouveau message"}
 ]
+const activePopup = ref()
+const openPopup = (name: string | undefined) => {
+  if (activePopup.value === name) {
+    activePopup.value = undefined
+    return
+  }
+  activePopup.value = name
+}
 </script>
 
 <style scoped>
@@ -103,22 +119,11 @@ button {
   background-color: var(--main-background);
   color: var(--secondary-text-color);
   box-shadow: 0 2px 7px 0 rgba(0, 0, 0, 0.3);
-}
-
-.notif-popup {
   position: absolute;
   height: 50vh;
   width: 40vh;
   top: 70px;
-  right: 350px;
-}
-
-.profile-popup {
-  position: absolute;
-  height: 50vh;
-  width: 40vh;
-  top: 70px;
-  right: 75px;
+  right: 30px;
 }
 
 .notif-topbar {
@@ -132,6 +137,7 @@ button {
 
 .profile-content {
   font-size: 3.5vh;
+
 }
 
 .notif-content {
