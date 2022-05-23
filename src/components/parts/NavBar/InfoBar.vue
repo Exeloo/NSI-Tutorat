@@ -1,16 +1,31 @@
-<template>
+<template lang="">
   <div class="bar">
-    <div class="fde">
+    <div class="item" @click="back()">
+      <div class="icon" i="ic-round-arrow-back" />
+      <div class="title">
+        Retour
+      </div>
+    </div>
+    <div class="item" @click="changeRoute('/dashboard')">
       <div class="icon" i="ic-outline-school" />
       <div class="title">
         Tutorat Fde
       </div>
     </div>
-    <GoogleAuth />
   </div>
 </template>
 
-<script>
+<script setup lang="ts">
+const router = useRouter()
+
+const changeRoute = (r: string) => {
+  router.push(r)
+}
+
+const back = () => {
+  router.back()
+}
+
 </script>
 
 <style scoped>
@@ -21,13 +36,15 @@
   font-size: min(4vw, 18px);
   background-color: var(--main-background);
   padding: 8px 4vw;
+  box-shadow: 0 2px 7px 0 rgba(0, 0, 0, 0.3);
 }
 
-.fde {
+.item {
   display: flex;
   align-items: center;
   color: var(--main-text-color);
   padding: 10px;
+  cursor: pointer;
 }
 
 .bar .icon {

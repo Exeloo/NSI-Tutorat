@@ -15,14 +15,14 @@
         <img src="/book.png">
       </div>
       <div class="row-text">
-        Pour apprendre et progresser ensemble. A travers ce site vous pouvez vous entraider, proposer votre aide et en recevoir
+        Pour apprendre et progresser ensemble. A travers ce site vous pouvez vous entraider, proposer votre aide et en recevoir.
       </div>
     </div>
   </div>
   <div class="gray row">
     <div class="row-content">
       <div class="row-text">
-        Trouver de l'aide  et en donner, s'aider pour avancer, le site vous met en relation avec des tutorants
+        Trouver de l'aide  et en donner, s'aider pour avancer, le site vous met en relation avec des tutorants.
       </div>
       <div class="row-img">
         <img src="/loupe.png">
@@ -60,7 +60,7 @@
 
 .row {
   width: 100%;
-  font-size: 30px;
+  font-size: 25px;
   height: max-content;
   display: grid;
   align-items: center;

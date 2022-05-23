@@ -1,4 +1,4 @@
-import { getRedirectResult, signInWithRedirect } from 'firebase/auth'
+import { getRedirectResult, signInWithRedirect, signOut } from 'firebase/auth'
 import { auth, provider } from '../firebase'
 import { User } from './User'
 
@@ -20,7 +20,7 @@ export const login = async() => {
 }
 
 export const logout = () => {
-
+  signOut(auth)
 }
 
 export const defineRedirect = () => {

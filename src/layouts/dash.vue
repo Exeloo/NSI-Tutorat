@@ -1,4 +1,5 @@
 <template>
+  <div v-if="isSideBarDeploy" class="blackoverlay" />
   <nav class="nav">
     <div class="top-bar">
       <TopBar />
@@ -37,19 +38,26 @@ const isSideBarDeploy = ref(false)
 }
 
 .content {
-  padding: 0.5vh 0 0 7.8vh;
+  padding: 0.5vh 0 0 0;
   width: 100%;
 }
 
 .sideBarEnabled {
   pointer-events: none;
-  background: rgb(0, 0, 0, 0.2);
+}
+
+.main {
+  padding-left: 7.8vh;
 }
 
 @media screen and (max-width: 520px){
   .content {
     padding: 7.9vh 0 0 0;
     width: 100%;
+  }
+
+  .main {
+    padding-left: 0;
   }
 }
 

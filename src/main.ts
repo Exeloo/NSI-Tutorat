@@ -6,6 +6,10 @@ import App from './App.vue'
 import '@unocss/reset/tailwind.css'
 import './styles/main.css'
 import './styles/layout.css'
+import './styles/info.css'
+import './styles/planning.css'
+import 'vue-cal/dist/vuecal.css'
+import 'vue-cal/dist/i18n/fr.js'
 import 'uno.css'
 import { FirebaseSystem } from './logic/data/firebase-system'
 import { login, softLogin, user } from './logic/data/auth/auth-manager'
@@ -29,7 +33,7 @@ export const isLoading = ref(true)
 
 export const firstConv = ref('')
 
-if (!['/', '/terms', '/contact', '/about-us', '/faq'].includes(window.location.pathname)) {
+if (!['/', '/terms', '/contact', '/about', '/faq', '/admin', '/login'].includes(window.location.pathname)) {
   const i1 = setInterval(async() => {
     if (!user.value || !user.value.exist || !user.value.valid) {
       await softLogin()

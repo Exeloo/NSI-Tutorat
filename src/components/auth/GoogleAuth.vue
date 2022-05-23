@@ -32,7 +32,7 @@
 <script lang="ts" setup>
 import { login } from '~/logic/data/auth/auth-manager'
 
-const props = defineProps({
+defineProps({
   color: {
     type: String,
     default: 'white',

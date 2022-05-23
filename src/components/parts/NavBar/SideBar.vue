@@ -117,6 +117,7 @@ const toggleSubMenu = (_: any, force: boolean | undefined = undefined) => {
 
   dropdownClass.relation.rotate = subMenu.value
   if (subMenu.value)
+    // eslint-disable-next-line @typescript-eslint/no-use-before-define
     toggleSideBar(undefined, true)
 }
 

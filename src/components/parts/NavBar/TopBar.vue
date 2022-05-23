@@ -44,10 +44,7 @@
       <div>content 7</div>
       <div>content 8</div>
     </div>
-
   </div>
-
-
 </template>
 
 <script setup lang="ts">
@@ -61,10 +58,10 @@ const onLogout = () => {
 }
 
 const notifs = [
-  {id:"1",date:"",lvl:"1",name:"new-message",content:"Vous avez une nouveau message"},
-  {id:"2",date:"",lvl:"1",name:"new-class",content:"Cours ajouté pour le 16/09"},
-  {id:"3",date:"",lvl:"1",name:"class-cancel",content:"Votre cours du 15/03 a 10h est annulé"},
-  {id:"4",date:"",lvl:"1",name:"new-message",content:"Vous avez une nouveau message"}
+  { id: '1', date: '', lvl: '1', name: 'new-message', content: 'Vous avez une nouveau message' },
+  { id: '2', date: '', lvl: '1', name: 'new-class', content: 'Cours ajouté pour le 16/09' },
+  { id: '3', date: '', lvl: '1', name: 'class-cancel', content: 'Votre cours du 15/03 a 10h est annulé' },
+  { id: '4', date: '', lvl: '1', name: 'new-message', content: 'Vous avez une nouveau message' },
 ]
 const activePopup = ref()
 const openPopup = (name: string | undefined) => {
