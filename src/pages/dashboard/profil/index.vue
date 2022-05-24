@@ -1,5 +1,5 @@
-<template >
-
+<template>
+  Truc
 </template>
 
 <script lang="ts">

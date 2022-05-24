@@ -5,10 +5,21 @@
   <main class="main">
     <div class="info">
       <div class="side-menu">
-        <button class="left-button">Informations personnelles</button>
-        <button class="left-button">Informations scolaires</button>
-        <button class="left-button">Mes relations</button>
-        <button class="left-button">Notifications</button>
+        <div class="title">
+          Profile
+        </div>
+        <button class="left-button">
+          Informations personnelles
+        </button>
+        <button class="left-button">
+          Informations scolaires
+        </button>
+        <button class="left-button">
+          Mes relations
+        </button>
+        <button class="left-button">
+          Notifications
+        </button>
       </div>
       <div>
         <router-view />
@@ -29,33 +40,35 @@ main {
 }
 
 .info {
-  padding-top: max(3vw, 20px);
-  padding-bottom: max(3vw, 10px);
+  padding: max(3vw, 20px) 40px;
   width: min(90%, 1000px);
   min-height: max(300px, 30vw);
   background: var(--main-background);
   display: flex;
-  justify-content: center;
+  justify-content: flex-start;
+  gap: 2rem;
   margin-bottom: 29vh;
 }
 
 .side-menu {
   display: flex;
   flex-direction: column;
-  justify-content: space-between;
-  border-width: 0 1px 1px 1px;
-  height: 100%;
+  align-items: flex-start;
+  border-width: 0 1px 0 0;
+  border-color: #808080;
 }
 
 .left-button {
-  padding: 3.5vh;
-  height: 100%;
-  border-width: 1px 0 0 0;
+  padding: 15px 30px;
 }
 
 .main {
   display: flex;
 }
 
-</style>
+.title {
+  margin-bottom: 20px;
+  margin-left: 20px;
+}
 
+</style>

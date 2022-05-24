@@ -37,15 +37,15 @@
       <Select id="euro" v-model="models.value.section.lang" label="Section Européenne" :options="options.section" :required="false" @change="updateSubjects" />
       <Select v-if="models.value.section.lang === 'angl-euro' && models.value.niveau !== 'seconde'" id="dnl" v-model="models.value.section.dnl" label="DNL" :options="selectOptions.section.dnl" @change="updateSubjects" />
     </div>
-    <div class="multi-entries">
-      <div v-if="options.subjects.good" class="multi-entries">
+    <div v-if="models.value.level" class="multi-entries">
+      <div class="multi-entries">
         <Checkbox id="help" v-model="models.value.tutorat.helper.wish" styles="blurple" label="Voudriez-vous devenir tuteur de quelqu'un ?" />
         <div v-if="models.value.tutorat.helper.wish && options.subjects.good">
           <Select id="help" v-model="models.value.tutorat.helper.subjects" label="Les matières dans lesquelles vous pourriez aider" :options="options.subjects.helper" tags search @change="updateSubjects" />
           <Select id="goodSubject" v-model="models.value.subjects.good" label="Autres matières dans lesquelles vous êtes à l'aise" :options="options.subjects.good" tags search :required="false" @change="updateSubjects" />
         </div>
       </div>
-      <div v-if="options.subjects.good" class="multi-entries">
+      <div class="multi-entries">
         <Checkbox id="receive" v-model="models.value.tutorat.receiver.wish" styles="blurple" label="Voudriez-vous recevoir de l'aide ?" />
         <div v-if="models.value.tutorat.receiver.wish && options.subjects.bad">
           <Select id="receive" v-model="models.value.tutorat.receiver.subjects" label="Les matières dans lesquelles vous voudriez vous faire aider" :options="options.subjects.receiver" tags search @change="updateSubjects" />
