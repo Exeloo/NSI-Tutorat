@@ -6,18 +6,18 @@
     <div class="info">
       <div class="side-menu">
         <div class="title">
-          Profile
+          Profile {{ onScreen.value }}
         </div>
-        <button class="left-button">
+        <button class="left-button" @click="changeOnScreen('perso')">
           Informations personnelles
         </button>
-        <button class="left-button">
+        <button class="left-button" @click="changeOnScreen('school')">
           Informations scolaires
         </button>
-        <button class="left-button">
+        <button class="left-button" @click="changeOnScreen('relation')">
           Mes relations
         </button>
-        <button class="left-button">
+        <button class="left-button" @click="changeOnScreen('notif')">
           Notifications
         </button>
       </div>
@@ -30,6 +30,15 @@
     <Footer />
   </footer>
 </template>
+
+<script lang="ts">
+const onScreen = ref('perso')
+
+const changeOnScreen = (name: string) => {
+  onScreen.value = name
+}
+
+</script>
 
 <style scoped>
 main {
@@ -60,6 +69,10 @@ main {
 
 .left-button {
   padding: 15px 30px;
+}
+
+.left-button:hover {
+  background-color: var(--secondary-bar-color);
 }
 
 .main {
