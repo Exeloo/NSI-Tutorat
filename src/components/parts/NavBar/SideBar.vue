@@ -46,7 +46,7 @@
                 Trouver un tutorant
               </div>
             </div>
-            <div class="sub-item single-item" @click="changeRoute('profile')">
+            <div class="sub-item single-item" @click="changeRoute('profil')">
               <div class="i" i="carbon-user" />
               <div class="text">
                 Mon profil
