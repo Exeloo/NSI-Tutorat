@@ -19,7 +19,6 @@
         <div class="text">
           {{ user.value.data.displayName }}
         </div>
-        <div class="logout-button" i="ic-round-account-circle" @click="logout()"
       </button>
     </div>
   </div>
@@ -43,6 +42,10 @@
       <div>content 6</div>
       <div>content 7</div>
       <div>content 8</div>
+
+      <div class="logout-button" @click="onLogout()">
+         Se deconnecter<div i="ic-baseline-log-out"/>
+      </div>
     </div>
   </div>
 </template>
@@ -134,12 +137,23 @@ button {
 
 .profile-content {
   font-size: 3.5vh;
-
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  padding: 5px;
 }
 
 .notif-content {
   border-width: 0 0 0.5px 0;
   font-size: 2.5vh;
+}
+
+.logout-button {
+  display: flex;
+  align-items: center;
+  padding: 5px;
+  cursor: pointer;
 }
 
 </style>

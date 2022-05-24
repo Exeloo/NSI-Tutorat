@@ -164,7 +164,7 @@ const toggleSideBar = (_: any, force: boolean | undefined = undefined) => {
 }
 
 .item {
-  cursor: pointer;
+
   color: var(--main-text-color);
   line-height: 7vh;
   transition: 0.5s ease;
