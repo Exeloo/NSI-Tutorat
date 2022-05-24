@@ -25,7 +25,7 @@
     <div v-if="hasSpe(false)" class="multi-entries">
       <Select id="spe-a" v-model="models.value.spe.a" label="Première spécialité" :options="options.spe.a" :search="true" @change="onSpeChange" />
       <Select id="spe-b" v-model="models.value.spe.b" label="Deuxième spécialité" :options="options.spe.b" :search="true" @change="onSpeChange" />
-      <Select id="spe-c" v-model="models.value.spe.c" :label="hasSpe(true) ? 'Troisième spécialité' : 'Spécialité arrêté l\'année dernière'" :options="options.spe.c" :search="true" @change="onSpeChange" />
+      <Select id="spe-c" v-model="models.value.spe.c" :label="hasSpe(true) ? 'Troisième spécialité' : 'Spécialité arrêtée l\'année dernière'" :options="options.spe.c" :search="true" @change="onSpeChange" />
     </div>
     <Select v-if="isTechno()" id="techno" v-model="models.value.techno" label="Filiaire Technologique" :options="options.techno" :search="true" />
     <div class="multi-entries">
@@ -38,15 +38,19 @@
       <Select v-if="models.value.section.lang === 'angl-euro' && models.value.niveau !== 'seconde'" id="dnl" v-model="models.value.section.dnl" label="DNL" :options="selectOptions.section.dnl" @change="updateSubjects" />
     </div>
     <div class="multi-entries">
-      <Select v-if="options.subjects.good" id="goodSubject" v-model="models.value.subjects.good" label="Les matières dans lesquelles vous êtes à l'aise" :options="options.subjects.good" tags search @change="updateSubjects" />
-      <Select v-if="options.subjects.bad" id="badSubject" v-model="models.value.subjects.bad" label="Les matières dans lesquelles vous êtes moins à l'aise" :options="options.subjects.bad" tags search @change="updateSubjects" />
       <div v-if="options.subjects.good" class="multi-entries">
         <Checkbox id="help" v-model="models.value.tutorat.helper.wish" styles="blurple" label="Voudriez-vous devenir tuteur de quelqu'un ?" />
-        <Select v-if="models.value.tutorat.helper.wish" id="help" v-model="models.value.tutorat.helper.subjects" label="Les matières dans lesquelles vous pourriez aider" :options="options.subjects.good" tags search @change="updateSubjects" />
+        <div v-if="models.value.tutorat.helper.wish && options.subjects.good">
+          <Select id="help" v-model="models.value.tutorat.helper.subjects" label="Les matières dans lesquelles vous pourriez aider" :options="options.subjects.helper" tags search @change="updateSubjects" />
+          <Select id="goodSubject" v-model="models.value.subjects.good" label="Autres matières dans lesquelles vous êtes à l'aise" :options="options.subjects.good" tags search :required="false" @change="updateSubjects" />
+        </div>
       </div>
       <div v-if="options.subjects.good" class="multi-entries">
         <Checkbox id="receive" v-model="models.value.tutorat.receiver.wish" styles="blurple" label="Voudriez-vous recevoir de l'aide ?" />
-        <Select v-if="models.value.tutorat.receiver.wish" id="receive" v-model="models.value.tutorat.receiver.subjects" label="Les matières dans lesquelles vous voudriez vous faire aider" :options="options.subjects.bad" tags search @change="updateSubjects" />
+        <div v-if="models.value.tutorat.receiver.wish && options.subjects.bad">
+          <Select id="receive" v-model="models.value.tutorat.receiver.subjects" label="Les matières dans lesquelles vous voudriez vous faire aider" :options="options.subjects.receiver" tags search @change="updateSubjects" />
+          <Select id="badSubject" v-model="models.value.subjects.bad" label="Les matières dans lesquelles vous êtes moins à l'aise" :options="options.subjects.bad" tags search :required="false" @change="updateSubjects" />
+        </div>
       </div>
     </div>
     <div class="submit">
@@ -116,16 +120,19 @@ const isTechno = () => {
   return models.value.level === 'premiere-t' || models.value.level === 'terminal-t'
 }
 
+const updateSubjects = () => {
+  options.subjects.helper = getSubjects(models.value).filter(e => ![...models.value.subjects.bad, ...models.value.subjects.good, ...models.value.tutorat.receiver.subjects].includes(e.value))
+  options.subjects.receiver = getSubjects(models.value).filter(e => ![...models.value.subjects.bad, ...models.value.subjects.good, ...models.value.tutorat.helper.subjects].includes(e.value))
+  options.subjects.good = getSubjects(models.value).filter(e => ![...models.value.subjects.bad, ...models.value.tutorat.helper.subjects, ...models.value.tutorat.receiver.subjects].includes(e.value))
+  options.subjects.bad = getSubjects(models.value).filter(e => ![...models.value.subjects.good, ...models.value.tutorat.helper.subjects, ...models.value.tutorat.receiver.subjects].includes(e.value))
+}
+
 const updateValidation = () => {
+  updateSubjects()
   isNotValid.value = !isValidChoices(models.value)
 }
 
 watch(models, updateValidation)
-
-const updateSubjects = () => {
-  options.subjects.good = getSubjects(models.value).filter(e => ![...models.value.subjects.bad, ...models.value.tutorat.receiver.subjects].includes(e.value))
-  options.subjects.bad = getSubjects(models.value).filter(e => ![...models.value.subjects.good, ...models.value.tutorat.helper.subjects].includes(e.value))
-}
 
 const onNiveauChange = () => {
   if (!models.value.level) options.classe = undefined
@@ -160,8 +167,7 @@ const onLvChange = () => {
 
 <style scoped>
 .entries * {
-  padding-top: 20px;
-  margin-bottom: 20px;
+  margin: 40px 0;
 }
 
 .entries {
@@ -185,8 +191,7 @@ const onLvChange = () => {
 }
 
 .multi-entries {
-  margin-top: 20px;
-  margin-bottom: 20px;
+  margin: 70px 0;
 }
 
 .loading-text {

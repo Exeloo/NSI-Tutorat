@@ -15,6 +15,8 @@ interface Options {
   option: undefined | Option[]
   section: Option[]
   subjects: {
+    helper: undefined | Option[]
+    receiver: undefined | Option[]
     good: undefined | Option[]
     bad: undefined | Option[]
   }
@@ -175,6 +177,8 @@ const getDefaultOptions = () => {
     option: undefined,
     section: selectOptions.section.lang,
     subjects: {
+      helper: undefined,
+      receiver: undefined,
       good: undefined,
       bad: undefined,
     },

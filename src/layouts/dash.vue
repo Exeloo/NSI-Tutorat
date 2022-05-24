@@ -59,6 +59,8 @@ const isSideBarDeploy = ref(false)
   .main {
     padding-left: 0;
   }
+  .side-bar {
+  }
 }
 
 </style>

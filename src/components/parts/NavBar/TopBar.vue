@@ -23,7 +23,7 @@
     </div>
   </div>
 
-  <div v-if="activePopup === 'notif'"  class="notif-popup popup">
+  <div v-if="activePopup === 'notif'" class="notif-popup popup">
     <div class="notif-topbar">
       Dernieres notifications :
     </div>
@@ -32,32 +32,32 @@
     </div>
   </div>
 
-  <div v-else-if="activePopup === 'profil'"  class="profile-popup popup">
+  <div v-else-if="activePopup === 'profil'" class="profile-popup popup">
     <div class="profile-content">
-      <div>content 1</div>
-      <div>content 2</div>
-      <div>content 3</div>
-      <div>content 4</div>
+      <div>Modifier le profil</div>
+      <div>Informations Scolaires</div>
+      <div>Modifier mon planning</div>
+      <div>Mes tutorants et tutorés</div>
       <div>content 5</div>
       <div>content 6</div>
       <div>content 7</div>
       <div>content 8</div>
 
       <div class="logout-button" @click="onLogout()">
-         Se deconnecter<div i="ic-baseline-log-out"/>
+        Se deconnecter<div i="ic-baseline-log-out" />
       </div>
     </div>
   </div>
 </template>
 
 <script setup lang="ts">
-import {logout, user} from '~/logic/data/auth/auth-manager'
+import { logout, user } from '~/logic/data/auth/auth-manager'
 
 const router = useRouter()
 
 const onLogout = () => {
   logout()
-  router.push("/")
+  router.push('/')
 }
 
 const notifs = [
@@ -120,7 +120,7 @@ button {
   color: var(--secondary-text-color);
   box-shadow: 0 2px 7px 0 rgba(0, 0, 0, 0.3);
   position: absolute;
-  height: 50vh;
+  height: 40vh;
   width: 40vh;
   top: 70px;
   right: 30px;
@@ -136,7 +136,7 @@ button {
 }
 
 .profile-content {
-  font-size: 3.5vh;
+  font-size: 2.5vh;
   height: 100%;
   display: flex;
   flex-direction: column;

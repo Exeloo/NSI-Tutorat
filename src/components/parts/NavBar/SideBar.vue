@@ -40,13 +40,13 @@
               </div>
             </div>
 
-            <div class="sub-item single-item" @click="changeRoute('find-tutorant')">
+            <div class="sub-item single-item" @click="changeRoute('search')">
               <div class="i" i="healthicons-magnifying-glass" />
               <div class="text">
                 Trouver un tutorant
               </div>
             </div>
-            <div class="sub-item single-item" @click="changeRoute('profile')">
+            <div class="sub-item single-item" @click="changeRoute('profil')">
               <div class="i" i="carbon-user" />
               <div class="text">
                 Mon profil
@@ -261,11 +261,13 @@ const toggleSideBar = (_: any, force: boolean | undefined = undefined) => {
   .SideBar {
     background-color: transparent;
     box-shadow: none;
+    z-index: 0;
   }
 
   .sideBarEnable {
     background-color: var(--main-bar-color);
     box-shadow: 0 0.3vh 1.2vh 0 rgba(0, 0, 0, 0.4);
+    z-index: 999;
   }
 
   .menu {

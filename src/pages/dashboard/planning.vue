@@ -200,9 +200,19 @@ const events = [
 }
 .cal {
   background-color: var(--main-background);
-  width: 1200px;
+  width: 80vw;
   height: 660px;
+  font-size: 13px;
   box-shadow: 0 0 5px 5px rgba(0, 0, 0, 0.05);
+}
+
+.vuecal__event.cours {background-color: rgba(253, 66, 66, 0.566);border: 1px solid rgb(238, 89, 89);color: #fff;}
+.vuecal__event.free {background-color: rgba(82, 179, 92, 0.434);border: 1px solid rgb(93, 226, 83);color: #fff;}
+
+@media screen and (max-width: 520px){
+  .cal {
+    width: 99%;
+  }
 }
 
 </style>

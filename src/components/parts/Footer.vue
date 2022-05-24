@@ -23,13 +23,13 @@
       <div class="returnPipe">
         |
       </div>
-      <div class="link" @click="changeRoute('terms')">
+      <div class="link" @click="changeRoutes('terms')">
         CGU
       </div>
       <div class="returnPipe">
         |
       </div>
-      <div class="link" @click="changeRoute('about')">
+      <div class="link" @click="changeRoutes('about')">
         À propos
       </div>
       <div class="returnPipe">
@@ -41,7 +41,7 @@
       <div class="returnPipe">
         |
       </div>
-      <div class="link" @click="changeRoute('faq')">
+      <div class="link" @click="changeRoutes('faq')">
         FAQ
       </div>
     </div>
@@ -50,8 +50,8 @@
 
 <script setup lang="ts">
 const router = useRouter()
-const changeRoute = (r: string) => {
-  router.push(r)
+const changeRoutes = (r: string) => {
+  router.push(`/${r}`)
 }
 
 const openUrl = (r: string) => {
