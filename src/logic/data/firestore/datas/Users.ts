@@ -2,6 +2,7 @@ import { Store } from '../interface/Store'
 import type { FDocument } from '../interface/Document'
 import type { PlanningType } from '~/logic/profil/planning/planning-type'
 import type { PartialSchoolPreferencesType, SchoolPreferencesType } from '~/logic/profil/school/school-type'
+import type { NotificationType } from '~/logic/profil/notification/notification-type'
 
 export interface UserData {
   avatar: string
@@ -11,6 +12,7 @@ export interface UserData {
   planning: PlanningType
   school: SchoolPreferencesType
   uid: string
+  notification: NotificationType
 }
 
 export interface PartialUserData {
@@ -21,6 +23,7 @@ export interface PartialUserData {
   planning?: PlanningType
   school?: PartialSchoolPreferencesType
   uid?: string
+  notification?: NotificationType
 }
 
 export class Users {

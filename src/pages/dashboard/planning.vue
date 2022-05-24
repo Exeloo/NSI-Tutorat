@@ -31,50 +31,162 @@ minDate.setFullYear(years[0], 8, 1)
 const maxDate = new Date()
 maxDate.setFullYear(years[1], 7, 31)
 
-const specialHours = reactive({
-  1: [
-    { from: 9 * 60, to: 10 * 60, class: 'buisy-hours' },
-    { from: 12 * 60, to: 13 * 60, class: 'buisy-hours' },
-    { from: 13 * 60 + 30, to: 17 * 60 + 30, class: 'buisy-hours' },
-  ],
-  2: [
-    { from: 8 * 60, to: 12 * 60, class: 'buisy-hours' },
-    { from: 13 * 60 + 30, to: 17 * 60 + 30, class: 'buisy-hours' },
-  ],
-  3: [
-    { from: 8 * 60, to: 12 * 60, class: 'buisy-hours' },
-  ],
-  4: [
-    { from: 8 * 60, to: 13 * 60, class: 'buisy-hours' },
-    { from: 14 * 60 + 30, to: 17 * 60 + 30, class: 'buisy-hours' },
-  ],
-  5: [
-    { from: 8 * 60, to: 12 * 60, class: 'buisy-hours' },
-    { from: 13 * 60 + 30, to: 16 * 60 + 30, class: 'buisy-hours' },
-  ],
-})
+// const specialHours = reactive({
+//   1: [
+//     { from: 9 * 60, to: 10 * 60, class: 'buisy-hours' },
+//     { from: 12 * 60, to: 13 * 60, class: 'buisy-hours' },
+//     { from: 13 * 60 + 30, to: 17 * 60 + 30, class: 'buisy-hours' },
+//   ],
+//   2: [
+//     { from: 8 * 60, to: 12 * 60, class: 'buisy-hours' },
+//     { from: 13 * 60 + 30, to: 17 * 60 + 30, class: 'buisy-hours' },
+//   ],
+//   3: [
+//     { from: 8 * 60, to: 12 * 60, class: 'buisy-hours' },
+//   ],
+//   4: [
+//     { from: 8 * 60, to: 13 * 60, class: 'buisy-hours' },
+//     { from: 14 * 60 + 30, to: 17 * 60 + 30, class: 'buisy-hours' },
+//   ],
+//   5: [
+//     { from: 8 * 60, to: 12 * 60, class: 'buisy-hours' },
+//     { from: 13 * 60 + 30, to: 16 * 60 + 30, class: 'buisy-hours' },
+//   ],
+// })
 
 const events = [
   {
-    start: '2022-05-24 10:30',
-    end: '2022-05-24 13:30',
-    title: 'Need to go shopping',
-    content: '<i class="v-icon material-icons">shopping_cart</i>',
-    class: 'leisure',
+    start: '2022-05-23 9:00',
+    end: '2022-05-23 10:00',
+    title: 'Cours',
+    content: '',
+    class: 'cours',
   },
   {
-    start: '2022-05-24 15:00',
-    end: '2022-05-24 17:00',
-    title: 'Golf with John',
-    content: '<i class="v-icon material-icons">golf_course</i>',
-    class: 'sport',
+    start: '2022-05-23 12:00',
+    end: '2022-05-23 13:00',
+    title: 'Cours',
+    content: '',
+    class: 'cours',
   },
   {
-    start: '2022-05-23 16:30',
+    start: '2022-05-23 13:30',
+    end: '2022-05-23 17:30',
+    title: 'Cours',
+    content: '',
+    class: 'cours',
+  },
+  {
+    start: '2022-05-24 8:00',
+    end: '2022-05-24 12:00',
+    title: 'Cours',
+    content: '',
+    class: 'cours',
+  },
+  {
+    start: '2022-05-24 13:30',
+    end: '2022-05-24 17:30',
+    title: 'Cours',
+    content: '',
+    class: 'cours',
+  },
+  {
+    start: '2022-05-25 8:00',
+    end: '2022-05-25 12:00',
+    title: 'Cours',
+    content: '',
+    class: 'cours',
+  },
+  {
+    start: '2022-05-26 8:00',
+    end: '2022-05-26 13:00',
+    title: 'Cours',
+    content: '',
+    class: 'cours',
+  },
+  {
+    start: '2022-05-26 14:30',
+    end: '2022-05-26 17:30',
+    title: 'Cours',
+    content: '',
+    class: 'cours',
+  },
+  {
+    start: '2022-05-27 8:00',
+    end: '2022-05-27 12:00',
+    title: 'Cours',
+    content: '',
+    class: 'cours',
+  },
+  {
+    start: '2022-05-27 13:30',
+    end: '2022-05-27 16:30',
+    title: 'Cours',
+    content: '',
+    class: 'cours',
+  },
+  {
+    start: '2022-05-23 10:00',
+    end: '2022-05-23 12:00',
+    title: 'Libre',
+    content: '',
+    class: 'free',
+  },
+  {
+    start: '2022-05-23 17:30',
     end: '2022-05-23 18:30',
-    title: 'Dad\'s birthday!',
-    content: '<i class="v-icon material-icons">cake</i>',
-    class: 'sport',
+    title: 'Libre',
+    content: '',
+    class: 'free',
+  },
+  {
+    start: '2022-05-24 12:00',
+    end: '2022-05-24 13:00',
+    title: 'Libre',
+    content: '',
+    class: 'free',
+  },
+  {
+    start: '2022-05-24 17:30',
+    end: '2022-05-24 18:30',
+    title: 'Libre',
+    content: '',
+    class: 'free',
+  },
+  {
+    start: '2022-05-25 13:00',
+    end: '2022-05-25 17:30',
+    title: 'Libre',
+    content: '',
+    class: 'free',
+  },
+  {
+    start: '2022-05-26 13:30',
+    end: '2022-05-26 14:30',
+    title: 'Libre',
+    content: '',
+    class: 'free',
+  },
+  {
+    start: '2022-05-26 17:30',
+    end: '2022-05-26 18:30',
+    title: 'Libre',
+    content: '',
+    class: 'free',
+  },
+  {
+    start: '2022-05-27 12:00',
+    end: '2022-05-27 13:00',
+    title: 'Libre',
+    content: '',
+    class: 'free',
+  },
+  {
+    start: '2022-05-27 16:30',
+    end: '2022-05-27 17:30',
+    title: 'Libre',
+    content: '',
+    class: 'free',
   },
 ]
 
@@ -92,9 +204,6 @@ const events = [
   height: 660px;
   box-shadow: 0 0 5px 5px rgba(0, 0, 0, 0.05);
 }
-
-.vuecal__event.leisure {background-color: rgba(253, 156, 66, 0.9);border: 1px solid rgb(233, 136, 46);color: #fff;}
-.vuecal__event.sport {background-color: rgba(255, 102, 102, 0.9);border: 1px solid rgb(235, 82, 82);color: #fff;}
 
 </style>
 
