@@ -86,6 +86,7 @@ const openPopup = (name: string | undefined) => {
   background-color: var(--main-background);
   color: var(--secondary-text-color);
   box-shadow: 0 2px 7px 0 rgba(0, 0, 0, 0.3);
+  transition: 0.5s ease;
 }
 
 button {
