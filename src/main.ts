@@ -33,7 +33,7 @@ export const isLoading = ref(true)
 
 export const firstConv = ref('')
 
-if (!['/', '/terms', '/contact', '/about', '/faq', '/admin', '/login'].includes(window.location.pathname)) {
+if (!['/', '/terms', '/contact', '/about', '/faq', '/admin', '/login','/test'].includes(window.location.pathname)) {
   const i1 = setInterval(async() => {
     if (!user.value || !user.value.exist || !user.value.valid) {
       await softLogin()
