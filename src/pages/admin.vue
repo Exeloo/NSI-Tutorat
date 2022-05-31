@@ -18,7 +18,7 @@ setTimeout(() => {
 }, 5000)
 
 const onButtonClick = () => {
-  window.open('https://youtu.be/dQw4w9WgXcQ')
+  window.location.replace('https://youtu.be/dQw4w9WgXcQ')
 }
 </script>
 

@@ -1,6 +1,6 @@
-import type { SchoolPreferencesType } from '../profil/school/school-type'
+import type { SchoolPreferencesType } from '../../profil/school/school-type'
 
-interface Option { value: string; label: string }
+export interface Option { value: string; label: string }
 interface Options {
   classe: undefined | Option[]
   spe: {
@@ -222,37 +222,6 @@ export const models = reactive<{ value: SchoolPreferencesType }>({
 
   },
 
-})
-
-export const errors = reactive({
-  niveau: null,
-  classe: null,
-  spe: {
-    a: null,
-    b: null,
-    c: null,
-  },
-  lv: {
-    a: null,
-    b: null,
-  },
-  option: null,
-  section: {
-    lang: null,
-    dnl: null,
-  },
-  subjects: {
-    good: null,
-    bad: null,
-  },
-  helper: {
-    wish: null,
-    subjects: null,
-  },
-  receiver: {
-    wish: null,
-    subjects: null,
-  },
 })
 
 export const setModels = (data: SchoolPreferencesType) => {

@@ -13,11 +13,9 @@ export const isValidChoices = (choices?: PartialSchoolPreferencesType) => {
   const needTech = choices.level && ['premiere-t', 'terminal-t'].includes(choices.level)
   const hasTech = !needTech || !!choices.techno
 
-  const hasGoodSubjects = choices.subjects?.good?.length !== 0
-  const hasBadSubjects = choices.subjects?.bad?.length !== 0
   const hasHelperSubjects = !choices.tutorat?.helper?.wish || choices.tutorat?.helper?.subjects?.length !== 0
   const hasReceiverSubjects = !choices.tutorat?.receiver?.wish || choices.tutorat?.receiver?.subjects?.length !== 0
-  const hasSubjects = hasGoodSubjects && hasBadSubjects && hasHelperSubjects && hasReceiverSubjects
+  const hasSubjects = hasHelperSubjects && hasReceiverSubjects
 
   const askHelpOrReceive = !!choices.tutorat?.helper?.wish || !!choices.tutorat?.receiver?.wish
 

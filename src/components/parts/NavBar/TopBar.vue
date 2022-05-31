@@ -17,7 +17,7 @@
       <button class="" @click="openPopup('profil')">
         <div class="icon" i="ic-round-account-circle" />
         <div class="text">
-          {{ user.value.data.displayName }}
+          {{ user.displayName }}
         </div>
       </button>
     </div>
