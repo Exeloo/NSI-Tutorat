@@ -6,18 +6,18 @@
     <div class="info">
       <div class="side-menu">
         <div class="title">
-          Profile
+          Profil
         </div>
-        <button class="left-button">
+        <button class="left-button" @click="changeOnPage('')">
           Informations personnelles
         </button>
-        <button class="left-button">
+        <button class="left-button" @click="changeOnPage('school')">
           Informations scolaires
         </button>
-        <button class="left-button">
+        <button class="left-button" @click="changeOnPage('relation')">
           Mes relations
         </button>
-        <button class="left-button">
+        <button class="left-button" @click="changeOnPage('notif')">
           Notifications
         </button>
       </div>
@@ -31,11 +31,21 @@
   </footer>
 </template>
 
+<script lang="ts" setup>
+
+const router = useRouter()
+
+const changeOnPage = (name: string ) => {
+  router.push(`/dashboard/profil/${name}`)
+}
+
+
+</script>
+
 <style scoped>
 main {
   display: flex;
   justify-content: center;
-  padding-top: 8vw;
   width: 100%;
 }
 
@@ -72,3 +82,8 @@ main {
 }
 
 </style>
+
+<route lang="yaml">
+meta:
+  layout: profil
+</route>

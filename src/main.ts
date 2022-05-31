@@ -35,32 +35,3 @@ export const toggleLoadingPage = (force?: boolean) => {
 }
 
 export const firstConv = ref('')
-
-// if (!['/', '/terms', '/contact', '/about', '/faq', '/admin', '/login'].includes(window.location.pathname)) {
-//   const i1 = setInterval(async() => {
-//     if (!user.value || !user.value.exist || !user.value.valid) {
-//       await softLogin()
-//       if (!user.value || !user.value.exist || !user.value.valid) {
-//         isLoading.value = false
-//         window.location.replace(`${window.location.origin}/login`)
-//         clearInterval(i1)
-//         setTimeout(() => {
-//           login()
-//         }, 1000)
-//       }
-//     }
-//     else {
-//       clearInterval(i1)
-//       initConvs()
-//       const i2 = setInterval(() => {
-//         if (convsCache && convsCache.get(getFirstConvId())) {
-//           isLoading.value = false
-//           clearInterval(i2)
-//         }
-//       }, 1000)
-//     }
-//   }, 1000)
-// }
-// else {
-//   isLoading.value = false
-// }
