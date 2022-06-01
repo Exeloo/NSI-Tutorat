@@ -13,7 +13,7 @@
       <div class="element description">
         <div class="sub-element">
           <div class="sub-text">
-            Description: test
+            Description:
           </div>
         </div>
         <div class="noName">
@@ -35,14 +35,20 @@
             <button class="modif-button" i="carbon-pen" @click="modify('age')" />
           </div>
         </div>
-        <div class="noName">
-          <div />
-        </div>
       </div>
       <div class="element">
         <div v-if="updating !== 'genre'">
           <div class="sub-element">
             Genre:
+          </div>
+          <div v-if="user.genre === 'm'">
+            masculin
+          </div>
+          <div v-else-if="user.genre === 'f'">
+            feminin
+          </div>
+          <div v-else>
+            non-precisé
           </div>
           <button class="modif-button" i="carbon-pen" @click="modify('genre')" />
         </div>

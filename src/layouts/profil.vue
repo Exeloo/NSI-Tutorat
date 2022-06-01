@@ -62,6 +62,7 @@ main {
 
 .side-menu {
   display: flex;
+  max-width: 155px;
   flex-direction: column;
   align-items: flex-start;
   border-width: 0 1px 0 0;
