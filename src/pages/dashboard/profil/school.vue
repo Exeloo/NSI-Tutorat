@@ -3,10 +3,10 @@
     <div class="euh-non">
       <div class="sub">
         <div class="under-text">
-          niveau:
+          Niveau:
         </div>
         <div class="age">
-          {{ user.school.level }}
+          {{ getSchoolLabel('niveau', user.school.level) }}
         </div>
         <button class="modif-button" i="carbon-pen" @click="modify('level')" />
       </div>
@@ -16,10 +16,10 @@
     <div class="euh-non">
       <div class="sub">
         <div class="under-text">
-          classe:
+          Classe:
         </div>
         <div class="age">
-          {{ user.school.class}}
+          {{ getSchoolLabel('classe', user.school.class, user.school.level)}}
         </div>
         <button class="modif-button" i="carbon-pen" @click="modify('class')" />
       </div>
@@ -29,15 +29,15 @@
     <div class="euh-non">
       <div class="sub">
         <div class="under-text">
-          spé:
+          Spécialités:
         </div>
         <div class="age">
-          {{ user.school.spe.a }}
-          {{ user.school.spe.b }}
-          <div v-if="user.school.level === 'terminal-g'">({{ user.school.spe.c }})</div>
-          <div v-else>{{ user.school.spe.c }}</div>
+          <div>- {{ getSchoolLabel('spe', user.school.spe.a) }}</div>
+          <div class="paul">- {{ getSchoolLabel('spe', user.school.spe.b) }} <button class="modif-button" i="carbon-pen" @click="modify('spe')" /></div>
+          <div v-if="user.school.level === 'terminal-g'" class="give-up">- {{ getSchoolLabel('spe', user.school.spe.c) }}</div>
+          <div v-else>- {{ getSchoolLabel('spe', user.school.spe.c) }}</div>
         </div>
-        <button class="modif-button" i="carbon-pen" @click="modify('spe')" />
+
       </div>
     </div>
   </div>
@@ -45,11 +45,11 @@
     <div class="euh-non">
       <div class="sub">
         <div class="under-text">
-          langues:
+          Langues:
         </div>
         <div class="age">
-          {{ user.school.lv.a}}
-          {{ user.school.lv.b}}
+          {{ getSchoolLabel('lv', user.school.lv.a) }} -
+          {{ getSchoolLabel('lv', user.school.lv.b) }}
         </div>
         <button class="modif-button" i="carbon-pen" @click="modify('lv')" />
       </div>
@@ -59,36 +59,36 @@
     <div class="euh-non">
       <div class="sub">
         <div class="under-text">
-          option:
+          Options:
         </div>
-        <div class="age">
-          {{ user.school.option}}
-        </div>
-        <button class="modif-button" i="carbon-pen" @click="modify('option')" />
-      </div>
-    </div>
-  </div>
-  <div class="element">
-    <div class="euh-non">
-      <div class="sub">
-        <div class="under-text">
-          option:
-        </div>
-        <div class="age">
-          {{ user.school.option}}
+        <div class="age" v-for="u in user.school.option">
+          {{ getSchoolLabel('option', u, user.school.level) }}
         </div>
         <button class="modif-button" i="carbon-pen" @click="modify('option')" />
       </div>
     </div>
   </div>
-  <div class="element">
+  <div class="element" v-if="user.school.section">
     <div class="euh-non">
       <div class="sub">
         <div class="under-text">
-          dnl:
+          Section européene:
         </div>
         <div class="age">
-          {{ user.school.dnl}}
+          {{ getSchoolLabel('section',user.school.section.lang, "lang" ) }}
+        </div>
+        <button class="modif-button" i="carbon-pen" @click="modify('option')" />
+      </div>
+    </div>
+  </div>
+  <div class="element" v-if="user.school.section.lang === 'angl-euro' && user.school.level !== 'seconde'">
+    <div class="euh-non">
+      <div class="sub">
+        <div class="under-text">
+          Dnl:
+        </div>
+        <div class="age">
+          {{ getSchoolLabel('section',user.school.section.dnl, "dnl" )}}
         </div>
         <button class="modif-button" i="carbon-pen" @click="modify('option')" />
       </div>
@@ -98,6 +98,7 @@
 
 <script lang="ts" setup>
 import { user } from '~/logic/data/auth/auth-manager'
+import {getSchoolLabel} from "~/logic/profil/school/school-manager";
 const updating = ref()
 
 const modify = (which: string) => {
@@ -122,12 +123,21 @@ const modify = (which: string) => {
 .modif-button {
   font-size: 18px;
   width: 40px;
+  margin-left: 15px;
 }
 
 .element {
   padding-top: 10px;
 }
 
+.give-up {
+  font-style: italic;
+}
+
+.paul {
+  display: flex;
+  align-self: center;
+}
 
 </style>
 

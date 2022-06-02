@@ -27,8 +27,8 @@ export const selectOptions = {
     { value: 'seconde', label: 'Seconde Générale et Technologique' },
     { value: 'premiere-g', label: 'Première Générale' },
     { value: 'premiere-t', label: 'Première Technologique' },
-    { value: 'terminal-g', label: 'Terminal Générale' },
-    { value: 'terminal-t', label: 'Terminal Technologique' },
+    { value: 'terminal-g', label: 'Terminale Générale' },
+    { value: 'terminal-t', label: 'Terminale Technologique' },
   ],
   classe: new Map([
     ['seconde', [
