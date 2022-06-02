@@ -28,13 +28,15 @@ const getLabelFromValue = (array: Array<Option>, id: string): string => {
   return array.filter((e: Option) => e.value === id).map((e: Option) => e.label)[0]
 }
 
-export const getSchoolName = (category: string, id: string, option?: string) => {
+type Category = 'niveau' | 'classe' | 'spe' | 'techno' | 'lv' | 'option' | 'section' | 'subject'
+
+export const getSchoolName = (category: Category, id: string, option?: string) => {
   const selectCat = selectOptions[category]
   if (option) {
     if (selectCat instanceof Map)
-      return getLabelFromValue(selectCat.get(<string>option), id)
+      return getLabelFromValue(<Option[]>selectCat.get(<string>option), id)
     else
-      return getLabelFromValue(selectCat[option], id)
+      return getLabelFromValue(<Option[]>selectCat[option], id)
   }
-  return getLabelFromValue(selectCat, id)
+  return getLabelFromValue(<Option[]>selectCat, id)
 }

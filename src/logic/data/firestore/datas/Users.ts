@@ -51,7 +51,7 @@ export class User {
 }
 
 export const getForcedUsers = async(): Promise<Map<string, UserData>> => {
-  const query = await store.queryDocuments({ where: { param_1: 'uid', comparator: '!=', param_2: user.value?.uid } })
+  const query = await store.queryDocuments({ where: { param_1: 'school.tutorat.helper.wish', comparator: '==', param_2: true } })
   query.docs.forEach((v) => {
     usersCache.set(v.id, <UserData>v.data())
   })
