@@ -77,8 +77,8 @@ const onButtonClick = async() => {
   if (isNotValid.value) return
   isButtonLoading.value = true
   await setUser(user.value.uid, { school: models.value })
-  await login()
   togglePageState({ id: 'loading', value: '' })
+  await login()
 }
 
 const hasSpe = (third: boolean) => {

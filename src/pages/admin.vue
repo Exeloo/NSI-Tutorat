@@ -24,9 +24,9 @@ const onButtonClick = () => {
 
 <style scoped>
 .l-app {
-  margin-top: 40vh;
   text-align: center;
 }
+
 </style>
 
 <route lang="yaml">

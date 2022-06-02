@@ -283,7 +283,7 @@ export const getSubjects = (models: SchoolPreferencesType) => {
 
   if (models.section.lang === 'angl-euro') {
     const dnlSubjects = selectOptions.section.dnl.filter(
-        dnl => models.section.dnl === dnl.value,
+      dnl => models.section.dnl === dnl.value,
     )
     options.push(...dnlSubjects.map((e) => { return { ...e, label: `DNL ${e.label}` } }))
   }

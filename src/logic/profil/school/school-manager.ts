@@ -1,4 +1,6 @@
 import type { PartialSchoolPreferencesType } from './school-type'
+import type { Option } from '~/logic/pages/login/school.login'
+import { selectOptions } from '~/logic/pages/login/school.login'
 
 export const isValidChoices = (choices?: PartialSchoolPreferencesType) => {
   if (!choices) return false
@@ -20,4 +22,19 @@ export const isValidChoices = (choices?: PartialSchoolPreferencesType) => {
   const askHelpOrReceive = !!choices.tutorat?.helper?.wish || !!choices.tutorat?.receiver?.wish
 
   return hasLevel && hasClasse && hasLv && hasDnl && hasSpe && hasTech && hasSubjects && askHelpOrReceive
+}
+
+const getLabelFromValue = (array: Array<Option>, id: string): string => {
+  return array.filter((e: Option) => e.value === id).map((e: Option) => e.label)[0]
+}
+
+export const getSchoolName = (category: string, id: string, option?: string) => {
+  const selectCat = selectOptions[category]
+  if (option) {
+    if (selectCat instanceof Map)
+      return getLabelFromValue(selectCat.get(<string>option), id)
+    else
+      return getLabelFromValue(selectCat[option], id)
+  }
+  return getLabelFromValue(selectCat, id)
 }

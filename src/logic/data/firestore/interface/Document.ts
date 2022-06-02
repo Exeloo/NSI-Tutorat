@@ -36,15 +36,7 @@ export class FDocument {
   async updateData() {
     const refDoc = await getDoc(this.ref)
     const data = refDoc.data()
-    if (!data) {
-      const defautDocRef = doc(this.collection.ref, 'default')
-      const defaultDoc = await getDoc(defautDocRef)
-      const defaultData = defaultDoc.data()
-      if (!defaultData) return
-      this.set(defaultData)
-      this.collection.cache.set(this.name, defaultData)
-      return
-    }
+    if (!data) return
     this.collection.cache.set(this.name, data)
   }
 

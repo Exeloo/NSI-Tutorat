@@ -77,6 +77,8 @@ const props = defineProps({
   },
 })
 
+const update = defineEmits(['update:modelValue'])
+
 const value = computed({
   get: () => {
     return props.modelValue
@@ -105,8 +107,6 @@ const changeRoute = (r: string, dashboard = true) => {
   const route = dashboard ? '/dashboard/' : '/'
   router.push(route.concat(r))
 }
-
-const update = defineEmits(['update:modelValue'])
 
 const toggleSubMenu = (_: any, force: boolean | undefined = undefined) => {
   if (force === undefined)

@@ -1,15 +1,16 @@
 <template>
   <!-- {{ pageState }} -->
-  <div v-if="pageState.id === 'loading'" class="loading">
+  <div v-if="pageState.id === 'error'">
+    {{ pageState.value }}
+  </div>
+  <SchoolInit v-else-if="pageState.id === 'school'" />
+  <PlanningInit v-else-if="pageState.id === 'planning'" />
+  <div v-else class="loading">
     <Loading />
     <div class="loading-text">
       Chargement en cours, veuillez patienter...
     </div>
   </div>
-  <div v-else-if="pageState.id === 'error'">
-    {{ pageState.value }}
-  </div>
-  <SchoolInit v-else />
 </template>
 
 <script setup lang="ts">
