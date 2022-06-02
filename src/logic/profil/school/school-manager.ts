@@ -28,7 +28,7 @@ const getLabelFromValue = (array: Array<Option>, id: string): string => {
   return array.filter((e: Option) => e.value === id).map((e: Option) => e.label)[0]
 }
 
-export const getSchoolName = (category: string, id: string, option?: string) => {
+export const getSchoolLabel = (category: string, id: string, option?: string) => {
   const selectCat = selectOptions[category]
   if (option) {
     if (selectCat instanceof Map)
