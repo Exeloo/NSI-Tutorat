@@ -1,35 +1,56 @@
 <template>
   <div class="content">
     <div class="non-modifiable">
-      <img class="pp" :src="user.value.data.avatar" alt=""/>
+      <img class="pp" :src="user.avatar" alt="">
       <div class="user-name">
-        <div>{{ user.value.data.displayName}}</div>
-        <div class="email">{{ user.value.data.email }}</div>
+        <div>{{ user.displayName }}</div>
+        <div class="email">
+          {{ user.email }}
+        </div>
       </div>
     </div>
-    <div class="modifiable" >
+    <div class="modifiable">
       <div class="element description">
         <div class="sub-element">
-          <div class="sub-text">Description:</div>
+          <div class="sub-text">
+            Description:
+          </div>
         </div>
         <div class="noName">
-          <div>{{ user.value.data.description }}</div>
-          <div><button class="modif-button" i="carbon-pen" @click="modify('desc')"/></div>
+          <div>
+            {{ user.description }}
+          </div>
+          <div><button class="modif-button" i="carbon-pen" @click="modify('desc')" /></div>
         </div>
       </div>
       <div class="element">
-        <div class="sub-element">
-          <div class="sub-text">Âge:</div>
-        </div>
-        <div class="noName">
-          <div>{{ age }}</div>
-          <button class="modif-button" i="carbon-pen" @click="modify('age')"/>
+        <div class="euh-non">
+          <div class="sub">
+            <div class="under-text">
+              Âge:
+            </div>
+            <div class="age">
+              {{ age }}
+            </div>
+            <button class="modif-button" i="carbon-pen" @click="modify('age')" />
+          </div>
         </div>
       </div>
       <div class="element">
         <div v-if="updating !== 'genre'">
-          <div class="sub-element">Genre: </div>
-          <button class="modif-button" i="carbon-pen" @click="modify('genre')"/>
+          <div class="sub-element">
+            Genre:
+          </div>
+          <div v-if="user.genre === 'm'">
+            masculin
+          </div>
+          <div v-else-if="user.genre === 'f'">
+            feminin
+          </div>
+          <div v-else>
+            non-precisé
+          </div>
+          <button class="modif-button" i="carbon-pen" @click="modify('genre')" />
         </div>
         <div v-else>
           <Select id="genre" v-model="genreModel" label="" :options="genres" @change="" />
@@ -40,25 +61,22 @@
 </template>
 
 <script lang="ts" setup>
-import {user} from "~/logic/data/auth/auth-manager";
-import firebase from "firebase/compat";
-import Timestamp = firebase.firestore.Timestamp;
-console.log(user.value.data.avatar)
+import firebase from 'firebase/compat'
+import { user } from '~/logic/data/auth/auth-manager'
+import Timestamp = firebase.firestore.Timestamp
 const updating = ref()
-const modify = (which: string ) => {
+const modify = (which: string) => {
   updating.value = which
 }
-const genreModel = ref(user.value.data.genre)
+const genreModel = ref(user.value?.genre)
 const genres = [
-  { label: 'Masculin', value: 'm'},
-  { label: 'Féminin', value: 'f'},
-  { label: 'Non précisé', value: 'n'}
+  { label: 'Masculin', value: 'm' },
+  { label: 'Féminin', value: 'f' },
+  { label: 'Non précisé', value: 'n' },
 ]
 
-console.log(user.value.data.age)
-
 const now = new Date()
-const age = new Date(now.getTime() - user.value.data.birthday.toDate().getTime()).getFullYear() - 1970
+const age = new Date(now.getTime() - user.value?.birthday.toDate().getTime()).getFullYear() - 1970
 </script>
 
 <style scoped>
@@ -101,6 +119,10 @@ const age = new Date(now.getTime() - user.value.data.birthday.toDate().getTime()
   text-decoration: underline;
 }
 
+.sub {
+  display: flex;
+}
+
 .description {
   gap: 10px;
 }
@@ -109,6 +131,12 @@ const age = new Date(now.getTime() - user.value.data.birthday.toDate().getTime()
   display: flex;
   align-items: center;
 }
+
+.under-text {
+  text-decoration: underline;
+  padding-right: 10px;
+}
+
 </style>
 
 <route lang="yaml">
