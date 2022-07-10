@@ -4,7 +4,7 @@
       {{ label }}
     </button>
   </div>
-  <div v-else>
+  <div v-else class="loading">
     <Loading />
   </div>
 </template>
@@ -67,6 +67,12 @@ button {
 
 .click {
     transform: scale(0.9);
+}
+
+.loading {
+  display: flex;
+  align-items: flex-start;
+  justify-content: flex-start;
 }
 
 </style>

@@ -271,7 +271,7 @@ export const getSubjects = (models: SchoolPreferencesType) => {
   const niveauOptions = selectOptions.option.get(models.level)
   const defaultOptions = selectOptions.option.get('default')
   if (!niveauOptions || !defaultOptions) return options
-  const optionSubjects = [...defaultOptions, ...niveauOptions].filter(
+  const optionSubjects = [...defaultOptions, ...niveauOptions, { value: 'maths-expert-opt', label: 'Mathématiques Expertes' }, { value: 'maths-compl-opt', label: 'Mathématiques Complémentaires' }].filter(
     opt => models.option.includes(opt.value),
   )
   options.push(...optionSubjects.map((e) => { return { ...e, label: `Option ${e.label}` } }))

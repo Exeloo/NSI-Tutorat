@@ -1,7 +1,6 @@
 import firebase from 'firebase/compat'
 import { Store } from '../interface/Store'
 import type { FDocument } from '../interface/Document'
-import { user } from '../../auth/auth-manager'
 import type { PlanningType } from '~/logic/profil/planning/planning-type'
 import type { PartialSchoolPreferencesType, SchoolPreferencesType } from '~/logic/profil/school/school-type'
 
@@ -13,8 +12,7 @@ export interface UserData {
   description: string
   displayName: string
   email: string
-  freeTime: PlanningType
-  genre: string
+  gender: string
   planning: PlanningType
   school: SchoolPreferencesType
   uid: string
@@ -26,8 +24,7 @@ export interface PartialUserData {
   description?: string
   displayName?: string
   email?: string
-  freeTime?: PlanningType
-  genre?: string
+  gender?: string
   planning?: PlanningType
   school?: PartialSchoolPreferencesType
   uid?: string

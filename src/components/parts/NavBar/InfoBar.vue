@@ -16,6 +16,13 @@
 </template>
 
 <script setup lang="ts">
+const props = defineProps({
+  return: {
+    required: false,
+    type: String,
+  },
+})
+
 const router = useRouter()
 
 const changeRoute = (r: string) => {
@@ -23,7 +30,10 @@ const changeRoute = (r: string) => {
 }
 
 const back = () => {
-  router.back()
+  if (props.return !== undefined)
+    router.push(`/${props.return}`)
+  else
+    router.back()
 }
 
 </script>

@@ -1,10 +1,12 @@
 <template>
-  <div class="input-calendar-container">
-    Un texte
-  </div>
+  <div class="" />
 </template>
 
 <script setup lang="ts">
+const props = defineProps({
+  
+})
+
 </script>
 
 <style scoped>

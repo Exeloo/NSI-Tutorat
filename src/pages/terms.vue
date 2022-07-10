@@ -11,6 +11,9 @@
         <div class="part">
           Le respect des présentes conditions est indispensable à l’utilisation de nos services mis à votre disposition. Si vous êtes en désaccord avec un ou plusieurs points de ces présentes conditions, vous n’êtes pas autorisé(e) à disposer de nos services. Vous vous engagez également à vous tenir informé des éventuelles modifications du présent règlement qui peuvent survenir à tout moment si nous voyons la nécessité de le modifier. Toutes les activités réalisées sur l’ensemble de nos services sont enregistrées. Nous nous réservons le droit d’exploiter ces informations, si nécessaire, à des fins juridiques.
         </div>
+        <div class="part">
+          Les messages envoyés sur ce service resteront privées, aucune personnes autres que les administarteurs du site y auront accès. Nous nous engageons à garantire le respect de votre vie privée en ne divulgant sous aucun prétexte autre qu'à des fins juridiques vos conversations.
+        </div>
       </div>
     </div>
     <div class="item">
@@ -31,21 +34,21 @@
     </div>
     <div class="item">
       <div class="title">
-        Contournement
+        Harcèlement
       </div>
       <div class="content">
         <div class="part">
-          Le contournement de sanction ou de règles est strictement interdit sur l’ensemble de nos services. En cas de contournement d’une de nos règles ou sanctions, les personnes concernées seront expulsées définitivement de l’ensemble des services, sans possibilité d’annulation.
+          Le harcèlement scolaire est considéré comme un déli selon la loi du 2 Mars 2022. Une personne reconnu coupable peut encourir jusqu'à 10 ans de prisons et 150 000 € d'amande. Le harcèlement est donc strictement interdit. Par ailleurs, comme dit précédement, nous nous reservons le droit d'utiliser les messages envoyer sur ce service à des fins juridiques en cas de harcèlement reconnu.
         </div>
       </div>
     </div>
     <div class="item">
       <div class="title">
-        Menace
+        Contournement
       </div>
       <div class="content">
         <div class="part">
-          Les menaces n’ont pas lieu d’être sur l’ensemble des services. Que ce soit envers des utilisateurs ou envers la société elle-même. En ce qui concerne les menaces de DDOS, celles-ci sont interdites par la loi et donc fortement punissables. Nous nous réservons le droit de dénoncer de tels agissements, avec les rapports d’activité des services comme preuves à l’appui.
+          Le contournement de sanction ou de règles est strictement interdit sur l’ensemble de nos services. En cas de contournement d’une de nos règles ou sanctions, les personnes concernées seront expulsées définitivement de l’ensemble des services, sans possibilité d’annulation.
         </div>
       </div>
     </div>
@@ -61,17 +64,7 @@
     </div>
     <div class="item">
       <div class="title">
-        Publicité
-      </div>
-      <div class="content">
-        <div class="part">
-          La publicité en chat public ou privé est strictement interdite sur l’intégralité des services qui vous sont proposés.
-        </div>
-      </div>
-    </div>
-    <div class="item">
-      <div class="title">
-        Pornographie,racisme…
+        Pornographie, racisme…
       </div>
       <div class="content">
         <div class="part">

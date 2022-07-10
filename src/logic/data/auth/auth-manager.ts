@@ -12,14 +12,14 @@ export const logout = () => {
   return signOut(auth)
 }
 
-export const login = async(forceNoRedirect = false): Promise<{ result: false; error: string } | { result: true }> => {
+export const login = async(forceNoRedirect = false, isLogout = true): Promise<{ result: false; error: string } | { result: true }> => {
   const userResult = await getUser(auth.currentUser)
   if (!userResult.result) {
     if (userResult.error === 'result') {
       if (!forceNoRedirect) await signInWithRedirect(auth, provider)
       return userResult
     }
-    await logout()
+    if (isLogout) await logout()
     return userResult
   }
   user.value = userResult.data
@@ -33,7 +33,7 @@ export const login = async(forceNoRedirect = false): Promise<{ result: false; er
 export const defineRedirect = () => {
   getRedirectResult(auth)
     .then(async() => {
-      if (!(await login(true)).result && !['/', '/terms', '/contact', '/about', '/faq', '/admin', '/login'].includes(window.location.pathname))
+      if (!(await login(true, false)).result && !['/', '/terms', '/contact', '/about', '/faq', '/admin', '/login'].includes(window.location.pathname))
         window.location.replace('/login')
       toggleLoadingPage(false)
     }).catch((error) => {

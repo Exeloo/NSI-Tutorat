@@ -1,5 +1,6 @@
 <template>
-  <div v-if="isSideBarDeploy" class="blackoverlay" />
+  <div v-if="dashboardMenuEnable" class="maskPage blackoverlay" @click="toggleSideBar(false)" />
+  <div v-else-if="activePopup" class="maskPage whiteoverlay" @click="openPopup('')" />
   <nav class="nav">
     <div class="top-bar">
       <TopBar />
@@ -7,9 +8,9 @@
   </nav>
   <div class="body">
     <div class="side-bar">
-      <SideBar v-model="isSideBarDeploy" />
+      <SideBar v-model="dashboardMenuEnable" />
     </div>
-    <div class="content" :class="{sideBarEnabled: isSideBarDeploy}">
+    <div class="content" :class="{sideBarEnabled: dashboardMenuEnable}">
       <main class="main">
         <router-view />
       </main>
@@ -21,8 +22,7 @@
 </template>
 
 <script setup lang="ts">
-
-const isSideBarDeploy = ref(false)
+import { activePopup, dashboardMenuEnable, openPopup, toggleSideBar } from '~/logic/pages/dashboard'
 
 </script>
 
@@ -43,11 +43,11 @@ const isSideBarDeploy = ref(false)
 }
 
 .sideBarEnabled {
-  pointer-events: none;
+  /* pointer-events: none; */
 }
 
 .main {
-  padding-left: 7.8vh;
+  padding-left: 9.5vh;
 }
 
 @media screen and (max-width: 520px){

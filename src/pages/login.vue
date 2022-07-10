@@ -1,7 +1,11 @@
 <template>
-  <!-- {{ pageState }} -->
-  <div v-if="pageState.id === 'error'">
-    {{ pageState.value }}
+  <div v-if="pageState.id === 'error'" class="login-error">
+    <div class="login-error-message">
+      {{ pageState.value }}
+    </div>
+    <div>
+      <Button id="conexion" label="Se connecter" styles="blurple" :options="{disabled: false}" :loading="isButtonLoading" @click="login()" />
+    </div>
   </div>
   <SchoolInit v-else-if="pageState.id === 'school'" />
   <PlanningInit v-else-if="pageState.id === 'planning'" />
@@ -37,6 +41,10 @@ const i = setInterval(async() => {
     togglePageState({ id: loginResult.error, value: '' })
   }
 }, 4000)
+
+setTimeout(() => {
+  window.scrollTo({ top: 0 })
+}, 100)
 
 </script>
 
@@ -78,6 +86,19 @@ const i = setInterval(async() => {
   font-size: 12px;
   font-style: italic;
   margin-bottom: 50px;
+}
+
+.login-error {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 3rem;
+}
+
+.login-error-message {
+  color: var(--color-danger);
+  padding-top: 50px;
+  text-align: center;
 }
 
 </style>

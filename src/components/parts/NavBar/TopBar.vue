@@ -27,23 +27,26 @@
     <div class="notif-topbar">
       Dernieres notifications :
     </div>
-    <div v-for="notififications in notifs" :key="notifs.id" class="notif-content">
+    <div v-for="notififications in notifs" :key="notififications" class="notif-content">
       -> {{ notififications.content }}
     </div>
   </div>
 
   <div v-else-if="activePopup === 'profil'" class="profile-popup popup">
     <div class="profile-content">
-      <div>Modifier le profil</div>
-      <div>Informations Scolaires</div>
-      <div>Modifier mon planning</div>
-      <div>Mes tutorants et tutorés</div>
-      <div>content 5</div>
-      <div>content 6</div>
-      <div>content 7</div>
-      <div>content 8</div>
-
-      <div class="logout-button" @click="onLogout()">
+      <div @click="changeRoute('profil')">
+        Modifier le profil
+      </div>
+      <div @click="changeRoute('profil/school')">
+        Informations Scolaires
+      </div>
+      <div @click="changeRoute('planning')">
+        Modifier mon planning
+      </div>
+      <div @click="changeRoute('profil/relation')">
+        Mes tutorants et tutorés
+      </div>
+      <div class="profil-button" @click="onLogout()">
         Se deconnecter<div i="ic-baseline-log-out" />
       </div>
     </div>
@@ -52,6 +55,7 @@
 
 <script setup lang="ts">
 import { logout, user } from '~/logic/data/auth/auth-manager'
+import { activePopup, openPopup } from '~/logic/pages/dashboard'
 
 const router = useRouter()
 
@@ -60,20 +64,18 @@ const onLogout = () => {
   router.push('/')
 }
 
+const changeRoute = (r: string, dashboard = true) => {
+  const route = dashboard ? '/dashboard/' : '/'
+  router.push(route.concat(r))
+}
+
 const notifs = [
   { id: '1', date: '', lvl: '1', name: 'new-message', content: 'Vous avez une nouveau message' },
   { id: '2', date: '', lvl: '1', name: 'new-class', content: 'Cours ajouté pour le 16/09' },
   { id: '3', date: '', lvl: '1', name: 'class-cancel', content: 'Votre cours du 15/03 a 10h est annulé' },
   { id: '4', date: '', lvl: '1', name: 'new-message', content: 'Vous avez une nouveau message' },
 ]
-const activePopup = ref()
-const openPopup = (name: string | undefined) => {
-  if (activePopup.value === name) {
-    activePopup.value = undefined
-    return
-  }
-  activePopup.value = name
-}
+
 </script>
 
 <style scoped>
@@ -121,8 +123,9 @@ button {
   color: var(--secondary-text-color);
   box-shadow: 0 2px 7px 0 rgba(0, 0, 0, 0.3);
   position: absolute;
-  height: 40vh;
-  width: 40vh;
+  height: fit-content;
+  max-width: 350px;
+  width: fit-content;
   top: 70px;
   right: 30px;
 }
@@ -145,16 +148,16 @@ button {
   padding: 5px;
 }
 
-.notif-content {
-  border-width: 0 0 0.5px 0;
-  font-size: 2.5vh;
-}
-
-.logout-button {
+.profile-content > div {
   display: flex;
   align-items: center;
   padding: 5px;
   cursor: pointer;
+}
+
+.notif-content {
+  border-width: 0 0 0.5px 0;
+  font-size: 2.5vh;
 }
 
 </style>

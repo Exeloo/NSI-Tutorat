@@ -1,28 +1,34 @@
 <template>
-  <main class="form-main">
-    <div class="form">
+  <nav class="nav">
+    <InfoBar return="dashboard/search" />
+  </nav>
+  <main class="main">
+    <div class="search">
       <router-view />
     </div>
   </main>
-  <Footer />
+  <footer class="footer">
+    <Footer />
+  </footer>
 </template>
 
-<style>
-.form-main {
+<style scoped>
+.main {
   display: flex;
   justify-content: center;
-  margin-top: 8vw;
+  padding-top: 8vw;
   width: 100%;
 }
 
-.form {
+.search {
   padding-top: max(3vw, 20px);
   padding-bottom: max(3vw, 10px);
-  width: min(95%, 910px);
+  width: min(90%, 1000px);
   min-height: max(300px, 30vw);
   background: var(--main-background);
   display: flex;
   justify-content: center;
   margin-bottom: 29vh;
 }
+
 </style>

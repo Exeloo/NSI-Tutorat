@@ -1,14 +1,14 @@
 <template>
-  <div class="SideBar" :class="isMenuOpen ? 'sideBarEnable' : ''">
+  <div class="SideBar" :class="dashboardMenuEnable ? 'sideBarEnable' : ''">
     <div class="toggle-menu" @click="toggleSideBar">
-      <div v-if="isMenuOpen" class="toggle-on toggle-btn">
+      <div v-if="dashboardMenuEnable" class="toggle-on toggle-btn">
         <div class="exit-button" i="ic-round-arrow-forward-ios" />
       </div>
       <div v-else class="toggle-off toggle-btn">
         <div i="ic-round-menu" />
       </div>
     </div>
-    <div class="menu" :class="isMenuOpen ? 'menuEnable' : ''">
+    <div class="menu" :class="dashboardMenuEnable ? 'menuEnable' : ''">
       <div>
         <div class="item single-item" @click="changeRoute('')">
           <div class="i" i="ic-baseline-computer" />
@@ -30,9 +30,9 @@
                 Relations
               </div>
             </div>
-            <div class="dropdown" :class="dropdownClass.relation" i="ic-baseline-keyboard-arrow-right" />
+            <div class="dropdown" :class="dashboardSubMenuEnable ? 'rotate' : ''" i="ic-baseline-keyboard-arrow-right" />
           </div>
-          <div v-if="subMenu" class="sub-menu">
+          <div v-if="dashboardSubMenuEnable" class="sub-menu">
             <div class="sub-item single-item" @click="changeRoute('chat')">
               <div class="i" i="ic-baseline-chat" />
               <div class="text">
@@ -69,68 +69,14 @@
 </template>
 
 <script setup lang="ts">
-
-const props = defineProps({
-  modelValue: {
-    type: Boolean,
-    required: true,
-  },
-})
-
-const update = defineEmits(['update:modelValue'])
-
-const value = computed({
-  get: () => {
-    return props.modelValue
-  },
-  set: (v: string) => {
-    update('update:modelValue', v)
-  },
-})
+import { dashboardMenuEnable, dashboardSubMenuEnable, toggleSideBar, toggleSubMenu } from '~/logic/pages/dashboard'
 
 const router = useRouter()
-
-const isMenuOpen = ref(false)
-const sidebarClass = reactive({
-  sideBarEnable: value.value,
-})
-
-const subMenu = ref(false)
-
-const dropdownClass = reactive({
-  relation: {
-    rotate: false,
-  },
-})
 
 const changeRoute = (r: string, dashboard = true) => {
   const route = dashboard ? '/dashboard/' : '/'
   router.push(route.concat(r))
-}
-
-const toggleSubMenu = (_: any, force: boolean | undefined = undefined) => {
-  if (force === undefined)
-    subMenu.value = !subMenu.value
-
-  else
-    subMenu.value = force
-
-  dropdownClass.relation.rotate = subMenu.value
-  if (subMenu.value)
-    // eslint-disable-next-line @typescript-eslint/no-use-before-define
-    toggleSideBar(undefined, true)
-}
-
-const toggleSideBar = (_: any, force: boolean | undefined = undefined) => {
-  if (force === undefined)
-    isMenuOpen.value = !isMenuOpen.value
-
-  else
-    isMenuOpen.value = force
-  if (!isMenuOpen.value)
-    toggleSubMenu(undefined, false)
-  value.value = isMenuOpen.value
-  sidebarClass.sideBarEnable = isMenuOpen.value
+  toggleSideBar(null, false)
 }
 
 </script>

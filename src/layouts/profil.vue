@@ -1,6 +1,6 @@
 <template>
   <nav class="nav">
-    <InfoBar />
+    <InfoBar return="dashboard" />
   </nav>
   <main class="main">
     <div class="info">
@@ -21,7 +21,7 @@
           Notifications
         </button>
       </div>
-      <div>
+      <div class="page">
         <router-view />
       </div>
     </div>
@@ -35,10 +35,9 @@
 
 const router = useRouter()
 
-const changeOnPage = (name: string ) => {
+const changeOnPage = (name: string) => {
   router.push(`/dashboard/profil/${name}`)
 }
-
 
 </script>
 
@@ -55,8 +54,9 @@ main {
   min-height: max(300px, 30vw);
   background: var(--main-background);
   display: flex;
+  flex-wrap: wrap;
   justify-content: flex-start;
-  gap: 2rem;
+  gap: 8%;
   margin-bottom: 29vh;
 }
 
@@ -80,6 +80,10 @@ main {
 .title {
   margin-bottom: 20px;
   margin-left: 20px;
+}
+
+.page {
+  width: 600px;;
 }
 
 </style>

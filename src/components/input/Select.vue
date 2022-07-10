@@ -4,7 +4,10 @@
     <VSelect
       :id="`select-${props.id}`"
       v-model="value"
-      :reduce="(e: any) => e.value" :options="options" :searchable="search" :multiple="tags" @update:modelValue="() => update('change', null)"
+      :reduce="(e: any) => e.value"
+      :options="options"
+      :searchable="search"
+      :multiple="tags"
     />
   </div>
 </template>
@@ -55,6 +58,8 @@ const value = computed({
     update('update:modelValue', v)
   },
 })
+
+watch(value, () => update('change', null))
 
 </script>
 

@@ -1,6 +1,9 @@
 import { initializeApp } from 'firebase/app'
 import { GoogleAuthProvider, connectAuthEmulator, getAuth } from 'firebase/auth'
 import { connectFirestoreEmulator, getFirestore } from 'firebase/firestore'
+import { initMessaging } from './messaging/initMessaging'
+
+// import { onBackgroundMessage } from 'firebase/messaging/sw'
 // import { connectStorageEmulator, getStorage } from 'firebase/storage'
 
 const firebaseConfig = {
@@ -12,13 +15,14 @@ const firebaseConfig = {
   appId: '1:926532289308:web:694157cf48d6bfbf6f30d9',
 }
 
-const app = initializeApp(firebaseConfig)
+export const app = initializeApp(firebaseConfig)
 
 export const provider = new GoogleAuthProvider()
 export const auth = getAuth(app)
 
 export const db = getFirestore(app)
-// export const storage = getStorage(app)
+
+// initMessaging()
 
 const isEmulated = false
 

@@ -11,13 +11,20 @@
   z-index: 1;
 }
 
-.blackoverlay {
+.maskPage {
   position: fixed;
   z-index: 998;
   width: 100%;
   height: 100%;
-  background-color: #23232341;
   transition: ease 1s;
+}
+
+.blackoverlay {
+  background-color: #23232341;
+}
+
+.whiteoverlay {
+  background-color: #ffffff00;
 }
 
 .footer {

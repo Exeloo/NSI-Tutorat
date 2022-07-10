@@ -1,6 +1,6 @@
 <template>
   <nav class="nav">
-    <InfoBar />
+    <InfoBar return="" />
   </nav>
   <main class="main">
     <div class="info">
@@ -13,7 +13,7 @@
 </template>
 
 <style scoped>
-main {
+.main {
   display: flex;
   justify-content: center;
   padding-top: 8vw;

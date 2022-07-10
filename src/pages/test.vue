@@ -1,10 +1,11 @@
 <template>
   <div class="content">
-    <Chat />
+    L
   </div>
 </template>
 
 <script setup lang="ts">
+
 const isSideBarDeploy = ref(false)
 
 </script>
