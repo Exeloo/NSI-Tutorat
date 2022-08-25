@@ -23,6 +23,7 @@ export const isValidChoices = (choices?: PartialSchoolPreferencesType) => {
 }
 
 const labels = new Map([
+  ['', '-'],
   ['seconde', 'Seconde Générale et Technologique'],
   ['premiere-g', 'Première Générale'],
   ['premiere-t', 'Première Technologique'],
@@ -54,10 +55,10 @@ const labels = new Map([
   ['tstl', 'TSTL'],
   ['tstd2a', 'TSTD2A'],
   ['art-spe', 'Art'],
-  ['geopo-spe', 'Histoire-Géographie], Géopolitique et Science Poilitique'],
-  ['hlp-spe', 'Humanité], Littérature et Philosophie'],
-  ['llce-spe', 'Langues], Littératures et Cultures Etrangère'],
-  ['llca-spe', 'Littératures], Langues et Cultures de l\'Antiquité'],
+  ['geopo-spe', 'Histoire-Géographie, Géopolitique et Science Poilitique'],
+  ['hlp-spe', 'Humanité, Littérature et Philosophie'],
+  ['llce-spe', 'Langues, Littératures et Cultures Etrangère'],
+  ['llca-spe', 'Littératures, Langues et Cultures de l\'Antiquité'],
   ['maths-spe', 'Mathématiques'],
   ['nsi-spe', 'Numérique et Science de l\'Informatique'],
   ['pc-spe', 'Physique-Chimie'],
@@ -95,6 +96,19 @@ const labels = new Map([
   ['n', 'Non Précisé'],
 ])
 
-export const getSchoolLabel = (id: string) => {
-  return labels.has(id) ? labels.get(id) : id
+export const getSchoolLabel = (id: string, prefix?: boolean): string => {
+  let label = labels.has(id) ? <string>labels.get(id) : id
+  if (prefix) {
+    if (id.endsWith('-spe'))
+      label = `Spécialité ${label}`
+    else if (id.endsWith('-opt'))
+      label = `Option ${label}`
+    else if (id.endsWith('-lv'))
+      label = `Langue Vivante ${label}`
+    else if (id.endsWith('-euro'))
+      label = `Section Européenne ${label}`
+    else if (id.endsWith('-dnl'))
+      label = `DNL ${label}`
+  }
+  return label
 }

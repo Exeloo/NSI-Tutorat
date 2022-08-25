@@ -7,12 +7,12 @@
       </div>
     </div>
     <div>
-      <button class="" @click="openPopup('notif')">
+      <!-- <button class="" @click="openPopup('notif')">
         <div class="icon" i="carbon-notification" />
         <div class="text">
           Notifications
         </div>
-      </button>
+      </button> -->
 
       <button class="" @click="openPopup('profil')">
         <div class="icon" i="ic-round-account-circle" />

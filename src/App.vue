@@ -20,7 +20,7 @@ useHead({
 
 <style>
 .l-app {
-  margin-top: 40vh;
+  padding-top: 40vh;
   text-align: center;
 }
 </style>

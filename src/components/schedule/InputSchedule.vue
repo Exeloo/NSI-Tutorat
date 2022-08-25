@@ -139,6 +139,7 @@ const getRightTimes = (start?: string, end?: string, index: number) => {
   let endList = start ? [...detailedTimes].filter((e, i) => e.value !== '07:00' && (!start || detailedTimes.map(e => e.value).indexOf(start) < i)) : [...detailedTimes].filter((e, i) => e.value !== '07:00')
   const tempList = getMinFormTimes(value.value[activeDay.value].filter((_, i) => i !== index)).sort((a, b) => a[0] - b[0])
   const buisyList = [tempList[0]]
+  // Boucle pour réduire les temps collés, ex : 10:00 | 11:00 + 11:00 | 15:30 => 10:00 | 15:30
   for (let i = 1; i < tempList.length; i++) {
     if (buisyList[buisyList.length - 1][1] === tempList[i][0])
       buisyList[buisyList.length - 1][1] = tempList[i][1]

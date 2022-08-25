@@ -1,15 +1,15 @@
 <template>
   <div class="content">
-    <Chat />
+    <ChatComponent />
     This is a chat
   </div>
 </template>
 
 <script setup lang="ts">
 
-setTimeout(() => {
-  window.scrollTo({ top: 0 })
-}, 100)
+// setTimeout(() => {
+//   window.scrollTo({ top: 0 })
+// }, 100)
 
 </script>
 

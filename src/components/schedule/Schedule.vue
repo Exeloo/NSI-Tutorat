@@ -36,6 +36,11 @@ const props = defineProps({
       return []
     },
   },
+  unwatch: {
+    type: Boolean,
+    default: false,
+    required: false,
+  },
 })
 
 const update = defineEmits(['update:modelValue'])
@@ -93,9 +98,11 @@ const resizeTasks = () => {
 }
 resizeTasks()
 
-watch(value.value, (value) => {
-  resizeTasks()
-})
+if (!props.unwatch) {
+  watch(props.options, (_) => {
+    resizeTasks()
+  })
+}
 
 const isOutOfRange = (start: number, end: number) => {
   const maxMin = times[times.length - 1].split(':')[0] * 60 + times[times.length - 1].split(':')[1] * 1

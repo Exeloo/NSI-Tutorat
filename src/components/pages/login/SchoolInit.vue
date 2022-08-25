@@ -90,6 +90,8 @@ const isTechno = () => {
 }
 
 const updateSubjects = () => {
+  if (optionOptions.value.filter(({ value }: Option) => models.value.option.includes(value)).length <= 0 && models.value.option.length > 0)
+    models.value.option = []
   options.subjects.helper = getSubjects(models.value).filter(({ value }: Option) => ![...models.value.subjects.bad, ...models.value.subjects.good, ...models.value.tutorat.receiver.subjects].includes(value))
   options.subjects.receiver = getSubjects(models.value).filter(({ value }: Option) => ![...models.value.subjects.bad, ...models.value.subjects.good, ...models.value.tutorat.helper.subjects].includes(value))
   options.subjects.good = getSubjects(models.value).filter(({ value }: Option) => ![...models.value.subjects.bad, ...models.value.tutorat.helper.subjects, ...models.value.tutorat.receiver.subjects].includes(value))

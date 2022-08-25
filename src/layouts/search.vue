@@ -31,4 +31,12 @@
   margin-bottom: 29vh;
 }
 
+@media screen and (max-width: 1040px){
+
+  .search {
+    margin-top: 70px;
+    width: min(96%, 1000px);
+  }
+}
+
 </style>

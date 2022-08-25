@@ -1,4 +1,5 @@
 import { getRedirectResult, signInWithRedirect, signOut } from 'firebase/auth'
+import { ref } from 'vue'
 import { auth, provider } from '../firebase'
 import type { UserData } from '../firestore/datas/Users'
 import { getUser } from './user'
@@ -6,7 +7,7 @@ import { toggleLoadingPage } from '~/main'
 import { isValidChoices } from '~/logic/profil/school/school-manager'
 import { isValidPlanning } from '~/logic/profil/planning/planning-manager'
 
-export const user = ref<UserData | undefined>(undefined)
+export const user = ref<UserData>()
 
 export const logout = () => {
   return signOut(auth)

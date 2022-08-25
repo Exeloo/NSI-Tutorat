@@ -8,16 +8,16 @@ export interface Conversation { id: string; name: string; entrants: string[]; me
 export const convsCache = reactive(new Map<string, Conversation>())
 
 // ! récupère une fois les nouveaux messages et les mets au début car ne les tries pas !
-const ref = new Store().getCollection('conversations', true, { where: { param_1: 'entrants', comparator: 'array-contains', param_2: user.value.data.uid } })
+const ref = new Store().getCollection('conversations', true, { where: { param_1: 'entrants', comparator: 'array-contains', param_2: user.value?.uid } })
 
 export const initConvs = async() => {
-  const query = await ref.queryDocuments({ where: { param_1: 'entrants', comparator: 'array-contains', param_2: user.value.data.uid } })
+  const query = await ref.queryDocuments({ where: { param_1: 'entrants', comparator: 'array-contains', param_2: user.value?.uid } })
   query.docs.forEach((qDoc) => {
     convsCache.set(qDoc.id, <Conversation>{ ...qDoc.data(), messages: new Array<Message>() })
     console.log(convsCache.get(qDoc.id))
 
-    const fDoc = ref.getDocument(qDoc.id)
-    const msgsCol = fDoc.getCollection('messages')
+    const fDoc = ref.getDocument(qDoc.id, false)
+    const msgsCol = fDoc.getCollection('messages', false)
 
     msgsCol.onSnapshot((snapshot) => {
       snapshot.docChanges().forEach(({ doc }) => {
@@ -40,7 +40,7 @@ export const getFirstConvId = () => {
 export const sendMessage = async(id: string, content: string) => {
   const doc = await ref.getDocument(id).getCollection('messages').createDocument({
     content,
-    author: user.value.data.uid,
+    author: user.value?.uid,
     timestamp: serverTimestamp(),
   })
   return doc.ref.id

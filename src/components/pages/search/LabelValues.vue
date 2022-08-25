@@ -3,8 +3,8 @@
     <div class="label">
       {{ label }} :
     </div>
-    <div v-for="item in value" :key="item" class="value">
-      - {{ getSchoolLabel(item) }}
+    <div v-for="(item, index) in value" :key="item" class="value">
+      - {{ getSchoolLabel(item, prefix) }}{{ value.length - 1 <= index ? complete : '' }}
     </div>
   </div>
 </template>
@@ -18,6 +18,15 @@ const props = defineProps({
   },
   value: {
     type: Array,
+  },
+  complete: {
+    required: false,
+    default: '',
+  },
+  prefix: {
+    type: Boolean,
+    required: false,
+    default: false,
   },
 })
 

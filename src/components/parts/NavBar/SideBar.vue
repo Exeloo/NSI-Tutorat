@@ -39,7 +39,12 @@
                 Chat
               </div>
             </div>
-
+            <div class="sub-item single-item" @click="changeRoute('profil/relation')">
+              <div class="i" i="carbon-events" />
+              <div class="text">
+                Mes relations
+              </div>
+            </div>
             <div class="sub-item single-item" @click="changeRoute('search')">
               <div class="i" i="healthicons-magnifying-glass" />
               <div class="text">
@@ -52,15 +57,6 @@
                 Mon profil
               </div>
             </div>
-          </div>
-        </div>
-      </div>
-
-      <div>
-        <div class="item  single-item" @click="changeRoute('settings')">
-          <div class="i" i="ic-baseline-settings" />
-          <div class="text">
-            Parametres
           </div>
         </div>
       </div>

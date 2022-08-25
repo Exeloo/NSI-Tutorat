@@ -71,6 +71,7 @@ import firebase from 'firebase/compat'
 
 import { getSchoolLabel } from '~/logic/profil/school/school-manager'
 import { user } from '~/logic/data/auth/auth-manager'
+
 import { setUser } from '~/logic/data/auth/user'
 
 import Timestamp = firebase.firestore.Timestamp
@@ -122,6 +123,9 @@ const onValidation = async() => {
     changeReturn.value = false
   }
   isButtonLoading.value = false
+  setTimeout(() => {
+    changeReturn.value = undefined
+  }, 10000)
 }
 
 const onUndo = () => {

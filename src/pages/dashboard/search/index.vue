@@ -53,8 +53,8 @@
             </div>
           </div>
           <LabelValue label="Classe" :value="publicUser.school.level" />
-          <LabelValues label="Il veut aider en" :value="publicUser.school.tutorat.helper.subjects" />
-          <LabelValues label="Il aussi à l'aise en" :value="publicUser.school.subjects.good" />
+          <LabelValues label="Il veut aider en" :value="publicUser.school.tutorat.helper.subjects" prefix />
+          <LabelValues label="Il aussi à l'aise en" :value="publicUser.school.subjects.good" prefix />
           <LabelValue label="Description" :value="publicUser.description" class="search-user-w-high" />
           <LabelValue label="Åge" :value="publicUser.birthday ? `${new Date(new Date().getTime() - publicUser.birthday.toDate().getTime()).getFullYear() - 1970} ans` : '-'" />
           <LabelValue label="Genre" :value="publicUser.gender" />

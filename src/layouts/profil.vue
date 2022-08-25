@@ -17,9 +17,9 @@
         <button class="left-button" @click="changeOnPage('relation')">
           Mes relations
         </button>
-        <button class="left-button" @click="changeOnPage('notif')">
+        <!-- <button class="left-button" @click="changeOnPage('notif')">
           Notifications
-        </button>
+        </button> -->
       </div>
       <div class="page">
         <router-view />
@@ -42,7 +42,7 @@ const changeOnPage = (name: string) => {
 </script>
 
 <style scoped>
-main {
+.main {
   display: flex;
   justify-content: center;
   width: 100%;
@@ -58,6 +58,8 @@ main {
   justify-content: flex-start;
   gap: 8%;
   margin-bottom: 29vh;
+  margin-top: 40px;
+  padding-top: 40px;
 }
 
 .side-menu {
