@@ -19,7 +19,7 @@
       <Select id="spe-c" v-model="models.value.spe.c" :label="hasSpe(true) ? t('firstLogin.forms.spe.c') : t('firstLogin.forms.spe.c-bis')" :options="options.spe.c" :search="true" @change="onSpeChange" />
     </div>
     <Select v-if="isTechno()" id="techno" v-model="models.value.techno" :label="t('firstLogin.forms.techno')" :options="options.techno" :search="true" />
-    <div>
+    <div class="lv">
       <Select id="lva" v-model="models.value.lv.a" :label="t('firstLogin.forms.lv.a')" :options="options.lv.a" @change="onLvChange" />
       <Select id="lvb" v-model="models.value.lv.b" :label="t('firstLogin.forms.lv.b')" :options="options.lv.b" @change="onLvChange" />
     </div>
@@ -90,6 +90,8 @@ const isTechno = () => {
 }
 
 const updateSubjects = () => {
+  if (!optionOptions.value)
+    onNiveauChange()
   if (optionOptions.value.filter(({ value }: Option) => models.value.option.includes(value)).length <= 0 && models.value.option.length > 0)
     models.value.option = []
   options.subjects.helper = getSubjects(models.value).filter(({ value }: Option) => ![...models.value.subjects.bad, ...models.value.subjects.good, ...models.value.tutorat.receiver.subjects].includes(value))
@@ -169,6 +171,13 @@ const onLvChange = () => {
   font-size: 12px;
   font-style: italic;
   margin-bottom: 50px;
+}
+
+.lv {
+  display: flex;
+  /* flex-wrap: wrap; */
+  gap: 2rem;
+  width: 90%;
 }
 
 </style>

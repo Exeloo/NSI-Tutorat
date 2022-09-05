@@ -91,9 +91,9 @@ const convertDate = (nb: number) => {
   return nb
 }
 const model = reactive({
-  description: newUser.description,
+  description: newUser.description ?? '',
   birthday: birth ? `${birth.getUTCFullYear()}-${convertDate(birth.getUTCMonth() + 1)}-${convertDate(birth.getUTCDate())}` : '',
-  gender: newUser.gender,
+  gender: newUser.gender ?? '',
 })
 const genres = [
   { label: 'Masculin', value: 'm' },

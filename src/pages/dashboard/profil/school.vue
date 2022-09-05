@@ -30,7 +30,7 @@
           <Select id="classe" v-model="models.value.class" :options="options.classe" :required="false" />
         </div>
       </div>
-      <div v-if="user.school.level.endsWith('-g')" class="profil-index-item">
+      <div v-if="models.value.level.endsWith('-g')" class="profil-index-item-value">
         <div class="profil-index-item-label">
           Spécialités :
         </div>
@@ -52,7 +52,7 @@
           <Select id="spe-c" v-model="models.value.spe.c" :options="options.spe.c" :search="true" :required="false" @change="onSpeChange" />
         </div>
       </div>
-      <div v-if="user.school.level.endsWith('-t')" class="profil-index-item">
+      <div v-if="models.value.level.endsWith('-t')" class="profil-index-item">
         <div class="profil-index-item-label">
           Filiaire Technologique :
         </div>
@@ -60,7 +60,7 @@
           {{ getSchoolLabel(user.school.class) }}
         </div>
         <div v-else class="profil-index-item-value">
-          <Select v-if="isTechno()" id="techno" v-model="models.value.techno" :options="options.techno" :search="true" :required="false" />
+          <Select id="techno" v-model="models.value.techno" :options="options.techno" :search="true" :required="false" />
         </div>
       </div>
       <div class="profil-index-item">
@@ -293,7 +293,9 @@ const onUndo = () => {
 }
 
 const updateSubjects = () => {
-  if (optionOptions.value.filter(({ value }: Option) => models.value.option.includes(value)).length <= 0 && models.value.option.length > 0)
+  if (!optionOptions.value)
+    onNiveauChange()
+  if (!optionOptions.value || (optionOptions.value.filter(({ value }: Option) => models.value.option.includes(value)).length <= 0 && models.value.option.length > 0))
     models.value.option = []
   options.subjects.helper = getSubjects(models.value).filter(({ value }: Option) => ![...models.value.subjects.bad, ...models.value.subjects.good, ...models.value.tutorat.receiver.subjects].includes(value))
   options.subjects.receiver = getSubjects(models.value).filter(({ value }: Option) => ![...models.value.subjects.bad, ...models.value.subjects.good, ...models.value.tutorat.helper.subjects].includes(value))
@@ -309,10 +311,12 @@ const updateValidation = () => {
 watch(models, updateValidation)
 
 const onNiveauChange = () => {
+  console.log(1)
   if (!models.value.level) options.classe = undefined
   else options.classe = selectOptions.classe.get(models.value.level)
   models.value.class = ''
   optionOptions.value = getOption(models.value.level, models.value.spe)
+  console.log(optionOptions.value)
 }
 
 const onSpeChange = () => {

@@ -8,7 +8,7 @@
     <div class="input-schedule-content">
       <div class="input-schedule-times">
         <div v-for="(model, i) in value[activeDay]" :key="model" class="input-schedule-time">
-          <div class="input-schedule-inputs">
+          <div v-if="model.statut !== 'tutorat'" class="input-schedule-inputs">
             <div :class="{timeError: !isLegalTime(model, undefined)}">
               <Select :id="`input-schedule-${activeDay}-${i}-start`" v-model="model.start" label="Début" :options="getRightTimes(model.start, model.end, i)[0]" :required="false" />
             </div>
@@ -234,6 +234,14 @@ const getRightTimes = (start?: string, end?: string, index: number) => {
 
 .input-schedule-buttons {
   margin-left: 10px;
+}
+
+.input-checkbox-tutorat {
+  color: var(--color-orange);
+  font-size: 18px;
+  align-self: center;
+  padding-left: 30px;
+
 }
 
 @media screen and (max-width: 520px) {

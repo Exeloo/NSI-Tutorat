@@ -3,7 +3,7 @@ import { addDoc, collection, getDocs, limit, onSnapshot, orderBy, query, where }
 
 import type { Unsubscribe } from 'firebase/auth'
 import type { Query } from '../firestore-types'
-import { getCache } from '../firestore-cache'
+import { getCache, getSubCache } from '../firestore-cache'
 import { FDocument } from './Document'
 import type { Store } from './Store'
 
@@ -17,7 +17,7 @@ export class FCollection {
   constructor(store: Store, name: string, isListen = false, q?: Query, doc?: FDocument) {
     this.store = store
     this.ref = doc ? collection(doc.ref, name) : collection(store.db, name)
-    this.cache = getCache(name)
+    this.cache = doc ? getSubCache(doc.collection.ref.id, doc.name, name) : getCache(name)
 
     if (isListen) {
       const w = q && q.where ? where(q.where.param_1, q.where.comparator, q.where.param_2) : undefined

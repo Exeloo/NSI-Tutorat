@@ -15,7 +15,15 @@
           Vous avez {{ sortedRelations.cancel.length }} relation(s) en attente de suppression.
         </div>
       </div>
-      <div class="relation-users">
+      <div v-if="[...sortedRelations.request, ...sortedRelations.pending, ...sortedRelations.cancel, ...sortedRelations.accepted].length === 0" class="relation-no-one">
+        <div style="color: var(--color-danger)">
+          Vous n'avez aucune relation pour l'instant, vous pouvez demander une relation pour être tutoré  ici :
+        </div>
+        <div>
+          <Button id="find" label="Trouver un tutorant" styles="blurple" :options="{ disabled: !!isLoading }" @click="redirectToProfile('')" />
+        </div>
+      </div>
+      <div v-else class="relation-users">
         <div v-for="[k, v] of [...sortedRelations.request, ...sortedRelations.pending, ...sortedRelations.cancel, ...sortedRelations.accepted]">
           <div class="relation-user-title">
             <div v-if="sortedRelations.request.map(([key, value]) => key).includes(k)" style="color: var(--color-danger)">
@@ -120,6 +128,7 @@ import { user } from '~/logic/data/auth/auth-manager'
 import { getEntrants, hasRelationDeny, RelationData, relationSetUserStatut, setRelation } from '~/logic/data/firestore/datas/Relations'
 import { getRelations, hasRelationAccept, hasRelationLeft, hasAllResponses, hasRelationResponse } from '~/logic/data/firestore/datas/Relations'
 import { getForcedUsers, getUsers, UserData } from '~/logic/data/firestore/datas/Users';
+import { changeActiveChat } from '~/logic/pages/chat';
 import { toggleLoadingPage } from '~/main';
 
 const relations = ref<Map<string, RelationData>>()
@@ -151,7 +160,8 @@ const redirectToProfile = (uid: string) => {
 }
 
 const chatRedirect = (id: string) => {
-  router.push(`/dashboard/chat/${id}`)
+  changeActiveChat(id)
+  router.push('/dashboard/chat')
 }
 
 const relationAccept = async (id: string) => {
@@ -347,6 +357,13 @@ setTimeout(() => {
   font-style: italic;
   margin-bottom: 20px;
   color: var(--color-danger)
+}
+
+.relation-no-one {
+  display: flex;
+  flex-direction: column;
+  gap: 2rem;
+  margin-top: calc(5vw + 25px);
 }
 
 </style>

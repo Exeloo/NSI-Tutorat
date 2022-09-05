@@ -34,6 +34,9 @@ if (users.value.size === 0 || !publicUser.value)
   f()
 
 const toggleIsRequesting = (force?: boolean) => {
+  if (!publicUser.value.school.tutorat.helper.wish) {
+    error.value = 'L\'utilisateur ne désire pas aider, veuillez vous rendre sur un autre profil !'
+  }
   isRequesting.value = force === undefined ? !isRequesting.value : force
 }
 
@@ -194,7 +197,7 @@ const onClick = async() => {
       <LabelValues label="Il aussi à l'aise en" :value="publicUser.school.subjects.good" prefix />
       <LabelValue label="Description" :value="publicUser.description" class="search-user-w-high" />
       <LabelValue v-if="publicUser.school.level.endsWith('-t')" label="Filiaire Technologique" :value="publicUser.school.techno" />
-      <LabelValues v-if="publicUser.school.level.endsWith('-g')" label="Spécialités" :value="[publicUser.school.spe.a, publicUser.school.spe.b, publicUser.school.spe.c]" :complete="publicUser.school.level.startsWith('terminal') ? ' (abandonée)' : ''" />
+      <LabelValues v-if="publicUser.school.level.endsWith('-g')" label="Spécialités" :value="[publicUser.school.spe.a, publicUser.school.spe.b, publicUser.school.spe.c]" :complete="publicUser.school.level.startsWith('terminal') ? ' (abandonnée)' : ''" />
       <LabelValues label="Langues vivantes" :value="[publicUser.school.lv.a, publicUser.school.lv.b]" />
     </div>
     <div class="search-user-schedule">
@@ -205,7 +208,7 @@ const onClick = async() => {
     </div>
     <div class="search-user-button">
       <div v-if="!isRequesting">
-        <Button id="request" label="Voir le profil" styles="blurple" :options="{disabled: false}" @click="toggleIsRequesting(true)" />
+        <Button id="request" label="Demander de l'aide" styles="blurple" :options="{disabled: false}" @click="toggleIsRequesting(true)" />
       </div>
       <div v-else class="search-user-choices">
         <div class="search-user-selects">
@@ -229,7 +232,7 @@ const onClick = async() => {
               id="receive"
               v-model="model.subjects"
               label="Matières dans lesquels vous voulez recevoir de l'aide"
-              :options="user.school.tutorat.receiver.subjects.filter(e => user.school.tutorat.helper.subjects.includes(e)).map(e => { return { label: getSchoolLabel(e, true), value: e}})"
+              :options="user.school.tutorat.receiver.subjects.filter(e => publicUser.school.tutorat.helper.subjects.includes(e)).map(e => { return { label: getSchoolLabel(e, true), value: e}})"
               tags
               search
               :required="false"
@@ -237,7 +240,7 @@ const onClick = async() => {
           </div>
         </div>
         <div class="search-user-choices-buttons">
-          <Button id="resign" label="Abandonné" styles="danger" :options="{disabled: false}" @click="resetModel" />
+          <Button id="resign" label="Abandonner" styles="danger" :options="{disabled: false}" @click="resetModel" />
           <Button id="confirm" label="Confirmer la demande de tutorat" styles="success" :options="{disabled: false}" @click="onClick()" />
         </div>
       </div>

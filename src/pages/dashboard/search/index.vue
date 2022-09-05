@@ -39,7 +39,7 @@
       </div>
     </div>
     <div v-if="user.school.tutorat.receiver.wish" class="search-users-container">
-      <div v-for="publicUser in users.values()" :key="publicUser.uid" class="search-user-container">
+      <div v-for="[publicUser, statut] in getFilteredUsers()" :key="publicUser.uid" class="search-user-container">
         <div class="search-user-flex">
           <div class="search-user-name-avatar">
             <img class="search-user-avatar" :src="publicUser.avatar" alt="">
@@ -65,30 +65,68 @@
 
         <!-- {{ publicUser.school }} -->
       </div>
+      <div v-if="getFilteredUsers().length === 0" class="search-user-container no-one">
+        Nous sommes désolé mais aucun profil n'a été trouvé pour vous, veuillez réessayer en changeant les filtres ou plus tard !
+      </div>
     </div>
   </div>
 </template>
 
 <script setup lang="ts">
+import type { UserData } from '~/logic/data/firestore/datas/Users'
 import { getForcedUsers, getUsers } from '~/logic/data/firestore/datas/Users'
 import { toggleLoadingPage } from '~/main'
 import { user } from '~/logic/data/auth/auth-manager'
+import { hasSameTimes } from '~/logic/profil/planning/planning-manager';
 
 const router = useRouter()
 
-const filter = reactive({ levelUp: !user.value.school.level.startsWith('terminal'), levelEqual: user.value.school.level.startsWith('terminal'), levelDown: false, times: true, filiaire: true })
+const filter = reactive({ levelUp: !(<UserData>user.value).school.level.startsWith('terminal'), levelEqual: (<UserData>user.value).school.level.startsWith('terminal'), levelDown: false, times: true, filiaire: true })
 
-const users = ref<Map<string, UserData>>(getUsers(false))
+const users = ref<Map<string, UserData>>(getUsers())
 if (users.value.size === 0) {
   const f = async() => {
     toggleLoadingPage(true)
-    users.value = await getForcedUsers(true)
+    users.value = await getForcedUsers()
     toggleLoadingPage(false)
   }
   f()
 }
 
-// const perfect
+const getSortedUsers = (publicUsers: UserData[]): [UserData, string][] => {
+  const u = (<UserData>user.value)
+  return publicUsers.map(p => {
+    return [p, '']
+  })
+}
+
+const getFilteredUsers = () => {
+  const filteredList: UserData[] = []
+  const u = <UserData> user.value
+  for (const [_, p] of users.value) {
+    if (!p.school.tutorat.helper.wish)
+      continue
+    if (p.uid === u.uid) 
+      continue
+    if (!u.school.tutorat.receiver.subjects.some(s => p.school.tutorat.helper.subjects.includes(s)))
+      continue
+    if (filter.filiaire && p.school.level !== 'seconde' && u.school.level !== 'seconde' && u.school.level.slice(-1) !== p.school.level.slice(-1))
+      continue
+    if (filter.times && !hasSameTimes(u.planning.map(schedule => schedule.times), p.planning.map(schedule => schedule.times)))
+      continue
+
+    if (filter.levelEqual && u.school.level.slice(0, -1) === p.school.level.slice(0, -1))
+      filteredList.push(p)
+
+    const pI = p.school.level === 'seconde' ? 1 : p.school.level.startsWith('premiere') ? 2 : 3
+    const uI = u.school.level === 'seconde' ? 1 : u.school.level.startsWith('premiere') ? 2 : 3
+    if ((filter.levelUp && pI > uI) || (filter.levelDown && pI < uI))
+      filteredList.push(p)
+  }
+  return getSortedUsers(filteredList)
+}
+
+
 
 </script>
 
@@ -219,6 +257,12 @@ if (users.value.size === 0) {
 
 .search-user-w-high {
   width: 800px;
+}
+
+.no-one {
+  width: 100%;
+  font-size: 18px;
+  color: var(--color-orange)
 }
 
 @media screen and (max-width: 520px){
