@@ -13,6 +13,10 @@ export const logout = () => {
   return signOut(auth)
 }
 
+export const updateUser = (d: UserData) => {
+  user.value = d
+}
+
 export const login = async(forceNoRedirect = false, isLogout = true): Promise<{ result: false; error: string } | { result: true }> => {
   const userResult = await getUser(auth.currentUser)
   if (!userResult.result) {

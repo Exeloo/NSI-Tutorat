@@ -1,6 +1,14 @@
 <template>
   <div class="checkbox">
-    <label :for="`checkbox-${props.id}`" style="display: flex; gap: 0.5rem;"><div style="color: var(--color-success)">Libre</div> | <div style="color: var(--color-danger)">Occupé</div></label>
+    <label :for="`checkbox-${props.id}`" style="display: flex; gap: 0.5rem;">
+      <div style="color: var(--color-success)">
+        Libre
+      </div>
+      |
+      <div style="color: var(--color-danger)">
+        Occupé
+      </div>
+    </label>
     <input
       :id="`checkbox-${props.id}`"
       v-model="check"

@@ -1,4 +1,4 @@
--<template>
+<template>
   <div class="chat-container">
     <div class="chat-relations-container">
       <div class="chat-relations-title">
@@ -28,7 +28,7 @@
             <div i="carbon-caret-right" />
           </div>
           <div v-else-if="unreadMessages.has(k) && unreadMessages.get(k) > 0" class="chat-relation-unread">
-            {{ unreadMessages.get(k) }}
+            {{ unreadMessages.get(k) > 9 ? '+9' : unreadMessages.get(k) }}
           </div>
         </div>
       </div>
@@ -45,7 +45,7 @@
     <div v-else-if="!activeChat" class="chat-messages-error">
       Chat introuvable !
     </div>
-    <div v-if="messages.has(activeChat)" class="chat-messages-container">
+    <div v-else-if="messages.has(activeChat)" class="chat-messages-container">
       <div class="chat-messages-messages">
         <div v-if="messages.get(activeChat).length > 0" class="chat-messages-info link" @click="extandMessages(activeChat)">
           Charger plus de message
@@ -57,7 +57,7 @@
               {{ publicUsers.get(msg.author).displayName }}
             </div>
             <div>
-              {{ msg.message}}
+              {{ msg.message }}
             </div>
             
           </div>
@@ -67,7 +67,7 @@
         Envoyez le premier message de la conversation !
       </div>
       <div class="chat-messages-input shadow">
-        <input v-model="inputContent[activeChat]" type="text" />
+        <input v-model="inputContent[activeChat]" type="text" @keyup="onKeyUp" />
         <button type="submit" i="carbon-send-alt" @click="sendMessage()" />
       </div>
     </div>
@@ -100,13 +100,17 @@ const getSortedRelations = () => {
   return newRelations
 }
 
+const onKeyUp = (e) => {
+  if (e.code === 'Enter')
+    sendMessage()
+}
+
 const load = async () => {
+
   isConvsLoading.value = true
   const u = (<UserData>user.value)
   relations.value = await getRelations()
   for (const [k, _] of relations.value) {
-    if (!hasInitConvs.value.get(k))
-      if (!await initConv(k)) continue
     const entrant = await getEntrant(k, u.uid)
     if (!entrant) {
       await relationSetUserStatut(k, u.uid, { statut: 'pending', return: '' })
@@ -114,6 +118,8 @@ const load = async () => {
     }
     else
       entrants.value.set(k, entrant)
+      if (!hasInitConvs.value.get(k))
+        await initConv(k, entrant.lastRead)
     
   }
   isConvsLoading.value = false

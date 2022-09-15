@@ -85,7 +85,32 @@ const changeOnPage = (name: string) => {
 }
 
 .page {
-  width: 600px;;
+  width: 600px;
+}
+
+@media screen and (max-width: 1040px){
+  .title {
+    width: 80%;
+  }
+  .side-menu {
+    border-width: 0 0 1px 0;
+    margin-bottom: 40px;
+    flex-direction: row;
+
+    padding-bottom: 20px;
+    flex-wrap: wrap;
+    text-align: start;
+    min-width: 100%;
+    width: fit-content;
+  }
+
+  .side-menu > button::before {
+    content: "→";
+  }
+
+  .left-button {
+    text-align: start;
+  }
 }
 
 </style>

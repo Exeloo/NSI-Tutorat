@@ -1,5 +1,8 @@
 import type { Timestamp } from 'firebase/firestore'
-import { createMessage, getMessages } from '../data/firestore/datas/Relations'
+import { serverTimestamp } from 'firebase/firestore'
+import { user } from '../data/auth/auth-manager'
+import { createMessage, getMessages, relationSetUserStatut } from '../data/firestore/datas/Relations'
+import type { UserData } from '../data/firestore/datas/Users'
 
 export const activeChat = ref('')
 export const messages = ref(new Map<string, [string, { timestamp: Timestamp; author: string; message: string }][]>())
@@ -9,13 +12,20 @@ export const inputContent = reactive({})
 
 export const changeActiveChat = (id: string) => {
   activeChat.value = id
+  unreadMessages.value.set(id, 0)
+  relationSetUserStatut(id, (<UserData>user.value).uid, { lastRead: <Timestamp>serverTimestamp() })
 }
 
-export const initConv = async(id: string) => {
+export const initConv = async(id: string, lastRead?: Timestamp) => {
   hasInitConvs.value.set(id, true)
   if (!activeChat.value)
-    activeChat.value = id
+    changeActiveChat(id)
   messages.value.set(id, await getMessages(id))
+  unreadMessages.value.set(id, 0)
+  messages.value.get(id)?.forEach(([, message]) => {
+    if (!lastRead || message.timestamp.toMillis() > lastRead.toMillis())
+      unreadMessages.value.set(id, (unreadMessages.value.get(id) ?? 0) + 1)
+  })
   return true
 }
 

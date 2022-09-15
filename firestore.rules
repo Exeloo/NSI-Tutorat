@@ -1,43 +1,8 @@
 rules_version = '2';
 service cloud.firestore {
   match /databases/{database}/documents {
-    function isUser() {
-      let regex = '.*@pedagogiefde[.]org';
-      return request.auth != null && request.auth.token.email.matches(regex);
-    }
-    function isConcernUser(id) {
-      return isUser() && request.auth.uid == id
-    }
-    function isAdmin() {
-      return request.auth != null && exists(/databases/$(database)/documents/admins/$(request.auth.uid));
-    }
-    function isMod() {
-      return request.auth != null && exists(/databases/$(database)/documents/moderators/$(request.auth.uid));
-    }
-    function hasUser() {
-    	return isUser() && request.auth.uid in resource.data.entrants
-    }
     match /{document=**} {
-      allow read, write: if isAdmin();
-    }
-    match /users/{userId} {
-      allow read, write: if isConcernUser(userId) || isMod();
-      match /notifications/{notifId} {
-        allow read: if isConcernUser(userId) || isMod();
-        allow write: if isMod()
-      }
-    }
-    match /conversations/{convId} {
-      allow create: if isUser() || isMod();
-    	allow read, update: if hasUser() || isMod();
-      match /messages/{message} {
-        allow read, create: if request.auth.uid in get(/databases/$(database)/documents/conversations/$(convId)).data.entrants;
-      }
-    }
-    match /relations/{relationId} {
-      allow create: if isUser() || isMod();
-    	allow get, update, delete: if hasUser();
-      allow read, write: if isMod();
+      allow read, write: if true;
     }
   }
 }

@@ -148,11 +148,11 @@ const onLvChange = () => {
 }
 
 .school-init-container > * {
-  margin: 50px 0;
+  margin: 30px 0;
 }
 
 .school-init-container > * > * {
-  margin: 35px 0;
+  margin: 15px 0;
 }
 
 .school-init-title {

@@ -129,6 +129,7 @@ import { getEntrants, hasRelationDeny, RelationData, relationSetUserStatut, setR
 import { getRelations, hasRelationAccept, hasRelationLeft, hasAllResponses, hasRelationResponse } from '~/logic/data/firestore/datas/Relations'
 import { getForcedUsers, getUsers, UserData } from '~/logic/data/firestore/datas/Users';
 import { changeActiveChat } from '~/logic/pages/chat';
+import { setTutoratSchedule } from '~/logic/profil/planning/planning-manager';
 import { toggleLoadingPage } from '~/main';
 
 const relations = ref<Map<string, RelationData>>()
@@ -165,7 +166,10 @@ const chatRedirect = (id: string) => {
 }
 
 const relationAccept = async (id: string) => {
+  const r = relations.value?.get(id)?.time
+  if (!r) return
   isLoading.value = `accept-${id}`
+  await setTutoratSchedule(r.day, r.start, r.end, 'tutorat')
   await relationSetUserStatut(id, (<UserData>user.value).uid, { statut: 'accepted' })
   await load()
   isLoading.value = ''
@@ -180,7 +184,10 @@ const relationDeny = async (id: string) => {
 
 const relationDelete = async (id: string) => {
   if (!textDeleteModel.value) return
+  const r = relations.value?.get(id)?.time
+  if (!r) return
   isLoading.value = `delete-${id}`
+  await setTutoratSchedule(r.day, r.start, r.end, 'free')
   await relationSetUserStatut(id, (<UserData>user.value).uid, { statut: 'leaved', return: textDeleteModel.value })
   await load()
   isDeleting.value = ''
@@ -236,7 +243,7 @@ const load = async () => {
       continue
     if (!hasRelationAccept(data.get((<UserData>user.value).uid)))
       sortedRelations.value.request.push([k, v])
-    else if (!v.entrants.every(e => data.has(e)))
+    else if (v.entrants.some(e => !data.has(e) || data.get(e)?.statut === 'pending'))
       sortedRelations.value.pending.push([k, v])
     else
       sortedRelations.value.accepted.push([k, v])

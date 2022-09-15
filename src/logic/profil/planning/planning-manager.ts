@@ -1,5 +1,11 @@
+import { timestamp } from '@vueuse/core'
+import { e } from 'unocss'
 import type { PlanningType } from './planning-type'
 import { isGoodSchedule } from '~/logic/pages/login/planning.login'
+import { updateUser, user } from '~/logic/data/auth/auth-manager'
+import type { UserData } from '~/logic/data/firestore/datas/Users'
+import { User } from '~/logic/data/firestore/datas/Users'
+import { setUser } from '~/logic/data/auth/user'
 
 export const isValidPlanning = (planning: PlanningType | undefined): boolean => {
   return !!planning && isGoodSchedule(planning.map(schedule => schedule.times))
@@ -79,4 +85,44 @@ export const hasSameTimes = (userSchedule: Schedule, publicUserSchedule: Schedul
   for (const day of sameTimes)
     if (day.some(day => day.statut === 'free')) return true
   return false
+}
+
+export const getTutoratSchedule = (day: string, start: string, end: string, statut: string) => {
+  const separatedTimes = getSeparatedTimes((<UserData>user.value).planning.map(time => time.times))
+  const separatedLocalTimes = getSeparatedTimes([[{ start, end, statut }]])
+  const days = ['Lundi', 'Mardi', 'Mercredi', 'Jeudi', 'Vendredi', 'Samedi', 'Dimanche']
+  for (const time of separatedTimes[days.indexOf(day)]) {
+    for (const lTime of separatedLocalTimes[0]) {
+      if (time.start === lTime.start && time.end === lTime.end)
+        time.statut = statut
+    }
+  }
+  const newSchedule = []
+  for (const day of separatedTimes) {
+    const times: { start: string; end: string; statut: string }[] = []
+    day.forEach((time) => {
+      if (times.length === 0) {
+        times.push(time)
+        return
+      }
+      const lastValue = <{ start: string; end: string; statut: string }>times.pop()
+      if (lastValue.end === time.start && lastValue.statut === time.statut) {
+        lastValue.end = time.end
+        times.push(lastValue)
+      }
+      else {
+        times.push(lastValue, time)
+      }
+    })
+    newSchedule.push(times)
+  }
+  return newSchedule
+}
+
+export const setTutoratSchedule = (day: string, start: string, end: string, statut: string) => {
+  const schedule = getTutoratSchedule(day, start, end, statut).map((schedule) => { return { times: schedule } })
+  updateUser({ ...(<UserData>user.value), planning: schedule })
+  return setUser((<UserData>user.value).uid, {
+    planning: schedule,
+  })
 }

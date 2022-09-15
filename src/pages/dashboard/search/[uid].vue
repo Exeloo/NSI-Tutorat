@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import { getForcedUsers, getUsers, UserData } from '~/logic/data/firestore/datas/Users'
 import { toggleLoadingPage } from '~/main'
-import { getSameTimes } from '~/logic/profil/planning/planning-manager'
+import { getSameTimes, setTutoratSchedule } from '~/logic/profil/planning/planning-manager'
 import { user } from '~/logic/data/auth/auth-manager'
 import { hasEnoughRange } from '~/logic/pages/login/planning.login'
 import { createRelation, relationSetUserStatut } from '~/logic/data/firestore/datas/Relations'
@@ -155,9 +155,11 @@ const startRelation = async () => {
       subjects: model.subjects
       
     })
+    await setTutoratSchedule(model.day, model.start, model.end, 'tutorat')
     await relationSetUserStatut(doc.name, (<UserData>user.value).uid, { statut: 'accepted' })
   }
   catch (e) {
+    console.error(e)
     return { statut: false, statement: 'Erreur dans la création de la relation, veuillez reessayer plus tard !' }
   }
   return { statut: true, statement: '' }
