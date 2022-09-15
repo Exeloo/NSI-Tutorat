@@ -1,27 +1,184 @@
 <template>
   <div class="container">
-    <div class="planning">
-      Planning
+    <div class="profil" @click="redirect('profil/relation')">
+      <div class="title">
+        Mes relations
+      </div>
+      <div v-if="sortedRelations.request.length > 0" style="color: var(--color-danger)">
+        Vous avez {{ sortRelations.request.length }} requête(s) en attente de votre réponse !
+      </div>
+      <div v-else-if="sortedRelations.pending.length > 0">
+        Vous avez {{ sortedRelations.pending.length }} requête(s) en attente.
+      </div>
+      <div v-else>
+        Rien à signaler
+      </div>
     </div>
-    <div class="notif">
-      Notifications
+    <div class="find" @click="redirect('search')">
+      <div class="title">
+        Trouver un tutorant
+      </div>
+      <div v-if="user.school.tutorat.receiver.wish">
+        Vous avez {{ getFilteredUsers().length }} propositions de partenaire pour le tutorat !
+      </div>
+      <div v-else>
+        Vous ne souhaitez pas être tutoré !
+      </div>
+    </div>
+    <div class="planning">
+      <Schedule :options="user?.planning?.map(schedule => schedule.times)" unwatch />
     </div>
     <div class="msgs">
-      Messages
+      <div class="chat-relations-title">
+        Conversations
+      </div>
+      <div class="chat-relations">
+        <div v-for="[k, v] in getSortedRelations()" :key="k" @click="redirectToChat(k)" >
+          <div class="chat-relation-flex">
+            <div>
+              <div v-for="s in v.subjects" :key="s">
+                {{ getSchoolLabel(s, true) }}
+              </div>
+            </div>
+            <div>
+              <div v-for="userId of v.entrants.filter(uid => uid !== user.uid)" class="chat-relation-item">
+                <div v-if="!publicUsers.has(userId)">
+                  Utilisateur introuvable
+                </div>
+                <div v-else @click="redirectToProfile(userId)">
+                  {{ publicUsers.get(userId).displayName }}
+                </div>
+              </div>
+            </div>
+          </div>
+          <div v-if="unreadMessages.has(k) && unreadMessages.get(k) > 0" class="chat-relation-unread">
+            {{ unreadMessages.get(k) > 9 ? '+9' : unreadMessages.get(k) }}
+          </div>
+          <div v-else class="chat-relation-unread-empty" />
+        </div>
+      </div>
     </div>
-    <div class="profil">
-      Mon profil de tutorant
-    </div>
-    <div class="find">
-      Trouver un tutorant
-    </div>
-    <div class="settings">
-      Réglages
-    </div>
+    
   </div>
 </template>
 
 <script setup lang="ts">
+import { user } from '~/logic/data/auth/auth-manager';
+import { getEntrant, RelationData, RelationEntrantData, relationSetUserStatut, hasRelationLeft, getEntrants, hasRelationAccept } from '~/logic/data/firestore/datas/Relations'
+import { getRelations } from '~/logic/data/firestore/datas/Relations'
+import { UserData } from '~/logic/data/firestore/datas/Users';
+import { getSchoolLabel } from '~/logic/profil/school/school-manager'
+import { getForcedUsers, getUsers } from '~/logic/data/firestore/datas/Users'
+import { toggleLoadingPage } from '~/main'
+import { changeActiveChat, hasInitConvs, initConv, unreadMessages } from '~/logic/pages/chat';
+import { hasSameTimes } from '~/logic/profil/planning/planning-manager';
+
+const isConvsLoading = ref(false)
+const relations = ref(new Map<string, RelationData>())
+const entrants = ref(new Map<string, RelationEntrantData>())
+const router = useRouter()
+const publicUsers = ref<Map<string, UserData>>(getUsers())
+
+
+type SortedRelationType = {
+  request: [string, RelationData][]
+  pending: [string, RelationData][]
+  cancel: [string, RelationData][]
+  accepted: [string, RelationData][]
+}
+
+const sortedRelations = ref<SortedRelationType>({
+  request: [],
+  pending: [],
+  cancel: [],
+  accepted: [],
+})
+
+const getSortedRelations = () => {
+  const newRelations = new Map<string, RelationData>()
+  for (const [k, v] of relations.value) {
+    if (!hasRelationLeft(entrants.value.get(k)))
+      newRelations.set(k, v)
+  }
+  return newRelations
+}
+
+const redirectToChat = (id: string) => {
+  changeActiveChat(id)
+  router.push('/dashboard/chat')
+}
+
+const redirect = (path: string) => {
+  router.push(`/dashboard/${path}`)
+}
+
+const getFilteredUsers = () => {
+  const filteredList: UserData[] = []
+  const u = <UserData> user.value
+  for (const [_, p] of publicUsers.value) {
+    if (!p.school.tutorat.helper.wish)
+      continue
+    if (p.uid === u.uid) 
+      continue
+    if (!u.school.tutorat.receiver.subjects.some(s => p.school.tutorat.helper.subjects.includes(s)))
+      continue
+    if (true && p.school.level !== 'seconde' && u.school.level !== 'seconde' && u.school.level.slice(-1) !== p.school.level.slice(-1))
+      continue
+    if (true && !hasSameTimes(u.planning.map(schedule => schedule.times), p.planning.map(schedule => schedule.times)))
+      continue
+
+    if (u.school.level.startsWith('terminale') && u.school.level.slice(0, -1) === p.school.level.slice(0, -1))
+      filteredList.push(p)
+
+    const pI = p.school.level === 'seconde' ? 1 : p.school.level.startsWith('premiere') ? 2 : 3
+    const uI = u.school.level === 'seconde' ? 1 : u.school.level.startsWith('premiere') ? 2 : 3
+    if (pI > uI)
+      filteredList.push(p)
+  }
+  return filteredList
+}
+
+
+const load = async () => {
+  isConvsLoading.value = true
+  const u = (<UserData>user.value)
+  relations.value = await getRelations()
+  for (const [k, v] of relations.value) {
+    const entrant = await getEntrant(k, u.uid)
+    if (!entrant) {
+      await relationSetUserStatut(k, u.uid, { statut: 'pending', return: '' })
+      entrants.value.set(k, { statut: 'pending', return: '' })
+    }
+    else
+      entrants.value.set(k, entrant)
+    if (!hasInitConvs.value.get(k))
+      await initConv(k, entrant.lastRead, false)
+
+      const data = await getEntrants(k)
+    if (hasRelationLeft(data.get((<UserData>user.value).uid)))
+      continue
+    if (!hasRelationAccept(data.get((<UserData>user.value).uid)))
+      sortedRelations.value.request.push([k, v])
+    else if (v.entrants.some(e => !data.has(e) || data.get(e)?.statut === 'pending'))
+      sortedRelations.value.pending.push([k, v])
+    else
+      sortedRelations.value.accepted.push([k, v])
+
+  }
+  isConvsLoading.value = false
+}
+
+load()
+
+
+if (publicUsers.value.size === 0) {
+  const f = async() => {
+    toggleLoadingPage(true)
+    publicUsers.value = await getForcedUsers()
+    toggleLoadingPage(false)
+  }
+  f()
+}
 
 setTimeout(() => {
   window.scrollTo({ top: 0 })
@@ -32,44 +189,119 @@ setTimeout(() => {
 <style scoped>
 
 .container {
-  margin: 10px 20px 20px 20px;
-  display: grid;
-  grid-gap: 1rem;
-  grid-auto-rows: minmax(150px, auto);
-  /* grid-template-columns: repeat(6, 1fr);
-  grid-template-rows: repeat(4, 1fr); */
+  padding: 10px 0 20px 20px;
+  display: flex;
+  gap: 1.5rem;
+  width: 100%;
+  flex-wrap: wrap;
+
 }
 
 .container > div {
   background-color: var(--main-background);
-  width: auto;
-
+  box-shadow: 0 2px 7px 0 rgba(0, 0, 0, 0.3);
 }
 
 .planning {
-  grid-column: 1/5;
-  grid-row: 1/4;
-}
-
-.notif {
-  grid-column: 5/7;
-  grid-row: 1/3;
+  padding: 20px 30px 40px 50px;
+  max-width: 900px;
+  width: 92%;
 }
 
 .msgs {
-  grid-column: 5/7;
-  grid-row: 3/5;
-}
+  padding: 20px 10px;
+  max-width: 470px;
+  width: 92%;
 
-.find {
-  grid-column: 3/4;
-  grid-row: 4;
 }
 
 .profil {
-  grid-column: 1/3;
-  grid-row: 4;
+  padding: 10px 20px;
+  cursor: pointer;
+  width: 92%;
+  max-width: 600px;
 }
+
+.find {
+  padding: 10px 20px;
+  cursor: pointer;
+  width: 92%;
+  max-width: 600px;
+}
+
+.title {
+  font-size: 19px;
+}
+
+.chat-relations-title {
+  font-size: 20px;
+}
+
+.chat-relations {
+  
+  margin-top: 20px;
+  height: 90%;
+  overflow-y: scroll;
+}
+
+.link {
+  cursor: pointer;
+}
+
+.chat-relations > * {
+  width: 95%;
+  border-top: 1px solid #000000;
+  padding: 10px 0;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  cursor: pointer;
+
+}
+
+.chat-relation-unread {
+  color: #ffffff;
+  background-color: var(--color-danger);
+  border-radius: 50%;
+  width: 22px;
+  height: 22px;
+  text-align: center;
+  font-size: 14px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.chat-relation-unread-empty {
+  color: #ffffff;
+  border-radius: 50%;
+  width: 22px;
+  height: 22px;
+  text-align: center;
+  font-size: 14px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.chat-relation-flex {
+  width: 90%;
+  overflow: hidden;
+}
+
+.chat-relation-flex > * {
+
+  background-image: linear-gradient(90deg, rgba(0,0,0,1) 0%, rgba(0,0,0,1) 70%, rgba(0, 0, 0, 0) 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  -moz-background-clip: text;
+  -moz-text-fill-color: transparent;
+  display: flex;
+  flex-wrap: no-wrap;
+  white-space: nowrap;
+  gap: 0.5rem;
+}
+
 
 </style>
 

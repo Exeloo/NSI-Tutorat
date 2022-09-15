@@ -1,10 +1,6 @@
 import { initializeApp } from 'firebase/app'
-import { GoogleAuthProvider, connectAuthEmulator, getAuth } from 'firebase/auth'
-import { connectFirestoreEmulator, getFirestore } from 'firebase/firestore'
-import { initMessaging } from './messaging/initMessaging'
-
-// import { onBackgroundMessage } from 'firebase/messaging/sw'
-// import { connectStorageEmulator, getStorage } from 'firebase/storage'
+import { GoogleAuthProvider, getAuth } from 'firebase/auth'
+import { getFirestore } from 'firebase/firestore'
 
 const firebaseConfig = {
   apiKey: 'AIzaSyAuX19RmaFWBcKB5PSZ8gUYND_3DWQS6uI',
@@ -21,17 +17,3 @@ export const provider = new GoogleAuthProvider()
 export const auth = getAuth(app)
 
 export const db = getFirestore(app)
-
-// initMessaging()
-
-const isEmulated = false
-
-const emulator = () => {
-  connectAuthEmulator(auth, 'http://localhost:9099')
-  connectFirestoreEmulator(db, 'localhost', 8081)
-  // connectStorageEmulator(storage, 'localhost', 9199)
-}
-
-// Use emulator
-if (isEmulated)
-  emulator()

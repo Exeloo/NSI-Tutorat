@@ -83,7 +83,6 @@ import { getSchoolLabel } from '~/logic/profil/school/school-manager'
 import { getForcedUsers, getUsers } from '~/logic/data/firestore/datas/Users'
 import { toggleLoadingPage } from '~/main'
 import { activeChat, changeActiveChat, hasInitConvs, initConv, messages, unreadMessages, sendMessage, inputContent } from '~/logic/pages/chat';
-import Loading from '~/components/style/Loading.vue';
 
 const isConvsLoading = ref(false)
 const relations = ref(new Map<string, RelationData>())
@@ -120,10 +119,8 @@ const load = async () => {
       entrants.value.set(k, entrant)
       if (!hasInitConvs.value.get(k))
         await initConv(k, entrant.lastRead)
-    
   }
   isConvsLoading.value = false
-  console.log(entrants.value)
 }
 
 load()

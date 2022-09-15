@@ -1,9 +1,9 @@
 import type { Timestamp } from 'firebase/firestore'
-import { query, serverTimestamp } from 'firebase/firestore'
+import { serverTimestamp } from 'firebase/firestore'
 
 import { Store } from '../interface/Store'
 import { user } from '../../auth/auth-manager'
-import { activeChat, messages, unreadMessages } from '~/logic/pages/chat'
+import { activeChat, isLooking, messages, unreadMessages, isLooking } from '~/logic/pages/chat'
 
 export interface RelationData {
   statut: 'ok' | 'asking' | 'canceling'
@@ -115,11 +115,10 @@ export const getMessages = async(id: string) => {
       if (!messages.value.get(id)?.some(v => v[0] === doc.doc.id))
         messages.value.get(id)?.push([doc.doc.id, <{ timestamp: Timestamp; author: string; message: string }>doc.doc.data()])
     })
-    if (activeChat.value === id)
+    if (activeChat.value === id && isLooking.value)
       relationSetUserStatut(id, <string>user.value?.uid, { lastRead: <Timestamp>serverTimestamp() })
     else
       unreadMessages.value.set(id, (unreadMessages.value.get(id) ?? 0) + 1)
-    console.log(messages.value)
   }, query)
   const q = await col.queryDocuments(query)
   const array: [string, { timestamp: Timestamp; author: string; message: string }][] = []

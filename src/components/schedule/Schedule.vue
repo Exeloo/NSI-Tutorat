@@ -33,7 +33,7 @@ const props = defineProps({
   options: {
     type: Array,
     default() {
-      return []
+      return [[]]
     },
   },
   unwatch: {
