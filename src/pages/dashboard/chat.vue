@@ -116,14 +116,14 @@ const load = async () => {
   relations.value = await getRelations()
   for (const [k, _] of relations.value) {
     const entrant = await getEntrant(k, u.uid)
-    if (!entrant) {
+    if (!entrant || !entrant.statut) {
       await relationSetUserStatut(k, u.uid, { statut: 'pending', return: '' })
       entrants.value.set(k, { statut: 'pending', return: '' })
     }
     else
       entrants.value.set(k, entrant)
-      if (!hasInitConvs.value.get(k))
-        await initConv(k, entrant?.lastRead)
+    if (!hasInitConvs.value.get(k))
+      await initConv(k, entrant?.lastRead)
   }
   isConvsLoading.value = false
 }

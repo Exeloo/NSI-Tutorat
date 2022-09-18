@@ -58,6 +58,7 @@ export const getRelations = async() => {
       relationsCache.set(doc.id, <RelationData>doc.data())
     })
   }
+  console.log(relationsCache)
   return relationsCache
 }
 
@@ -100,7 +101,7 @@ export const hasRelationDeny = (data?: RelationEntrantData) => {
 }
 
 export const hasRelationLeft = (data?: RelationEntrantData) => {
-  return !!data && data.statut !== 'accepted' && data.statut !== 'pending'
+  return !!data && !!data.statut && data.statut !== 'accepted' && data.statut !== 'pending'
 }
 
 export const getMessages = async(id: string) => {

@@ -18,7 +18,6 @@ declare module 'vue' {
     Loading: typeof import('./components/style/Loading.vue')['default']
     LoginBar: typeof import('./components/parts/NavBar/LoginBar.vue')['default']
     PlanningInit: typeof import('./components/pages/login/PlanningInit.vue')['default']
-    PreferenceInit: typeof import('./components/pages/login/PreferenceInit.vue')['default']
     Schedule: typeof import('./components/schedule/Schedule.vue')['default']
     SchoolInit: typeof import('./components/pages/login/SchoolInit.vue')['default']
     SearchUser: typeof import('./components/pages/search/SearchUser.vue')['default']

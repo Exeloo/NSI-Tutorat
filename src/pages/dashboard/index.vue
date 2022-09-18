@@ -152,7 +152,7 @@ const load = async () => {
   relations.value = await getRelations()
   for (const [k, v] of relations.value) {
     const entrant = await getEntrant(k, u.uid)
-    if (!entrant) {
+    if (!entrant || !entrant.statut) {
       await relationSetUserStatut(k, u.uid, { statut: 'pending', return: '' })
       entrants.value.set(k, { statut: 'pending', return: '' })
     }

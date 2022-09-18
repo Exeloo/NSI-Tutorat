@@ -24,10 +24,11 @@ import { pageState, togglePageState } from '~/logic/pages/login'
 const router = useRouter()
 const isButtonLoading = ref(false)
 
-setTimeout(async() => {
+const i = setInterval(async() => {
   if (pageState.value.id === 'loading') {
     if (result.value.result) {
       router.push('/dashboard')
+      clearInterval(i)
       return
     }
     if (result.value.error === 'noResults') {
