@@ -9,7 +9,7 @@ export const setUser = (uid: string, data: PartialUserData) => {
 
 export const getUser = async(result: Firebase.User | null): Promise<{ result: false; error: string } | { result: true; data: UserData }> => {
   if (!result || !result.displayName || !result.email) return { result: false, error: 'result' }
-  // if (!result.email.endsWith('@pedagogiefde.org')) return { result: false, error: 'email' }
+  if (!result.email.endsWith('@pedagogiefde.org')) return { result: false, error: 'email' }
   const store = new User(result.uid)
   const data = await store.getUser()
   await setUser(result.uid, { ...data, uid: result.uid, displayName: result.displayName, email: result.email, avatar: result.photoURL ?? '' })

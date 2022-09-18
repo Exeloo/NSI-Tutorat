@@ -35,7 +35,6 @@
           Spécialités :
         </div>
         <div v-if="!updating" class="profil-index-item-value">
-          <!-- Changer le getSchoolLabel pour les matières dans lesquels vous voulez aider  avec le Spécialité ... ou Option ... et garder le ... pour la partie Spécialités ou Options -->
           <div>
             - {{ getSchoolLabel(user.school.spe.a) }}
           </div>
