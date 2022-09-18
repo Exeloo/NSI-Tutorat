@@ -52,7 +52,7 @@ export const selectOptions = {
     ]],
     ['premiere-t', [
       { value: '1stl', label: '1STL' },
-      { value: '1stdaa', label: '1STDAA' },
+      { value: '1std2a', label: '1STDAA' },
     ]],
     ['terminal-g', [
       { value: 'tg1', label: 'TG1' },
@@ -64,15 +64,15 @@ export const selectOptions = {
     ]],
     ['terminal-t', [
       { value: 'tstl', label: 'TSTL' },
-      { value: 'tstdaa', label: 'TSTDAA' },
+      { value: 'tstd2a', label: 'TSTD2A' },
     ]],
   ]),
   spe: [
-    { value: 'art-spe', label: 'Art' },
-    { value: 'geopo-spe', label: 'Histoire-Géographie, Géopolitique et Science Poilitique' },
+    { value: 'ap-spe', label: 'Arts Plastiques' },
+    { value: 'cav-spe', label: 'Cinéma AudioVisuel' },
+    { value: 'ghhsp-spe', label: 'Histoire-Géographie, Géopolitique et Science Poilitique' },
     { value: 'hlp-spe', label: 'Humanité, Littérature et Philosophie' },
     { value: 'llce-spe', label: 'Langues, Littératures et Cultures Etrangère' },
-    { value: 'llca-spe', label: 'Littératures, Langues et Cultures de l\'Antiquité' },
     { value: 'maths-spe', label: 'Mathématiques' },
     { value: 'nsi-spe', label: 'Numérique et Science de l\'Informatique' },
     { value: 'pc-spe', label: 'Physique-Chimie' },
@@ -80,7 +80,7 @@ export const selectOptions = {
     { value: 'ses-spe', label: 'Science Economique et Sociales' },
   ],
   techno: [
-    { value: 'sti2a', label: 'STI2A' },
+    { value: 'std2a', label: 'STD2A' },
     { value: 'stl', label: 'STL' },
   ],
   lv: [
@@ -90,23 +90,27 @@ export const selectOptions = {
   ],
   option: new Map([
     ['seconde', [
-      { value: '?', label: '?' },
+      { value: 'ccd-opt', label: 'Création Cultures Design' },
+      { value: 'sl-opt', label: 'Science Laboratoire' },
     ]],
     ['premiere-g', [
-      { value: '?', label: '?' },
+      { value: 'chinois-opt', label: 'Chinois' },
+      { value: 'mathsSpe-opt', label: 'Mathématiques Spécifiques' },
     ]],
     ['premiere-t', [
-      { value: '?', label: '?' },
+      { value: 'chinois-opt', label: '? Chinois' },
+      { value: 'mathsSpe-opt', label: '? Mathématiques Spécifiques' },
     ]],
     ['terminal-g', [
-      { value: 'droit-opt', label: 'Droit ?' },
+      { value: 'chinois-opt', label: 'Chinois' },
     ]],
     ['terminal-t', [
-      { value: '?', label: '?' },
+      { value: 'chinois-opt', label: '? Chinois' },
+      { value: 'mathsSpe-opt', label: '? Mathématiques Spécifiques' },
     ]],
     ['default', [
-      { value: 'art-opt', label: 'Art' },
-      { value: 'chinois-opt', label: 'Chinois' },
+      { value: 'ap-opt', label: 'Arts Plasitiques' },
+      { value: 'cav-opt', label: 'Cinéma AudioVisuel' },
     ]],
   ]),
   section: {
@@ -123,6 +127,7 @@ export const selectOptions = {
   },
   subject: new Map([
     ['seconde', [
+      { value: 'emch', label: '? EMCH' },
       { value: 'fr', label: 'Français' },
       { value: 'maths', label: 'Mathématiques' },
       { value: 'pc', label: 'Physique-Chimie' },
@@ -131,33 +136,47 @@ export const selectOptions = {
       { value: 'svt', label: 'Sciences de la Vie et de la Terre' },
     ]],
     ['premiere-g', [
+      { value: 'emc', label: 'Enseignement Morale et Civique' },
       { value: 'es', label: 'Enseignement Scientifique' },
       { value: 'fr', label: 'Français' },
     ]],
     ['premiere-t', [
+      { value: 'emc', label: 'Enseignement Morale et Civique' },
       { value: 'fr', label: 'Français' },
       { value: 'maths', label: 'Mathématiques' },
     ]],
     ['terminal-g', [
+      { value: 'emc', label: 'Enseignement Morale et Civique' },
       { value: 'es', label: 'Enseignement Scientifique' },
       { value: 'philo', label: 'Philosophie' },
     ]],
     ['terminal-t', [
+      { value: 'emc', label: 'Enseignement Morale et Civique' },
       { value: 'maths', label: 'Mathématiques' },
       { value: 'philo', label: 'Philosophie' },
     ]],
     ['default', [
-      { value: 'emc', label: 'Enseignement Morale et Civique' },
       { value: 'eps', label: 'Education Physique et Sportive' },
       { value: 'hist', label: 'Histoire-Géographie' },
     ]],
-    ['stl', [
-      { value: 'emc', label: 'Enseignement Morale et Civique' },
-      { value: 'eps', label: 'Education Physique et Sportive' },
-      { value: 'hist', label: 'Histoire-Géographie' },
+    ['premiere-t-stl', [
+      { value: 'bb-tspe', label: 'Biochimie-Biologie' },
+      { value: '?-tspe', label: '?' },
+      { value: 'pcm-tspe', label: 'Physique-Chimie et Mathématiques' },
     ]],
-    ['sti2a', [
-      { value: 'emc', label: 'Spécialité Analyse et Méthodes en Design' },
+    ['terminal-t-stl', [
+      { value: '?-tspe', label: '?' },
+      { value: 'pcm-tspe', label: 'Physique-Chimie et Mathématiques' },
+    ]],
+    ['premiere-t-std2a', [
+      { value: 'dma-tspe', label: 'Design et Métiers d\'Arts' },
+      { value: 'onl-tspe', label: 'Outils et Langages Numériques' },
+      { value: 'pc-tspe', label: 'Physique-Chimie' },
+    ]],
+    ['terminal-t-std2a', [
+      { value: 'amd-tspe', label: 'Analyse et Méthodes en Design' },
+      { value: 'eps-tspe', label: 'Education Physique et Sportive' },
+      { value: 'ccdma-tspe', label: 'Conception et Création en Design et Métiers d\'Arts' },
     ]],
   ]),
 }
@@ -252,14 +271,6 @@ export const getSubjects = (models: SchoolPreferencesType) => {
   const options: Option[] = []
   const isTerminalG = models.level === 'terminal-g'
 
-  const speSubjects = selectOptions.spe.filter((v: any) => {
-    const isSpe = Object.values(models.spe).includes(v.value)
-    const isLastSpe = models.spe.c === v.value
-    const isLostSpe = isTerminalG && isLastSpe
-    return isSpe && !isLostSpe
-  })
-  options.push(...speSubjects.map((e) => { return { ...e, label: `Spécialité ${e.label}` } }))
-
   const niveauSubjects = selectOptions.subject.get(models.level)
   const defaultSubjects = selectOptions.subject.get('default')
   if (!niveauSubjects || !defaultSubjects) return options
@@ -267,6 +278,19 @@ export const getSubjects = (models: SchoolPreferencesType) => {
 
   const lvSubjects = selectOptions.lv.filter((v: any) => Object.values(models.lv).includes(v.value))
   options.push(...lvSubjects)
+
+  if (models.level.endsWith('-g')) {
+    const speSubjects = selectOptions.spe.filter((v: any) => {
+      const isSpe = Object.values(models.spe).includes(v.value)
+      const isLastSpe = models.spe.c === v.value
+      const isLostSpe = isTerminalG && isLastSpe
+      return isSpe && !isLostSpe
+    })
+    options.push(...speSubjects.map((e) => { return { ...e, label: `Spécialité ${e.label}` } }))
+  }
+
+  if (models.techno)
+    options.push(...selectOptions.subject.get(`${models.level}-${models.techno}`) ?? [])
 
   const niveauOptions = selectOptions.option.get(models.level)
   const defaultOptions = selectOptions.option.get('default')

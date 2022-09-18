@@ -30,7 +30,7 @@
 </template>
 
 <script lang="ts" setup>
-import { login } from '~/logic/data/auth/auth-manager'
+import { userLogin } from '~/logic/data/auth/auth-manager'
 
 defineProps({
   color: {
@@ -43,7 +43,7 @@ defineProps({
 const runAuth = (router: any) => {
   router.push('login')
   setTimeout(() => {
-    login()
+    userLogin()
   }, 1000)
 }
 

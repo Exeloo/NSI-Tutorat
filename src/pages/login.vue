@@ -4,7 +4,7 @@
       {{ pageState.value }}
     </div>
     <div>
-      <Button id="conexion" label="Se connecter" styles="blurple" :options="{disabled: false}" :loading="isButtonLoading" @click="login()" />
+      <Button id="conexion" label="Se connecter" styles="blurple" :options="{disabled: false}" :loading="isButtonLoading" @click="userLogin()" />
     </div>
   </div>
   <SchoolInit v-else-if="pageState.id === 'school'" />
@@ -18,27 +18,35 @@
 </template>
 
 <script setup lang="ts">
-import { login, user } from '~/logic/data/auth/auth-manager'
+import { result, user, userLogin } from '~/logic/data/auth/auth-manager'
 import { pageState, togglePageState } from '~/logic/pages/login'
 
 const router = useRouter()
 const isButtonLoading = ref(false)
 
-const isIntervaled = ref(true)
-
-const i = setInterval(async() => {
+setTimeout(async() => {
   if (pageState.value.id === 'loading') {
-    const loginResult = await login()
-    if (loginResult.result) {
-      clearInterval(i)
+    if (result.value.result) {
       router.push('/dashboard')
       return
     }
-    if (loginResult.error === 'email') {
+    if (result.value.error === 'noResults') {
+      await userLogin()
+      return
+    }
+    if (result.value.error === 'email') {
       togglePageState({ id: 'error', value: 'Adresse email invalide, veuillez utiliser votre compte google pedagogiefde !' })
       return
     }
-    togglePageState({ id: loginResult.error, value: '' })
+    if (result.value.error === 'cookies') {
+      togglePageState({ id: 'error', value: 'Vous avez un problème de cookies, veuillez désactiver vos protections contre les cookies sur ce site. Merci' })
+      return
+    }
+    if (result.value.error === 'result') {
+      togglePageState({ id: 'error', value: 'Erreur 404... Contactez un administrateur !' })
+      return
+    }
+    togglePageState({ id: result.value.error, value: '' })
   }
 }, 4000)
 

@@ -7,9 +7,14 @@
       <div class="chat-relations">
         <div v-for="[k, v] in getSortedRelations()" :key="k" @click="changeActiveChat(k)" >
           <div class="chat-relation-flex">
-            <div>
+            <div v-if="v.subjects?.length > 0">
               <div v-for="s in v.subjects" :key="s">
                 {{ getSchoolLabel(s, true) }}
+              </div>
+            </div>
+            <div v-else>
+              <div>
+                Premier Contact
               </div>
             </div>
             <div>
@@ -118,7 +123,7 @@ const load = async () => {
     else
       entrants.value.set(k, entrant)
       if (!hasInitConvs.value.get(k))
-        await initConv(k, entrant.lastRead)
+        await initConv(k, entrant?.lastRead)
   }
   isConvsLoading.value = false
 }

@@ -1,3 +1,82 @@
+<template>
+  <div v-if="publicUser" class="search-container">
+    <div class="search-user-flex">
+      <div class="search-user-name-avatar">
+        <img class="search-user-avatar" :src="publicUser.avatar" alt="">
+        <div class="search-user-name-email">
+          <div class="search-user-name">
+            {{ publicUser.displayName }}
+          </div>
+          <div class="search-user-email">
+            {{ publicUser.email }}
+          </div>
+        </div>
+      </div>
+      <LabelValue label="Classe" :value="publicUser.school.level" />
+      <LabelValue label="Åge" :value="publicUser.birthday ? `${new Date(new Date().getTime() - publicUser.birthday.toDate().getTime()).getFullYear() - 1970} ans` : '-'" />
+      <LabelValue label="Genre" :value="publicUser.gender ?? '-'" />
+      <LabelValues label="Il veut aider en" :value="publicUser.school.tutorat.helper.subjects" prefix />
+      <LabelValues label="Il aussi à l'aise en" :value="publicUser.school.subjects.good" prefix />
+      <LabelValue label="Description" :value="publicUser.description ?? '-'" class="search-user-w-high" />
+      <LabelValue v-if="publicUser.school.level.endsWith('-t')" label="Filiaire Technologique" :value="publicUser.school.techno" />
+      <LabelValues v-if="publicUser.school.level.endsWith('-g')" label="Spécialités" :value="[publicUser.school.spe.a, publicUser.school.spe.b, publicUser.school.spe.c]" :complete="publicUser.school.level.startsWith('terminal') ? ' (abandonnée)' : ''" />
+      <LabelValues label="Langues vivantes" :value="[publicUser.school.lv.a, publicUser.school.lv.b]" />
+    </div>
+    <div class="search-user-schedule">
+      <Schedule
+        :options="getSameTimes(user.planning.map(schedule => schedule.times), publicUser.planning.map(schedule => schedule.times))"
+        unwatch
+      />
+    </div>
+    <div class="search-user-button">
+      <div v-if="!isRequesting" class="default-button">
+        <Button id="contact" label="Contacter" styles="blurple" :options="{disabled: false}" :loading="isButtonLoading === 'contact'" @click="contact()" />
+        <Button id="request" label="Demander de l'aide" styles="blurple" :options="{disabled: false}" @click="toggleIsRequesting(true)" />
+      </div>
+      <div v-else class="search-user-choices">
+        <div class="search-user-selects">
+          <div class="search-user-selects-title">
+            Veuillez selectionner l'horaire souhaité
+          </div>
+          <div class="search-user-selects-selects">
+            <div class="search-user-selects-selects-time">
+              <div>
+              <Select id="day" v-model="model.day" label="Jour" :options="getRightTimes(model)[0]" :required="false" />
+            </div>
+            <div :class="{timeError: !isLegalTime(model, undefined)}">
+              <Select id="start" v-model="model.start" label="Début" :options="getRightTimes(model)[1]" :required="false" />
+            </div>
+            <div :class="{timeError: !isLegalTime(undefined, model)}">
+              <Select id="end" v-model="model.end" label="Fin" :options="getRightTimes(model)[2]" :required="false" />
+            </div>
+            </div>
+            <!-- Les options après doivent être remplacés par une fonction :) -->
+            <Select
+              id="receive"
+              v-model="model.subjects"
+              label="Matières dans lesquels vous voulez recevoir de l'aide"
+              :options="user.school.tutorat.receiver.subjects.filter(e => publicUser.school.tutorat.helper.subjects.includes(e)).map(e => { return { label: getSchoolLabel(e, true), value: e}})"
+              tags
+              search
+              :required="false"
+            />
+          </div>
+        </div>
+        <div class="search-user-choices-buttons">
+          <Button id="resign" label="Abandonner" styles="danger" :options="{disabled: false}" @click="resetModel" />
+          <Button id="confirm" label="Confirmer la demande de tutorat" styles="success" :options="{disabled: false}" :loading="isButtonLoading === 'create'" @click="onClick()" />
+        </div>
+      </div>
+      <div v-if="result.statut" class="cal-val-return cal-val-good">
+        Demande de Tutorat envoyée !
+      </div>
+      <div v-else-if="result.statut === false" class="cal-val-return cal-val-bad">
+        {{ result.statement }}
+      </div>
+    </div>
+  </div>
+</template>
+
 <script setup lang="ts">
 import { getForcedUsers, getUsers, UserData } from '~/logic/data/firestore/datas/Users'
 import { toggleLoadingPage } from '~/main'
@@ -6,6 +85,7 @@ import { user } from '~/logic/data/auth/auth-manager'
 import { hasEnoughRange } from '~/logic/pages/login/planning.login'
 import { createRelation, relationSetUserStatut } from '~/logic/data/firestore/datas/Relations'
 import { getSchoolLabel } from '~/logic/profil/school/school-manager'
+import { changeActiveChat } from '~/logic/pages/chat'
 
 const props = defineProps({
   uid: {
@@ -14,6 +94,7 @@ const props = defineProps({
   },
 })
 
+const isButtonLoading = ref('')
 const users = ref<Map<string, UserData>>(getUsers())
 const error = ref('')
 const result = ref<{ statut?: boolean; statement: string }>({ statut: undefined, statement: '' })
@@ -34,7 +115,7 @@ if (users.value.size === 0 || !publicUser.value)
   f()
 
 const toggleIsRequesting = (force?: boolean) => {
-  if (!publicUser.value.school.tutorat.helper.wish) {
+  if (force && !publicUser.value.school.tutorat.helper.wish) {
     error.value = 'L\'utilisateur ne désire pas aider, veuillez vous rendre sur un autre profil !'
   }
   isRequesting.value = force === undefined ? !isRequesting.value : force
@@ -102,7 +183,7 @@ const isLegalTime = (e1, e2) => {
 
   return !isOutOfRange(...partial) && hasEnoughRange(startMin, endMin)
 }
-
+  
 const getRightTimes = ({ day, start, end }: {day: string, start: string, end: string}, restricted = true) => {
   const publicTimes = getSameTimes((<UserData>user.value).planning.map(schedule => schedule.times), publicUser.value.planning.map(schedule => schedule.times), restricted)
   const publicDays = days.filter((day, index) => publicTimes[index].length > 0).map((day) => { return { label: day, value: day } })
@@ -134,8 +215,8 @@ const getRightTimes = ({ day, start, end }: {day: string, start: string, end: st
 
 const startRelation = async () => {
   const rightTimes = getRightTimes(model)
-  // if (publicUser.value.uid === (<UserData>user.value).uid)
-  //   return { statut: false, statement: 'Vous n\'avez pas le droit de vous demander vous même !' }
+  if (publicUser.value.uid === (<UserData>user.value).uid)
+    return { statut: false, statement: 'Vous n\'avez pas le droit de vous demander vous même !' }
   if (rightTimes[0].length === 0 || !rightTimes[1].map(e => e.value).includes(model.start) || !rightTimes[2].map(e => e.value).includes(model.end))
     return { statut: false, statement: 'Erreur dans la saisie de la plage horaire !' }
   if (model.subjects.length === 0)
@@ -164,99 +245,50 @@ const startRelation = async () => {
   }
   return { statut: true, statement: '' }
 }
-
-const onClick = async() => {
+  
+const onClick = async () => {
+  isButtonLoading.value = 'create'
   result.value = await startRelation()
   if (result.value.statut) {
     resetModel()
     setTimeout(() => {
       router.push('/dashboard/profil/relation')
-    }, 3000)
+    }, 2000)
   }
   setTimeout(() => result.value = { statut: undefined, statement: '' }, 5000)
+  isButtonLoading.value = ''
 }
 
+const chatRedirect = (id: string) => {
+  
+}
+  
+const contact = async () => {
+  if (!publicUser.value.school.tutorat.helper.wish) {
+    error.value = 'L\'utilisateur ne désire pas aider, veuillez vous rendre sur un autre profil !'
+  }
+  isButtonLoading.value = 'contact'
+  try {
+    const doc = await createRelation({
+      statut: 'contact',
+      entrants: [(<UserData>user.value).uid, publicUser.value.uid],
+      receivers: [(<UserData>user.value).uid],
+      helpers: [publicUser.value.uid],
+      
+    })
+    result.value = { statut: true, statement: '' }
+    changeActiveChat(doc.name)
+    router.push('/dashboard/chat')
+  }
+  catch (e) {
+    console.error(e)
+    result.value = { statut: false, statement: 'Erreur dans la création de la relation, veuillez reessayer plus tard !' }
+  }
+  isButtonLoading.value = ''
+  setTimeout(() => result.value = { statut: undefined, statement: '' }, 5000)
+}
+  
 </script>
-
-<template>
-  <div v-if="publicUser" class="search-container">
-    <div class="search-user-flex">
-      <div class="search-user-name-avatar">
-        <img class="search-user-avatar" :src="publicUser.avatar" alt="">
-        <div class="search-user-name-email">
-          <div class="search-user-name">
-            {{ publicUser.displayName }}
-          </div>
-          <div class="search-user-email">
-            {{ publicUser.email }}
-          </div>
-        </div>
-      </div>
-      <LabelValue label="Classe" :value="publicUser.school.level" />
-      <LabelValue label="Åge" :value="publicUser.birthday ? `${new Date(new Date().getTime() - publicUser.birthday.toDate().getTime()).getFullYear() - 1970} ans` : '-'" />
-      <LabelValue label="Genre" :value="publicUser.gender" />
-      <LabelValues label="Il veut aider en" :value="publicUser.school.tutorat.helper.subjects" prefix />
-      <LabelValues label="Il aussi à l'aise en" :value="publicUser.school.subjects.good" prefix />
-      <LabelValue label="Description" :value="publicUser.description" class="search-user-w-high" />
-      <LabelValue v-if="publicUser.school.level.endsWith('-t')" label="Filiaire Technologique" :value="publicUser.school.techno" />
-      <LabelValues v-if="publicUser.school.level.endsWith('-g')" label="Spécialités" :value="[publicUser.school.spe.a, publicUser.school.spe.b, publicUser.school.spe.c]" :complete="publicUser.school.level.startsWith('terminal') ? ' (abandonnée)' : ''" />
-      <LabelValues label="Langues vivantes" :value="[publicUser.school.lv.a, publicUser.school.lv.b]" />
-    </div>
-    <div class="search-user-schedule">
-      <Schedule
-        :options="getSameTimes(user.planning.map(schedule => schedule.times), publicUser.planning.map(schedule => schedule.times))"
-        unwatch
-      />
-    </div>
-    <div class="search-user-button">
-      <div v-if="!isRequesting">
-        <Button id="request" label="Demander de l'aide" styles="blurple" :options="{disabled: false}" @click="toggleIsRequesting(true)" />
-      </div>
-      <div v-else class="search-user-choices">
-        <div class="search-user-selects">
-          <div class="search-user-selects-title">
-            Veuillez selectionner l'horaire souhaité
-          </div>
-          <div class="search-user-selects-selects">
-            <div class="search-user-selects-selects-time">
-              <div>
-              <Select id="day" v-model="model.day" label="Jour" :options="getRightTimes(model)[0]" :required="false" />
-            </div>
-            <div :class="{timeError: !isLegalTime(model, undefined)}">
-              <Select id="start" v-model="model.start" label="Début" :options="getRightTimes(model)[1]" :required="false" />
-            </div>
-            <div :class="{timeError: !isLegalTime(undefined, model)}">
-              <Select id="end" v-model="model.end" label="Fin" :options="getRightTimes(model)[2]" :required="false" />
-            </div>
-            </div>
-            
-            <Select
-              id="receive"
-              v-model="model.subjects"
-              label="Matières dans lesquels vous voulez recevoir de l'aide"
-              :options="user.school.tutorat.receiver.subjects.filter(e => publicUser.school.tutorat.helper.subjects.includes(e)).map(e => { return { label: getSchoolLabel(e, true), value: e}})"
-              tags
-              search
-              :required="false"
-            />
-          </div>
-        </div>
-        <div class="search-user-choices-buttons">
-          <Button id="resign" label="Abandonner" styles="danger" :options="{disabled: false}" @click="resetModel" />
-          <Button id="confirm" label="Confirmer la demande de tutorat" styles="success" :options="{disabled: false}" @click="onClick()" />
-        </div>
-      </div>
-      <div v-if="result.statut" class="cal-val-return cal-val-good">
-        Demande de Tutorat envoyée !
-      </div>
-      <div v-else-if="result.statut === false" class="cal-val-return cal-val-bad">
-        {{ result.statement }}
-      </div>
-    </div>
-  </div>
-</template>
-
-
 
 <style scoped>
 .search-container {
@@ -429,6 +461,12 @@ const onClick = async() => {
   justify-content: flex-end;
   gap: 1rem;
   margin-top: 20px;
+}
+
+.default-button {
+  display: flex;
+  gap: 2rem;
+  flex-wrap: wrap;
 }
 
 @media screen and (max-width: 520px){

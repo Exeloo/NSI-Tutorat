@@ -4,8 +4,8 @@
       <div class="title">
         Mes relations
       </div>
-      <div v-if="sortedRelations.request.length > 0" style="color: var(--color-danger)">
-        Vous avez {{ sortRelations.request.length }} requête(s) en attente de votre réponse !
+      <div v-if="sortedRelations.request.length + sortedRelations.contact.length > 0" style="color: var(--color-danger)">
+        Vous avez {{ sortedRelations.request.length + sortedRelations.contact.length }} requête(s) en attente de votre réponse !
       </div>
       <div v-else-if="sortedRelations.pending.length > 0">
         Vous avez {{ sortedRelations.pending.length }} requête(s) en attente.
@@ -35,10 +35,13 @@
       <div class="chat-relations">
         <div v-for="[k, v] in getSortedRelations()" :key="k" @click="redirectToChat(k)" >
           <div class="chat-relation-flex">
-            <div>
+            <div v-if="v.subjects?.length > 0">
               <div v-for="s in v.subjects" :key="s">
                 {{ getSchoolLabel(s, true) }}
               </div>
+            </div>
+            <div v-else>
+              Premier contact
             </div>
             <div>
               <div v-for="userId of v.entrants.filter(uid => uid !== user.uid)" class="chat-relation-item">
@@ -77,11 +80,9 @@ const isConvsLoading = ref(false)
 const relations = ref(new Map<string, RelationData>())
 const entrants = ref(new Map<string, RelationEntrantData>())
 const router = useRouter()
-const publicUsers = ref<Map<string, UserData>>(getUsers())
-
-
 type SortedRelationType = {
   request: [string, RelationData][]
+  contact: [string, RelationData][]
   pending: [string, RelationData][]
   cancel: [string, RelationData][]
   accepted: [string, RelationData][]
@@ -89,10 +90,16 @@ type SortedRelationType = {
 
 const sortedRelations = ref<SortedRelationType>({
   request: [],
+  contact: [],
   pending: [],
   cancel: [],
   accepted: [],
 })
+const publicUsers = ref<Map<string, UserData>>(getUsers())
+
+
+
+
 
 const getSortedRelations = () => {
   const newRelations = new Map<string, RelationData>()
@@ -152,12 +159,14 @@ const load = async () => {
     else
       entrants.value.set(k, entrant)
     if (!hasInitConvs.value.get(k))
-      await initConv(k, entrant.lastRead, false)
+      await initConv(k, entrant?.lastRead, false)
 
       const data = await getEntrants(k)
     if (hasRelationLeft(data.get((<UserData>user.value).uid)))
       continue
-    if (!hasRelationAccept(data.get((<UserData>user.value).uid)))
+    if (v.statut === 'contact')
+      sortedRelations.value.contact.push([k, v])
+    else if (!hasRelationAccept(data.get((<UserData>user.value).uid)))
       sortedRelations.value.request.push([k, v])
     else if (v.entrants.some(e => !data.has(e) || data.get(e)?.statut === 'pending'))
       sortedRelations.value.pending.push([k, v])
@@ -206,12 +215,14 @@ setTimeout(() => {
   padding: 20px 30px 40px 50px;
   max-width: 900px;
   width: 92%;
+  height: 620px;
 }
 
 .msgs {
   padding: 20px 10px;
   max-width: 470px;
   width: 92%;
+  height: 620px;
 
 }
 

@@ -1,15 +1,12 @@
 <template>
   <div class="container">
-    <!-- <div class="main-t">
-      Conditions Générales d'Utilisation
-    </div> -->
     <div class="item">
       <div class="title">
         Qui sommes nous ?
       </div>
       <div class="content">
         <div class="part">
-          Nous sommes Quentin et Mattéo, 2 terminales au Lycée François d'Estaing en NSI.
+          Nous sommes Quentin et Mattéo, 2 ex-lycéen au Lycée François d'Estaing.
         </div>
       </div>
     </div>

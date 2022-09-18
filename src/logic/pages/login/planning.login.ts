@@ -1,3 +1,5 @@
+import { getSeparatedTimes } from '~/logic/profil/planning/planning-manager'
+
 export const getMinFormTime = (time: string) => {
   return (<number[]><unknown>time.split(':'))[0] * 60 + (<number[]><unknown>time.split(':'))[1] * 1
 }
@@ -33,5 +35,14 @@ export const isGoodSchedule = (schedule: { start: string; end: string; statut: s
     }
     if (buisyList[0][0] < 7 * 60 || buisyList[buisyList.length - 1][1] > 19 * 60) return false
   }
-  return isCompleted
+  const sTimes = getSeparatedTimes(schedule)
+  let n = 0
+  for (const times of sTimes) {
+    for (const time of times) {
+      if (time.statut === 'free')
+        n += 1
+    }
+  }
+
+  return isCompleted && n > 7
 }

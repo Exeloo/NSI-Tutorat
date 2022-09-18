@@ -75,6 +75,7 @@ import { user } from '~/logic/data/auth/auth-manager'
 import { setUser } from '~/logic/data/auth/user'
 
 import Timestamp = firebase.firestore.Timestamp
+import { UserData } from '~/logic/data/firestore/datas/Users'
 
 const updating = ref(false)
 const isButtonLoading = ref(false)
@@ -102,19 +103,28 @@ const genres = [
 ]
 
 const hasDifferencies = () => {
-  const isDifferentDate = (user.value.birthday || model.birthday) && (
-    (!user.value.birthday && model.birthday) || (user.value.birthday && !model.birthday) || new Date(model.birthday).getTime() !== user.value.birthday.toDate().getTime()
+  const u = <UserData>user.value
+  if (model.description.includes('@') || model.description.includes('https://') || model.description.includes('http://'))
+    return false
+  if (model.description.includes('.') && model.description.includes('/')) {
+    const words: string[] = model.description.split(' ')
+    if (words.some(w => w.includes('.') && w.includes('/')))
+      return false
+  }
+  const isDifferentDate = (u.birthday || model.birthday) && (
+    (!u.birthday && model.birthday) || (u.birthday && !model.birthday) || new Date(model.birthday).getTime() !== u.birthday.toDate().getTime()
   )
-  return model.description !== user.value.description || model.gender !== user.value.gender || isDifferentDate
+  return model.description !== u.description || model.gender !== u.gender || isDifferentDate
 }
 
 const onValidation = async() => {
   if (!hasDifferencies()) return
+  const u = <UserData>user.value
   isButtonLoading.value = true
-  const data = { ...model, birthday: model.birthday ? new Date(model.birthday) : '' }
+  const data = { ...model, birthday: (model.birthday ? new Date(model.birthday) : undefined) }
   try {
-    await setUser(user.value.uid, data)
-    user.value = { ...user.value, ...data, birthday: data.birthday ? new Timestamp(Math.floor(data.birthday.getTime() / 1000), 0) : '' }
+    await setUser(u.uid, data)
+    user.value = { ...u, ...data, birthday: data.birthday ? new Timestamp(Math.floor(data.birthday.getTime() / 1000), 0) : undefined }
     changeReturn.value = true
     updating.value = false
   }
@@ -132,6 +142,7 @@ const onUndo = () => {
   updating.value = false
   const nUser = JSON.parse(JSON.stringify(user.value))
   model.description = nUser.description
+  if (birth)
   model.birthday = `${birth.getUTCFullYear()}-${convertDate(birth.getUTCMonth() + 1)}-${convertDate(birth.getUTCDate())}`
   model.gender = nUser.gender
 }

@@ -25,17 +25,6 @@
           <Checkbox id="times" v-model="filter.times" styles="blurple" label="Horaires communes" />
           <Checkbox v-if="user.school.level !== 'seconde'" id="filiaire" v-model="filter.filiaire" styles="blurple" label="Même filiaire (générale et technologique)" />
         </div>
-        <div class="search-filters-check-text">
-          <span v-if="!(filter.levelUp || filter.levelDown || filter.levelEqual)">
-            Au moins un des filtres si-dessous doit être activé, dans le cas contraire aucun résultat ne s'affichera !
-          </span>
-        </div>
-
-        <div>
-          <Checkbox v-if="!user.school.level.startsWith('terminal')" id="levelUp" v-model="filter.levelUp" styles="blurple" label="Niveau scolaire supérieur" />
-          <Checkbox id="levelEqual" v-model="filter.levelEqual" styles="blurple" label="Niveau scolaire égal" />
-          <Checkbox v-if="user.school.level !== 'seconde'" id="levelDown" v-model="filter.levelDown" styles="blurple" label="Niveau scolaire inférieur" />
-        </div>
       </div>
     </div>
     <div v-if="user.school.tutorat.receiver.wish" class="search-users-container">
@@ -81,7 +70,7 @@ import { hasSameTimes } from '~/logic/profil/planning/planning-manager';
 
 const router = useRouter()
 
-const filter = reactive({ levelUp: !(<UserData>user.value).school.level.startsWith('terminal'), levelEqual: (<UserData>user.value).school.level.startsWith('terminal'), levelDown: false, times: true, filiaire: true })
+const filter = reactive({ times: true, filiaire: true })
 
 const users = ref<Map<string, UserData>>(getUsers())
 if (users.value.size === 0) {
@@ -114,14 +103,11 @@ const getFilteredUsers = () => {
       continue
     if (filter.times && !hasSameTimes(u.planning.map(schedule => schedule.times), p.planning.map(schedule => schedule.times)))
       continue
-
-    if (filter.levelEqual && u.school.level.slice(0, -1) === p.school.level.slice(0, -1))
-      filteredList.push(p)
-
     const pI = p.school.level === 'seconde' ? 1 : p.school.level.startsWith('premiere') ? 2 : 3
     const uI = u.school.level === 'seconde' ? 1 : u.school.level.startsWith('premiere') ? 2 : 3
-    if ((filter.levelUp && pI > uI) || (filter.levelDown && pI < uI))
-      filteredList.push(p)
+    if (pI < uI)
+      continue
+    filteredList.push(p)
   }
   return getSortedUsers(filteredList)
 }

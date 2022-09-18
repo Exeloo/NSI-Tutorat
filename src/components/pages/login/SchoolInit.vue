@@ -18,7 +18,7 @@
       <Select id="spe-b" v-model="models.value.spe.b" :label="t('firstLogin.forms.spe.b')" :options="options.spe.b" :search="true" @change="onSpeChange" />
       <Select id="spe-c" v-model="models.value.spe.c" :label="hasSpe(true) ? t('firstLogin.forms.spe.c') : t('firstLogin.forms.spe.c-bis')" :options="options.spe.c" :search="true" @change="onSpeChange" />
     </div>
-    <Select v-if="isTechno()" id="techno" v-model="models.value.techno" :label="t('firstLogin.forms.techno')" :options="options.techno" :search="true" />
+    <Select v-if="isTechno()" id="techno" v-model="models.value.techno" :label="t('firstLogin.forms.techno')" :options="selectOptions.techno" :search="true" />
     <div class="lv">
       <Select id="lva" v-model="models.value.lv.a" :label="t('firstLogin.forms.lv.a')" :options="options.lv.a" @change="onLvChange" />
       <Select id="lvb" v-model="models.value.lv.b" :label="t('firstLogin.forms.lv.b')" :options="options.lv.b" @change="onLvChange" />
@@ -51,7 +51,7 @@
 </template>
 
 <script setup lang="ts">
-import { login, user } from '~/logic/data/auth/auth-manager'
+import { user, userLogin } from '~/logic/data/auth/auth-manager'
 import type { Option } from '~/logic/pages/login/school.login'
 import { getOption, getSubjects, models, optionOptions, options, selectOptions, setModels } from '~/logic/pages/login/school.login'
 import { isValidChoices } from '~/logic/profil/school/school-manager'
@@ -78,7 +78,7 @@ const onButtonClick = async() => {
   isButtonLoading.value = true
   await setUser(user.value.uid, { school: models.value })
   togglePageState({ id: 'loading', value: '' })
-  await login()
+  await userLogin()
 }
 
 const hasSpe = (third: boolean) => {

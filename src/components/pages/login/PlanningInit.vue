@@ -13,6 +13,14 @@
         :options="model"
       />
     </div>
+    <div class="cal-val-return">
+      <div style="color: var(--color-success)">
+        N'hésitez pas à remplir l'entièreté du planning !
+      </div>
+      <div style="color: var(--color-orange)">
+        Le planning doit contenir au moins 4h d'horaire libre !
+      </div>
+    </div>
     <div class="planning-init-calendar-input-container">
       <InputSchedule v-model="model" />
     </div>
@@ -23,7 +31,7 @@
 </template>
 
 <script setup lang="ts">
-import { login, user } from '~/logic/data/auth/auth-manager'
+import { userLogin, user } from '~/logic/data/auth/auth-manager'
 import { setUser } from '~/logic/data/auth/user'
 import { togglePageState } from '~/logic/pages/login'
 import { isGoodSchedule } from '~/logic/pages/login/planning.login'
@@ -37,7 +45,7 @@ const onButtonClick = async() => {
   isButtonLoading.value = true
   await setUser(user.value.uid, { planning: model.value.map((e) => { return { times: e } }) })
   togglePageState({ id: 'loading', value: '' })
-  await login()
+  await userLogin()
 }
 
 </script>
@@ -97,6 +105,13 @@ const onButtonClick = async() => {
     min-width: 0;
     width: 100%;
   }
+}
+
+.cal-val-return {
+  font-size: 13px;
+  font-style: italic;
+  align-self: flex-start;
+  margin: 20px 40px 0 40px;
 }
 
 @media screen and (max-width: 520px){

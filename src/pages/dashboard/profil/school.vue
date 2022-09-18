@@ -311,12 +311,10 @@ const updateValidation = () => {
 watch(models, updateValidation)
 
 const onNiveauChange = () => {
-  console.log(1)
   if (!models.value.level) options.classe = undefined
   else options.classe = selectOptions.classe.get(models.value.level)
   models.value.class = ''
   optionOptions.value = getOption(models.value.level, models.value.spe)
-  console.log(optionOptions.value)
 }
 
 const onSpeChange = () => {

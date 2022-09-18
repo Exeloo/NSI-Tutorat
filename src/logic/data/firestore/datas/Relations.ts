@@ -3,10 +3,10 @@ import { serverTimestamp } from 'firebase/firestore'
 
 import { Store } from '../interface/Store'
 import { user } from '../../auth/auth-manager'
-import { activeChat, isLooking, messages, unreadMessages, isLooking } from '~/logic/pages/chat'
+import { activeChat, isLooking, messages, unreadMessages } from '~/logic/pages/chat'
 
 export interface RelationData {
-  statut: 'ok' | 'asking' | 'canceling'
+  statut: 'ok' | 'asking' | 'canceling' | 'adm' | 'contact'
   entrants: string[]
   helpers: string[]
   receivers: string[]
@@ -19,7 +19,7 @@ export interface RelationData {
 }
 
 export interface PartialRelationData {
-  statut?: 'ok' | 'asking' | 'canceling'
+  statut?: 'ok' | 'asking' | 'canceling' | 'adm' | 'contact'
   entrants?: string[]
   helpers?: string[]
   receivers?: string[]
@@ -32,13 +32,13 @@ export interface PartialRelationData {
 }
 
 export interface RelationEntrantData {
-  statut: 'accepted' | 'refused' | 'leaved' | 'pending'
+  statut: 'accepted' | 'refused' | 'leaved' | 'pending' | 'abort'
   return: string
   lastRead: Timestamp
 }
 
 export interface PartialRelationEntrantData {
-  statut?: 'accepted' | 'refused' | 'leaved' | 'pending'
+  statut?: 'accepted' | 'refused' | 'leaved' | 'pending' | 'abort'
   return?: string
   lastRead?: Timestamp
 }

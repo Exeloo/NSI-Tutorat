@@ -1,10 +1,7 @@
-import { timestamp } from '@vueuse/core'
-import { e } from 'unocss'
 import type { PlanningType } from './planning-type'
 import { isGoodSchedule } from '~/logic/pages/login/planning.login'
 import { updateUser, user } from '~/logic/data/auth/auth-manager'
 import type { UserData } from '~/logic/data/firestore/datas/Users'
-import { User } from '~/logic/data/firestore/datas/Users'
 import { setUser } from '~/logic/data/auth/user'
 
 export const isValidPlanning = (planning: PlanningType | undefined): boolean => {
@@ -15,7 +12,8 @@ interface ScheduleTime { start: string; end: string; statut: string }
 
 type Schedule = ScheduleTime[][]
 
-const detailedTimes = ['07:00', '07:30', '08:00', '08:30', '09:00', '09:30', '10:00', '10:30', '11:00', '11:30', '12:00', '12:30', '13:00', '13:30', '14:00', '14:30', '15:00', '15:30', '16:00', '16:30', '17:00', '17:30', '18:00', '18:30', '19:00']
+export const days = ['Lundi', 'Mardi', 'Mercredi', 'Jeudi', 'Vendredi', 'Samedi', 'Dimanche']
+export const detailedTimes = ['07:00', '07:30', '08:00', '08:30', '09:00', '09:30', '10:00', '10:30', '11:00', '11:30', '12:00', '12:30', '13:00', '13:30', '14:00', '14:30', '15:00', '15:30', '16:00', '16:30', '17:00', '17:30', '18:00', '18:30', '19:00']
 
 export const getFreeTimes = (schedule: Schedule, restricted: boolean): Schedule => {
   const newDays = []
@@ -63,8 +61,8 @@ export const getSeparatedTimes = (schedule: Schedule): Schedule => {
 }
 
 export const getSameTimes = (userSchedule: Schedule, publicUserSchedule: Schedule, restricted = false) => {
-  const freeUTime = getSeparatedTimes(getFreeTimes(userSchedule, restricted))
-  const freePTime = getSeparatedTimes(getFreeTimes(publicUserSchedule, true))
+  const freeUTime = getSeparatedTimes(getFreeTimes(userSchedule, true))
+  const freePTime = getSeparatedTimes(getFreeTimes(publicUserSchedule, restricted))
   const newDays = []
   for (const [i, userDay] of freeUTime.entries()) {
     const newDay = []
@@ -83,7 +81,7 @@ export const getSameTimes = (userSchedule: Schedule, publicUserSchedule: Schedul
 export const hasSameTimes = (userSchedule: Schedule, publicUserSchedule: Schedule): boolean => {
   const sameTimes = getSameTimes(userSchedule, publicUserSchedule)
   for (const day of sameTimes)
-    if (day.some(day => day.statut === 'free')) return true
+    if (day.some(day => day.statut === 'free' || day.statut === 'tutorat')) return true
   return false
 }
 

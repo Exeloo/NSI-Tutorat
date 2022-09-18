@@ -12,6 +12,7 @@ import 'vue-cal/dist/vuecal.css'
 import 'vue-cal/dist/i18n/fr.js'
 import 'uno.css'
 import { FirebaseSystem } from './logic/data/firebase-system'
+import { defineRedirect } from './logic/data/auth/auth-manager'
 // import { login, softLogin, user } from './logic/data/auth/auth-manager'
 // import { convsCache, getFirstConvId, initConvs } from './logic/data/firestore/datas/Conversations'
 
@@ -29,9 +30,8 @@ export const createApp = ViteSSG(
   },
 )
 
+defineRedirect()
 export const isLoading = ref(true)
 export const toggleLoadingPage = (force?: boolean) => {
   isLoading.value = force === undefined ? !isLoading.value : force
 }
-
-export const firstConv = ref('')

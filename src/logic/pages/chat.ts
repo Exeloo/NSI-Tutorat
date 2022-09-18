@@ -7,7 +7,7 @@ import type { UserData } from '../data/firestore/datas/Users'
 export const activeChat = ref('')
 export const messages = ref(new Map<string, [string, { timestamp: Timestamp; author: string; message: string }][]>())
 export const hasInitConvs = ref(new Map<string, boolean>())
-export const unreadMessages = ref<Map<string, number>>(new Map<string, number>([['32uraR9dWEiXLpXOISo7', 2]]))
+export const unreadMessages = ref<Map<string, number>>(new Map<string, number>())
 export const inputContent = reactive({})
 export const isLooking = ref(true)
 

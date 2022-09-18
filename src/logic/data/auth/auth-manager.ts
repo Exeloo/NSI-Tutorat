@@ -1,3 +1,4 @@
+import type { User } from 'firebase/auth'
 import { getRedirectResult, signInWithRedirect, signOut } from 'firebase/auth'
 import { ref } from 'vue'
 import { auth, provider } from '../firebase'
@@ -8,6 +9,7 @@ import { isValidChoices } from '~/logic/profil/school/school-manager'
 import { isValidPlanning } from '~/logic/profil/planning/planning-manager'
 
 export const user = ref<UserData>()
+export const result = ref<{ result: false; error: string } | { result: true }>({ result: false, error: 'noResult' })
 
 export const logout = () => {
   return signOut(auth)
@@ -17,8 +19,10 @@ export const updateUser = (d: UserData) => {
   user.value = d
 }
 
-export const login = async(forceNoRedirect = false, isLogout = true): Promise<{ result: false; error: string } | { result: true }> => {
-  const userResult = await getUser(auth.currentUser)
+const login = async(forceNoRedirect = false, isLogout = true, u?: User, isF = false): Promise<{ result: false; error: string } | { result: true }> => {
+  if (isF && !u && !auth.currentUser)
+    return { result: false, error: 'cookies' }
+  const userResult = await getUser(u ?? auth.currentUser)
   if (!userResult.result) {
     if (userResult.error === 'result') {
       if (!forceNoRedirect) await signInWithRedirect(auth, provider)
@@ -35,15 +39,23 @@ export const login = async(forceNoRedirect = false, isLogout = true): Promise<{ 
   return { result: true }
 }
 
+export const userLogin = async() => {
+  result.value = await login()
+}
+
 export const defineRedirect = () => {
   getRedirectResult(auth)
-    .then(async() => {
-      if (!(await login(true, false)).result && !['/', '/terms', '/contact', '/about', '/faq', '/admin', '/login'].includes(window.location.pathname))
+    .then(async(u) => {
+      result.value = (await login(true, false, u?.user, true))
+      if (!result.value.result && !['/', '/terms', '/about', '/faq', '/admin', '/login'].includes(window.location.pathname))
         window.location.replace('/login')
+      else if (result.value.result && ['/', '/login'].includes(window.location.pathname))
+        window.location.replace('/dashboard')
       toggleLoadingPage(false)
-    }).catch((error) => {
+    })
+    .catch((error) => {
       const errorCode = error.code
       const errorMessage = error.message
-      console.error(errorCode, errorMessage)
+      console.error('AuthError', errorCode, errorMessage)
     })
 }
