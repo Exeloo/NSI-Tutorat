@@ -54,8 +54,11 @@ const labels = new Map([
   ['tg6', 'TG6'],
   ['tstl', 'TSTL'],
   ['tstd2a', 'TSTD2A'],
-  ['art-spe', 'Art'],
-  ['geopo-spe', 'Histoire-Géographie, Géopolitique et Science Poilitique'],
+  ['stl', 'STL'],
+  ['std2a', 'STD2A'],
+  ['ap-spe', 'Arts Plastiques'],
+  ['cav-spe', 'Cinéma AudioVisuel'],
+  ['ghhsp-spe', 'Histoire-Géographie, Géopolitique et Science Poilitique'],
   ['hlp-spe', 'Humanité, Littérature et Philosophie'],
   ['llce-spe', 'Langues, Littératures et Cultures Etrangère'],
   ['llca-spe', 'Littératures, Langues et Cultures de l\'Antiquité'],
@@ -64,13 +67,22 @@ const labels = new Map([
   ['pc-spe', 'Physique-Chimie'],
   ['svt-spe', 'Science de la Vie et de la Terre'],
   ['ses-spe', 'Science Economique et Sociales'],
-  ['std2a', 'STD2A'],
-  ['stl', 'STL'],
+  ['bb-tspe', 'Biochimie-Biologie'],
+  ['pcm-tspe', 'Physique-Chimie et Mathématiques'],
+  ['?-tspe', '?'],
+  ['dma-tspe', 'Design et Métiers d\'Arts'],
+  ['onl-tspe', 'Outils et Langages Numériques'],
+  ['pc-tspe', 'Physique-Chimie'],
+  ['amd-tspe', 'Analyse et Méthodes en Design'],
+  ['ccdma-tspe', 'Conception et Création en Design et Métiers d\'Arts'],
   ['alld-lv', 'Allemand'],
   ['angl-lv', 'Anglais'],
   ['esp-lv', 'Espagnol'],
-  ['droit-opt', 'Droit'],
-  ['art-opt', 'Art'],
+  ['ccd-opt', 'Création Cultures Design'],
+  ['sl-opt', 'Science Laboratoire'],
+  ['ap-opt', 'Arts Plasitiques'],
+  ['cav-opt', 'Cinéma AudioVisuel'],
+  ['mathsSpe-opt', 'Mathématiques Spécifiques'],
   ['maths-expert-opt', 'Mathématiques Expertes'],
   ['maths-compl-opt', 'Mathématiques Complémentaires'],
   ['chinois-opt', 'Chinois'],
@@ -99,7 +111,7 @@ const labels = new Map([
 export const getSchoolLabel = (id: string, prefix?: boolean): string => {
   let label = labels.has(id) ? <string>labels.get(id) : id
   if (prefix) {
-    if (id.endsWith('-spe'))
+    if (id.endsWith('-spe') || id.endsWith('-tspe'))
       label = `Spécialité ${label}`
     else if (id.endsWith('-opt'))
       label = `Option ${label}`

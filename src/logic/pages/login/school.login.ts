@@ -175,7 +175,6 @@ export const selectOptions = {
     ]],
     ['terminal-t-std2a', [
       { value: 'amd-tspe', label: 'Analyse et Méthodes en Design' },
-      { value: 'eps-tspe', label: 'Education Physique et Sportive' },
       { value: 'ccdma-tspe', label: 'Conception et Création en Design et Métiers d\'Arts' },
     ]],
   ]),

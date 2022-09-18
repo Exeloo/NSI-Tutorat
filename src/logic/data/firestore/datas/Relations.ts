@@ -58,7 +58,6 @@ export const getRelations = async() => {
       relationsCache.set(doc.id, <RelationData>doc.data())
     })
   }
-  console.log(relationsCache)
   return relationsCache
 }
 

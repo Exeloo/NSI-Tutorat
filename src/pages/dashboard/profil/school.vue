@@ -60,7 +60,7 @@
           {{ getSchoolLabel(user.school.class) }}
         </div>
         <div v-else class="profil-index-item-value">
-          <Select id="techno" v-model="models.value.techno" :options="options.techno" :search="true" :required="false" />
+          <Select id="techno" v-model="models.value.techno" :options="selectOptions.techno" :search="true" :required="false" />
         </div>
       </div>
       <div class="profil-index-item">
