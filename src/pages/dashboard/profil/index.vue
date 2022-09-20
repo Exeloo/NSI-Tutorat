@@ -31,7 +31,7 @@
           {{ user.birthday ? `${convertDate(user.birthday.toDate().getUTCDate())}/${convertDate(user.birthday.toDate().getUTCMonth() + 1)}/${user.birthday.toDate().getUTCFullYear()}` : '-' }}
         </div>
         <div v-else class="profil-index-item-input">
-          <input v-model="model.birthday" type="date" class="profil-index-item-date">
+          <input v-model="model.birthday" type="date" class="profil-index-item-date" :min="`${now - 20}-01-01`" :max="`${now - 13}-01-01`">
         </div>
       </div>
       <div class="profil-index-item">
@@ -76,6 +76,8 @@ import { setUser } from '~/logic/data/auth/user'
 
 import Timestamp = firebase.firestore.Timestamp
 import { UserData } from '~/logic/data/firestore/datas/Users'
+
+const now = new Date().getFullYear()
 
 const updating = ref(false)
 const isButtonLoading = ref(false)

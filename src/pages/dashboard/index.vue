@@ -75,6 +75,7 @@ import { getForcedUsers, getUsers } from '~/logic/data/firestore/datas/Users'
 import { toggleLoadingPage } from '~/main'
 import { changeActiveChat, hasInitConvs, initConv, unreadMessages } from '~/logic/pages/chat';
 import { hasSameTimes } from '~/logic/profil/planning/planning-manager';
+import { hasSameSubjects, getSameSubjects } from '~/logic/profil/school/school-manager'
 
 const isConvsLoading = ref(false)
 const relations = ref(new Map<string, RelationData>())
@@ -123,24 +124,25 @@ const getFilteredUsers = () => {
   const filteredList: UserData[] = []
   const u = <UserData> user.value
   for (const [_, p] of publicUsers.value) {
+    if (!u.school || !p.school)
+      continue
     if (!p.school.tutorat.helper.wish)
       continue
     if (p.uid === u.uid) 
       continue
-    if (!u.school.tutorat.receiver.subjects.some(s => p.school.tutorat.helper.subjects.includes(s)))
+    if (!hasSameSubjects(p.school.tutorat.helper.subjects, u.school.tutorat.receiver.subjects))
       continue
-    if (true && p.school.level !== 'seconde' && u.school.level !== 'seconde' && u.school.level.slice(-1) !== p.school.level.slice(-1))
+    if (p.school.level !== 'seconde' && u.school.level !== 'seconde' && u.school.level.slice(-1) !== p.school.level.slice(-1))
       continue
-    if (true && !hasSameTimes(u.planning.map(schedule => schedule.times), p.planning.map(schedule => schedule.times)))
+    if (!u.planning || !p.planning)
       continue
-
-    if (u.school.level.startsWith('terminale') && u.school.level.slice(0, -1) === p.school.level.slice(0, -1))
-      filteredList.push(p)
-
+    if (!hasSameTimes(u.planning.map(schedule => schedule.times), p.planning.map(schedule => schedule.times)))
+      continue
     const pI = p.school.level === 'seconde' ? 1 : p.school.level.startsWith('premiere') ? 2 : 3
     const uI = u.school.level === 'seconde' ? 1 : u.school.level.startsWith('premiere') ? 2 : 3
-    if (pI > uI)
-      filteredList.push(p)
+    if (pI < uI)
+      continue
+    filteredList.push(p)
   }
   return filteredList
 }

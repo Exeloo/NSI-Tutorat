@@ -16,7 +16,7 @@
           {{ getSchoolLabel(user.school.level) }}
         </div>
         <div v-else class="profil-index-item-value">
-          <Select id="niveau" v-model="models.value.level" :options="selectOptions.niveau" :required="false" @change="onNiveauChange" />
+          <Select id="niveau" v-model="models.value.level" :options="selectOptions.niveau" :required="false" @change="updateValidation" />
         </div>
       </div>
       <div class="profil-index-item">
@@ -27,7 +27,7 @@
           {{ getSchoolLabel(user.school.class) }}
         </div>
         <div v-else class="profil-index-item-value">
-          <Select id="classe" v-model="models.value.class" :options="options.classe" :required="false" />
+          <Select id="classe" v-model="models.value.class" :options="options.classe" :required="false" @change="updateValidation" />
         </div>
       </div>
       <div v-if="models.value.level.endsWith('-g')" class="profil-index-item-value">
@@ -46,9 +46,9 @@
           </div>
         </div>
         <div v-else class="profil-index-item-value profil-index-item-multi-select">
-          <Select id="spe-a" v-model="models.value.spe.a" :options="options.spe.a" :search="true" :required="false" @change="onSpeChange" />
-          <Select id="spe-b" v-model="models.value.spe.b" :options="options.spe.b" :search="true" :required="false" @change="onSpeChange" />
-          <Select id="spe-c" v-model="models.value.spe.c" :options="options.spe.c" :search="true" :required="false" @change="onSpeChange" />
+          <Select id="spe-a" v-model="models.value.spe.a" :options="options.spe.a" :search="true" :required="false" @change="updateValidation" />
+          <Select id="spe-b" v-model="models.value.spe.b" :options="options.spe.b" :search="true" :required="false" @change="updateValidation" />
+          <Select id="spe-c" v-model="models.value.spe.c" :options="options.spe.c" :search="true" :required="false" @change="updateValidation" />
         </div>
       </div>
       <div v-if="models.value.level.endsWith('-t')" class="profil-index-item">
@@ -59,7 +59,7 @@
           {{ getSchoolLabel(user.school.class) }}
         </div>
         <div v-else class="profil-index-item-value">
-          <Select id="techno" v-model="models.value.techno" :options="selectOptions.techno" :search="true" :required="false" />
+          <Select id="techno" v-model="models.value.techno" :options="selectOptions.techno" :search="true" :required="false" @change="updateValidation" />
         </div>
       </div>
       <div class="profil-index-item">
@@ -75,8 +75,8 @@
           </div>
         </div>
         <div v-else class="profil-index-item-value profil-index-item-multi-select">
-          <Select id="lva" v-model="models.value.lv.a" :options="options.lv.a" :required="false" @change="onLvChange" />
-          <Select id="lvb" v-model="models.value.lv.b" :options="options.lv.b" :required="false" @change="onLvChange" />
+          <Select id="lva" v-model="models.value.lv.a" :options="options.lv.a" :required="false" @change="updateValidation" />
+          <Select id="lvb" v-model="models.value.lv.b" :options="options.lv.b" :required="false" @change="updateValidation" />
         </div>
       </div>
       <div class="profil-index-item">
@@ -89,7 +89,7 @@
           </div>
         </div>
         <div v-else class="profil-index-item-value">
-          <Select v-if="models.value.level && optionOptions" id="options" v-model="models.value.option" :options="optionOptions" tags :required="false" />
+          <Select v-if="models.value.level && optionOptions" id="options" v-model="models.value.option" :options="getOption(models.value.level, models.value.spe)" tags :required="false" @change="updateValidation" />
         </div>
       </div>
       <div class="profil-index-item">
@@ -100,7 +100,7 @@
           {{ getSchoolLabel(user.school.section.lang) }}
         </div>
         <div v-else class="profil-index-item-value">
-          <Select id="euro" v-model="models.value.section.lang" :options="options.section" :required="false" />
+          <Select id="euro" v-model="models.value.section.lang" :options="options.section" :required="false" @change="updateValidation" />
         </div>
       </div>
       <div class="profil-index-item">
@@ -111,7 +111,7 @@
           {{ getSchoolLabel(user.school.section.dnl) }}
         </div>
         <div v-else class="profil-index-item-value">
-          <Select v-if="models.value.section.lang === 'angl-euro' && models.value.niveau !== 'seconde'" id="dnl" v-model="models.value.section.dnl" :options="selectOptions.section.dnl" :required="false" />
+          <Select v-if="models.value.section.lang === 'angl-euro' && models.value.niveau !== 'seconde'" id="dnl" v-model="models.value.section.dnl" :options="selectOptions.section.dnl" :required="false" @change="updateValidation" />
         </div>
       </div>
       <div v-if="user.school.tutorat.helper.wish || updating" class="profil-index-item">
@@ -143,8 +143,8 @@
         <div v-else class="profil-index-item-value">
           <Checkbox id="help" v-model="models.value.tutorat.helper.wish" styles="blurple" />
           <div v-if="models.value.tutorat.helper.wish && options.subjects.good" class="profil-index-item-sub-group">
-            <Select id="help" v-model="models.value.tutorat.helper.subjects" label="Je veux aider en" :options="options.subjects.helper" tags search />
-            <Select id="goodSubject" v-model="models.value.subjects.good" label="Je suis aussi à l'aise en" :options="options.subjects.good" tags search :required="false" />
+            <Select id="help" v-model="models.value.tutorat.helper.subjects" label="Je veux aider en" :options="options.subjects.helper" tags search @change="updateValidation" />
+            <Select id="goodSubject" v-model="models.value.subjects.good" label="Je suis aussi à l'aise en" :options="options.subjects.good" tags search :required="false" @change="updateValidation" />
           </div>
         </div>
       </div>
@@ -177,8 +177,8 @@
         <div v-else class="profil-index-item-value">
           <Checkbox id="receive" v-model="models.value.tutorat.receiver.wish" styles="blurple" />
           <div v-if="models.value.tutorat.receiver.wish && options.subjects.bad" class="profil-index-item-sub-group">
-            <Select id="receive" v-model="models.value.tutorat.receiver.subjects" label="Je veux recevoir de l'aide en" :options="options.subjects.receiver" tags search />
-            <Select id="badSubject" v-model="models.value.subjects.bad" label="Je suis aussi moins à l'aise en" :options="options.subjects.bad" tags search :required="false" />
+            <Select id="receive" v-model="models.value.tutorat.receiver.subjects" label="Je veux recevoir de l'aide en" :options="options.subjects.receiver" tags search @change="updateValidation" />
+            <Select id="badSubject" v-model="models.value.subjects.bad" label="Je suis aussi moins à l'aise en" :options="options.subjects.bad" tags search :required="false" @change="updateValidation" />
           </div>
         </div>
       </div>
@@ -291,36 +291,15 @@ const onUndo = () => {
   setModels(copyRef(user.value.school))
 }
 
-const updateSubjects = () => {
-  if (!optionOptions.value)
-    onNiveauChange()
-  if (!optionOptions.value || (optionOptions.value.filter(({ value }: Option) => models.value.option.includes(value)).length <= 0 && models.value.option.length > 0))
-    models.value.option = []
-  options.subjects.helper = getSubjects(models.value).filter(({ value }: Option) => ![...models.value.subjects.bad, ...models.value.subjects.good, ...models.value.tutorat.receiver.subjects].includes(value))
-  options.subjects.receiver = getSubjects(models.value).filter(({ value }: Option) => ![...models.value.subjects.bad, ...models.value.subjects.good, ...models.value.tutorat.helper.subjects].includes(value))
-  options.subjects.good = getSubjects(models.value).filter(({ value }: Option) => ![...models.value.subjects.bad, ...models.value.tutorat.helper.subjects, ...models.value.tutorat.receiver.subjects].includes(value))
-  options.subjects.bad = getSubjects(models.value).filter(({ value }: Option) => ![...models.value.subjects.good, ...models.value.tutorat.helper.subjects, ...models.value.tutorat.receiver.subjects].includes(value))
-}
-
-const updateValidation = () => {
-  updateSubjects()
-  isNotValid.value = !isValidChoices(models.value)
-}
-
-watch(models, updateValidation)
-
 const onNiveauChange = () => {
   if (!models.value.level) options.classe = undefined
   else options.classe = selectOptions.classe.get(models.value.level)
-  models.value.class = ''
-  optionOptions.value = getOption(models.value.level, models.value.spe)
 }
 
 const onSpeChange = () => {
-  options.spe.a = selectOptions.spe.filter(({ value }: Option) => ![models.value.spe.b, models.value.spe.c].includes(value))
-  options.spe.b = selectOptions.spe.filter(({ value }: Option) => ![models.value.spe.a, models.value.spe.c].includes(value))
-  options.spe.c = selectOptions.spe.filter(({ value }: Option) => ![models.value.spe.a, models.value.spe.b].includes(value))
-  optionOptions.value = getOption(models.value.level, models.value.spe)
+  options.spe.a = selectOptions.spe.filter(({ value }: Option) => ![models.value.spe.b, models.value.spe.c].includes(value) && !(([models.value.spe.b, models.value.spe.c].includes('ap-spe') || [models.value.spe.b, models.value.spe.c].includes('cav-spe')) && ['ap-spe', 'cav-spe'].includes(value)) && !(models.value.option.includes('mathsSpe-opt') && value === 'maths-spe'))
+  options.spe.b = selectOptions.spe.filter(({ value }: Option) => ![models.value.spe.a, models.value.spe.c].includes(value) && !(([models.value.spe.a, models.value.spe.c].includes('ap-spe') || [models.value.spe.a, models.value.spe.c].includes('cav-spe')) && ['ap-spe', 'cav-spe'].includes(value)) && !(models.value.option.includes('mathsSpe-opt') && value === 'maths-spe'))
+  options.spe.c = selectOptions.spe.filter(({ value }: Option) => ![models.value.spe.a, models.value.spe.b].includes(value) && !(([models.value.spe.a, models.value.spe.b].includes('ap-spe') || [models.value.spe.a, models.value.spe.b].includes('cav-spe')) && ['ap-spe', 'cav-spe'].includes(value)) && !(models.value.option.includes('mathsSpe-opt') && value === 'maths-spe'))
 }
 
 const idToLang = (e: string) => e.split('-')[0]
@@ -333,6 +312,22 @@ const onLvChange = () => {
       .map(id => idToLang(id))
       .includes(idToLang(l.value)),
   )
+}
+
+const updateSubjects = () => {
+  onNiveauChange()
+  onSpeChange()
+  onLvChange()
+  const subjects = getSubjects(models.value)
+  options.subjects.helper = subjects.filter(({ value }: Option) => ![...models.value.subjects.bad, ...models.value.subjects.good, ...models.value.tutorat.receiver.subjects].includes(value))
+  options.subjects.receiver = subjects.filter(({ value }: Option) => ![...models.value.subjects.bad, ...models.value.subjects.good, ...models.value.tutorat.helper.subjects].includes(value) && !(value === 'fr' && models.value.level.startsWith('terminal')))
+  options.subjects.good = subjects.filter(({ value }: Option) => ![...models.value.subjects.bad, ...models.value.tutorat.helper.subjects, ...models.value.tutorat.receiver.subjects].includes(value))
+  options.subjects.bad = subjects.filter(({ value }: Option) => ![...models.value.subjects.good, ...models.value.tutorat.helper.subjects, ...models.value.tutorat.receiver.subjects].includes(value) && !(value === 'fr' && models.value.level.startsWith('terminal')))
+}
+
+const updateValidation = () => {
+  updateSubjects()
+  isNotValid.value = !isValidChoices(models.value)
 }
 
 setTimeout(() => {
@@ -356,7 +351,6 @@ setTimeout(() => {
 </script>
 
 <style scoped>
-
 .profil-index-container {
   width: 100%;
 }

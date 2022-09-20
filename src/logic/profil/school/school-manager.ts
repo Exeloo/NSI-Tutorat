@@ -1,3 +1,4 @@
+import { correspondingTable, labels } from './school-data'
 import type { PartialSchoolPreferencesType } from './school-type'
 
 export const isValidChoices = (choices?: PartialSchoolPreferencesType) => {
@@ -22,92 +23,6 @@ export const isValidChoices = (choices?: PartialSchoolPreferencesType) => {
   return hasLevel && hasClasse && hasLv && hasDnl && hasSpe && hasTech && hasSubjects && askHelpOrReceive
 }
 
-const labels = new Map([
-  ['', '-'],
-  ['seconde', 'Seconde Générale et Technologique'],
-  ['premiere-g', 'Première Générale'],
-  ['premiere-t', 'Première Technologique'],
-  ['terminal-g', 'Terminale Générale'],
-  ['terminal-t', 'Terminale Technologique'],
-  ['2nd1', '2nd1'],
-  ['2nd2', '2nd2'],
-  ['2nd3', '2nd3'],
-  ['2nd4', '2nd4'],
-  ['2nd5', '2nd5'],
-  ['2nd6', '2nd6'],
-  ['2nd7', '2nd7'],
-  ['2nd8', '2nd8'],
-  ['2nd9', '2nd9'],
-  ['1g1', '1G1'],
-  ['1g2', '1G2'],
-  ['1g3', '1G3'],
-  ['1g4', '1G4'],
-  ['1g5', '1G5'],
-  ['1g6', '1G6'],
-  ['1stl', '1STL'],
-  ['1std2a', '1STD2A'],
-  ['tg1', 'TG1'],
-  ['tg2', 'TG2'],
-  ['tg3', 'TG3'],
-  ['tg4', 'TG4'],
-  ['tg5', 'TG5'],
-  ['tg6', 'TG6'],
-  ['tstl', 'TSTL'],
-  ['tstd2a', 'TSTD2A'],
-  ['stl', 'STL'],
-  ['std2a', 'STD2A'],
-  ['ap-spe', 'Arts Plastiques'],
-  ['cav-spe', 'Cinéma AudioVisuel'],
-  ['ghhsp-spe', 'Histoire-Géographie, Géopolitique et Science Poilitique'],
-  ['hlp-spe', 'Humanité, Littérature et Philosophie'],
-  ['llce-spe', 'Langues, Littératures et Cultures Etrangère'],
-  ['llca-spe', 'Littératures, Langues et Cultures de l\'Antiquité'],
-  ['maths-spe', 'Mathématiques'],
-  ['nsi-spe', 'Numérique et Science de l\'Informatique'],
-  ['pc-spe', 'Physique-Chimie'],
-  ['svt-spe', 'Science de la Vie et de la Terre'],
-  ['ses-spe', 'Science Economique et Sociales'],
-  ['bb-tspe', 'Biochimie-Biologie'],
-  ['pcm-tspe', 'Physique-Chimie et Mathématiques'],
-  ['?-tspe', '?'],
-  ['dma-tspe', 'Design et Métiers d\'Arts'],
-  ['onl-tspe', 'Outils et Langages Numériques'],
-  ['pc-tspe', 'Physique-Chimie'],
-  ['amd-tspe', 'Analyse et Méthodes en Design'],
-  ['ccdma-tspe', 'Conception et Création en Design et Métiers d\'Arts'],
-  ['alld-lv', 'Allemand'],
-  ['angl-lv', 'Anglais'],
-  ['esp-lv', 'Espagnol'],
-  ['ccd-opt', 'Création Cultures Design'],
-  ['sl-opt', 'Science Laboratoire'],
-  ['ap-opt', 'Arts Plasitiques'],
-  ['cav-opt', 'Cinéma AudioVisuel'],
-  ['mathsSpe-opt', 'Mathématiques Spécifiques'],
-  ['maths-expert-opt', 'Mathématiques Expertes'],
-  ['maths-compl-opt', 'Mathématiques Complémentaires'],
-  ['chinois-opt', 'Chinois'],
-  ['alld-euro', 'Allemand'],
-  ['angl-euro', 'Anglais'],
-  ['esp-euro', 'Espagnol'],
-  ['eps-dnl', 'Education Physique et Sportive'],
-  ['hist-dnl', 'Histoire-Géographie'],
-  ['maths-dnl', 'Mathématiques'],
-  ['fr', 'Français'],
-  ['maths', 'Mathématiques'],
-  ['pc', 'Physique-Chimie'],
-  ['ses', 'Sciences Economique et Sociale'],
-  ['snt', 'Sciences Numérique et Technologique'],
-  ['svt', 'Sciences de la Vie et de la Terre'],
-  ['es', 'Enseignement Scientifique'],
-  ['philo', 'Philosophie'],
-  ['emc', 'Enseignement Morale et Civique'],
-  ['eps', 'Education Physique et Sportive'],
-  ['hist', 'Histoire-Géographie'],
-  ['m', 'Masculin'],
-  ['f', 'Féminin'],
-  ['n', 'Non Précisé'],
-])
-
 export const getSchoolLabel = (id: string, prefix?: boolean): string => {
   let label = labels.has(id) ? <string>labels.get(id) : id
   if (prefix) {
@@ -124,3 +39,21 @@ export const getSchoolLabel = (id: string, prefix?: boolean): string => {
   }
   return label
 }
+
+export const getHelpSubjects = (id: string) => {
+  return correspondingTable.get(id) ?? [id]
+}
+
+export const getSameSubjects = (hSubjects: string[], rSubjects: string[]) => {
+  const a = new Set<string>()
+  for (const hS of hSubjects) {
+    const subjects = getHelpSubjects(hS)
+    for (const rS of rSubjects) {
+      if (subjects.includes(rS))
+        a.add(rS)
+    }
+  }
+  return Array.from(a.values())
+}
+
+export const hasSameSubjects = (hS: string[], rS: string[]) => getSameSubjects(hS, rS).length > 0

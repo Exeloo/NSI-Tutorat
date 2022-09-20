@@ -5,7 +5,7 @@
       :id="`select-${props.id}`"
       v-model="value"
       :reduce="(e: any) => e.value"
-      :options="options"
+      :options="opts"
       :searchable="search"
       :multiple="tags"
     />
@@ -60,8 +60,32 @@ const value = computed({
   },
 })
 
-watch(value, () => update('change', null))
+const opts = computed({
+  get: () => {
+    if (value.value && value.value.length) {
+      if (value.value.endsWith) {
+        if (!props.options.map(({ value }) => value).includes(value.value))
+          value.value = ''
+      }
+      else {
+        const nV = []
+        let hasChanged = false
+        for (const v of value.value) {
+          if (props.options.map(({ value }) => value).includes(v))
+            nV.push(v)
+          else
+            hasChanged = true
+        }
+        if (hasChanged)
+          value.value = nV
+      }
+    }
+    return props.options
+  },
 
+})
+
+watch(value, () => update('change', null))
 </script>
 
 <style scoped>

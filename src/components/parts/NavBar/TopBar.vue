@@ -7,13 +7,6 @@
       </div>
     </div>
     <div>
-      <!-- <button class="" @click="openPopup('notif')">
-        <div class="icon" i="carbon-notification" />
-        <div class="text">
-          Notifications
-        </div>
-      </button> -->
-
       <button class="" @click="openPopup('profil')">
         <div class="icon" i="ic-round-account-circle" />
         <div class="text">
@@ -23,16 +16,7 @@
     </div>
   </div>
 
-  <div v-if="activePopup === 'notif'" class="notif-popup popup">
-    <div class="notif-topbar">
-      Dernieres notifications :
-    </div>
-    <div v-for="notififications in notifs" :key="notififications" class="notif-content">
-      -> {{ notififications.content }}
-    </div>
-  </div>
-
-  <div v-else-if="activePopup === 'profil'" class="profile-popup popup">
+  <div v-if="activePopup === 'profil'" class="profile-popup popup">
     <div class="profile-content">
       <div @click="changeRoute('profil')">
         Modifier le profil
@@ -60,11 +44,13 @@ import { activePopup, openPopup } from '~/logic/pages/dashboard'
 const router = useRouter()
 
 const onLogout = () => {
+  openPopup('')
   logout()
   router.push('/')
 }
 
 const changeRoute = (r: string, dashboard = true) => {
+  openPopup('')
   const route = dashboard ? '/dashboard/' : '/'
   router.push(route.concat(r))
 }

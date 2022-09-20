@@ -75,11 +75,11 @@
               <Button id="accept" label="Accepter" styles="success" :options="{ disabled: !!isLoading }" :loading="`accept-${k}` === isLoading" @click="relationAccept(k)" />
               <Button id="deny" label="Refuser" styles="danger" :options="{ disabled: !!isLoading }" :loading="`deny-${k}` === isLoading" @click="relationDeny(k)" />
             </div>
-            <div v-else-if="sortedRelations.contact.map(([key, value]) => key).includes(k)">
+            <div v-else-if="sortedRelations.contact.map(([key, value]) => key).includes(k) && v.receivers.includes(user.uid)">
               <Button id="create" label="Créer une relation" styles="success" :options="{ disabled: !!isLoading || isDeleting === k || isAdding === k || isCreating === k }" :loading="`create-${k}` === isLoading" @click="initCreate(k)" />
               <Button id="abort" label="Supprimer la relation" styles="danger" :options="{ disabled: !!isLoading || isDeleting === k || isAdding === k || isCreating === k }" :loading="`abort-${k}` === isLoading" @click="relationAbort(k)" />
             </div>
-            <div v-else>
+            <div v-else-if="!sortedRelations.contact.map(([key, value]) => key).includes(k)">
               <Button id="delete" label="Quitter la relation" styles="danger" :options="{ disabled: isDeleting === k || !!isLoading || isAdding === k }" @click="() => { textDeleteModel = ''; isDeleting = k; isAdding = ''; isCreating = '' }" />
             </div>
             

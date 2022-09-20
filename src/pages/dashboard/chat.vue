@@ -45,7 +45,7 @@
       </div>
     </div>
     <div v-else-if="!activeChat" class="chat-messages-error">
-      Aucun chat n'est séléctionner !
+      Aucun chat n'est séléctionné !
     </div>
     <div v-else-if="!activeChat" class="chat-messages-error">
       Chat introuvable !

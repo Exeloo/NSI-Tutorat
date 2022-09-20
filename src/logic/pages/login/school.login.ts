@@ -51,8 +51,8 @@ export const selectOptions = {
       { value: '1g6', label: '1G6' },
     ]],
     ['premiere-t', [
-      { value: '1stl', label: '1STL' },
       { value: '1std2a', label: '1STDAA' },
+      { value: '1stl', label: '1STL' },
     ]],
     ['terminal-g', [
       { value: 'tg1', label: 'TG1' },
@@ -63,8 +63,8 @@ export const selectOptions = {
       { value: 'tg6', label: 'TG6' },
     ]],
     ['terminal-t', [
-      { value: 'tstl', label: 'TSTL' },
       { value: 'tstd2a', label: 'TSTD2A' },
+      { value: 'tstl', label: 'TSTL' },
     ]],
   ]),
   spe: [
@@ -95,18 +95,13 @@ export const selectOptions = {
     ]],
     ['premiere-g', [
       { value: 'chinois-opt', label: 'Chinois' },
-      { value: 'mathsSpe-opt', label: 'Mathématiques Spécifiques' },
     ]],
     ['premiere-t', [
-      { value: 'chinois-opt', label: '? Chinois' },
-      { value: 'mathsSpe-opt', label: '? Mathématiques Spécifiques' },
     ]],
     ['terminal-g', [
       { value: 'chinois-opt', label: 'Chinois' },
     ]],
     ['terminal-t', [
-      { value: 'chinois-opt', label: '? Chinois' },
-      { value: 'mathsSpe-opt', label: '? Mathématiques Spécifiques' },
     ]],
     ['default', [
       { value: 'ap-opt', label: 'Arts Plasitiques' },
@@ -123,12 +118,11 @@ export const selectOptions = {
       { value: 'eps-dnl', label: 'Education Physique et Sportive' },
       { value: 'hist-dnl', label: 'Histoire-Géographie' },
       { value: 'maths-dnl', label: 'Mathématiques' },
+      { value: 'ses-dnl', label: 'Sciences Economique et Sociale' },
     ],
   },
   subject: new Map([
     ['seconde', [
-      { value: 'emch', label: '? EMCH' },
-      { value: 'fr', label: 'Français' },
       { value: 'maths', label: 'Mathématiques' },
       { value: 'pc', label: 'Physique-Chimie' },
       { value: 'ses', label: 'Sciences Economique et Sociale' },
@@ -136,36 +130,30 @@ export const selectOptions = {
       { value: 'svt', label: 'Sciences de la Vie et de la Terre' },
     ]],
     ['premiere-g', [
-      { value: 'emc', label: 'Enseignement Morale et Civique' },
       { value: 'es', label: 'Enseignement Scientifique' },
-      { value: 'fr', label: 'Français' },
     ]],
     ['premiere-t', [
-      { value: 'emc', label: 'Enseignement Morale et Civique' },
-      { value: 'fr', label: 'Français' },
       { value: 'maths', label: 'Mathématiques' },
     ]],
     ['terminal-g', [
-      { value: 'emc', label: 'Enseignement Morale et Civique' },
       { value: 'es', label: 'Enseignement Scientifique' },
       { value: 'philo', label: 'Philosophie' },
     ]],
     ['terminal-t', [
-      { value: 'emc', label: 'Enseignement Morale et Civique' },
       { value: 'maths', label: 'Mathématiques' },
       { value: 'philo', label: 'Philosophie' },
     ]],
     ['default', [
-      { value: 'eps', label: 'Education Physique et Sportive' },
+      { value: 'fr', label: 'Français' },
       { value: 'hist', label: 'Histoire-Géographie' },
     ]],
     ['premiere-t-stl', [
       { value: 'bb-tspe', label: 'Biochimie-Biologie' },
-      { value: '?-tspe', label: '?' },
+      { value: 'spcl-tspe', label: 'Sciences Physiques et Chimiques en Laboratoire' },
       { value: 'pcm-tspe', label: 'Physique-Chimie et Mathématiques' },
     ]],
     ['terminal-t-stl', [
-      { value: '?-tspe', label: '?' },
+      { value: 'spcl-tspe', label: 'Sciences Physiques et Chimiques en Laboratoire' },
       { value: 'pcm-tspe', label: 'Physique-Chimie et Mathématiques' },
     ]],
     ['premiere-t-std2a', [
@@ -249,13 +237,18 @@ export const setModels = (data: SchoolPreferencesType) => {
 export const options = reactive(getDefaultOptions())
 export const optionOptions = ref()
 
-export const getOption = (niveau: string, spe: { a?: string; b?: string; c?: string } | undefined) => {
+export const getOption = (niveau: string, spe?: { a?: string; b?: string; c?: string }) => {
   const options = selectOptions.option.get(niveau)
   const defaultOptions = <Option[]>selectOptions.option.get('default')
   if (!options) return undefined
   const copyOptions = [...options]
   for (const defaultOption of defaultOptions)
     copyOptions.push(defaultOption)
+  if (niveau === 'premiere-g' && spe) {
+    console.log(spe.b)
+    if (spe.a !== 'maths-spe' && spe.b !== 'maths-spe' && spe.c !== 'maths-spe')
+      copyOptions.push({ value: 'mathsSpe-opt', label: 'Mathématiques Spécifiques' })
+  }
 
   if (niveau === 'terminal-g' && spe) {
     if (spe.c === 'maths-spe')
@@ -263,12 +256,12 @@ export const getOption = (niveau: string, spe: { a?: string; b?: string; c?: str
     else if (spe.a === 'maths-spe' || spe.b === 'maths-spe')
       copyOptions.push({ value: 'maths-expert-opt', label: 'Mathématiques Expertes' })
   }
+
   return copyOptions
 }
 
 export const getSubjects = (models: SchoolPreferencesType) => {
   const options: Option[] = []
-  const isTerminalG = models.level === 'terminal-g'
 
   const niveauSubjects = selectOptions.subject.get(models.level)
   const defaultSubjects = selectOptions.subject.get('default')
@@ -282,7 +275,7 @@ export const getSubjects = (models: SchoolPreferencesType) => {
     const speSubjects = selectOptions.spe.filter((v: any) => {
       const isSpe = Object.values(models.spe).includes(v.value)
       const isLastSpe = models.spe.c === v.value
-      const isLostSpe = isTerminalG && isLastSpe
+      const isLostSpe = models.level === 'terminal-g' && isLastSpe
       return isSpe && !isLostSpe
     })
     options.push(...speSubjects.map((e) => { return { ...e, label: `Spécialité ${e.label}` } }))

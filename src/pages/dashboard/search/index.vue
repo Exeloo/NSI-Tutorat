@@ -42,8 +42,8 @@
             </div>
           </div>
           <LabelValue label="Classe" :value="publicUser.school.level" />
-          <LabelValues label="Il veut aider en" :value="publicUser.school.tutorat.helper.subjects" prefix />
-          <LabelValues label="Il aussi à l'aise en" :value="publicUser.school.subjects.good" prefix />
+          <LabelValues label="Il/Elle veut aider en" :value="publicUser.school.tutorat.helper.subjects" prefix />
+          <LabelValues label="Il/Elle est aussi à l'aise en" :value="publicUser.school.subjects.good" prefix />
           <LabelValue label="Description" :value="publicUser.description" class="search-user-w-high" />
           <LabelValue label="Åge" :value="publicUser.birthday ? `${new Date(new Date().getTime() - publicUser.birthday.toDate().getTime()).getFullYear() - 1970} ans` : '-'" />
           <LabelValue label="Genre" :value="publicUser.gender" />
@@ -51,8 +51,6 @@
         <div class="search-user-button">
           <Button id="look" label="Voir le profil" styles="blurple" :options="{disabled: false}" @click="() => { router.push(`/dashboard/search/${publicUser.uid}`) }" />
         </div>
-
-        <!-- {{ publicUser.school }} -->
       </div>
       <div v-if="getFilteredUsers().length === 0" class="search-user-container no-one">
         Nous sommes désolé mais aucun profil n'a été trouvé pour vous, veuillez réessayer en changeant les filtres ou plus tard !
@@ -67,6 +65,7 @@ import { getForcedUsers, getUsers } from '~/logic/data/firestore/datas/Users'
 import { toggleLoadingPage } from '~/main'
 import { user } from '~/logic/data/auth/auth-manager'
 import { hasSameTimes } from '~/logic/profil/planning/planning-manager';
+import { hasSameSubjects, getSameSubjects } from '~/logic/profil/school/school-manager'
 
 const router = useRouter()
 
@@ -93,13 +92,17 @@ const getFilteredUsers = () => {
   const filteredList: UserData[] = []
   const u = <UserData> user.value
   for (const [_, p] of users.value) {
+    if (!u.school || !p.school)
+      continue
     if (!p.school.tutorat.helper.wish)
       continue
     if (p.uid === u.uid) 
       continue
-    if (!u.school.tutorat.receiver.subjects.some(s => p.school.tutorat.helper.subjects.includes(s)))
+    if (!hasSameSubjects(p.school.tutorat.helper.subjects, u.school.tutorat.receiver.subjects))
       continue
     if (filter.filiaire && p.school.level !== 'seconde' && u.school.level !== 'seconde' && u.school.level.slice(-1) !== p.school.level.slice(-1))
+      continue
+    if (!u.planning || !p.planning)
       continue
     if (filter.times && !hasSameTimes(u.planning.map(schedule => schedule.times), p.planning.map(schedule => schedule.times)))
       continue

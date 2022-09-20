@@ -15,8 +15,8 @@
       <LabelValue label="Classe" :value="publicUser.school.level" />
       <LabelValue label="Åge" :value="publicUser.birthday ? `${new Date(new Date().getTime() - publicUser.birthday.toDate().getTime()).getFullYear() - 1970} ans` : '-'" />
       <LabelValue label="Genre" :value="publicUser.gender ?? '-'" />
-      <LabelValues label="Il veut aider en" :value="publicUser.school.tutorat.helper.subjects" prefix />
-      <LabelValues label="Il aussi à l'aise en" :value="publicUser.school.subjects.good" prefix />
+      <LabelValues label="Il/Elle veut aider en" :value="publicUser.school.tutorat.helper.subjects" prefix />
+      <LabelValues label="Il/Elle est aussi à l'aise en" :value="publicUser.school.subjects.good" prefix />
       <LabelValue label="Description" :value="publicUser.description ?? '-'" class="search-user-w-high" />
       <LabelValue v-if="publicUser.school.level.endsWith('-t')" label="Filiaire Technologique" :value="publicUser.school.techno" />
       <LabelValues v-if="publicUser.school.level.endsWith('-g')" label="Spécialités" :value="[publicUser.school.spe.a, publicUser.school.spe.b, publicUser.school.spe.c]" :complete="publicUser.school.level.startsWith('terminal') ? ' (abandonnée)' : ''" />
@@ -29,6 +29,9 @@
       />
     </div>
     <div class="search-user-button">
+      <div v-if="error" class="cal-val-return cal-val-bad">
+        {{ error }}
+      </div>
       <div v-if="!isRequesting" class="default-button">
         <Button id="contact" label="Contacter" styles="blurple" :options="{disabled: false}" :loading="isButtonLoading === 'contact'" @click="contact()" />
         <Button id="request" label="Demander de l'aide" styles="blurple" :options="{disabled: false}" @click="toggleIsRequesting(true)" />
@@ -55,7 +58,7 @@
               id="receive"
               v-model="model.subjects"
               label="Matières dans lesquels vous voulez recevoir de l'aide"
-              :options="user.school.tutorat.receiver.subjects.filter(e => publicUser.school.tutorat.helper.subjects.includes(e)).map(e => { return { label: getSchoolLabel(e, true), value: e}})"
+              :options="getSameSubjects(user.school.tutorat.receiver.subjects, publicUser.school.tutorat.helper.subjects).map(e => { return { label: getSchoolLabel(e, true), value: e}})"
               tags
               search
               :required="false"
@@ -84,7 +87,7 @@ import { getSameTimes, setTutoratSchedule } from '~/logic/profil/planning/planni
 import { user } from '~/logic/data/auth/auth-manager'
 import { hasEnoughRange } from '~/logic/pages/login/planning.login'
 import { createRelation, relationSetUserStatut } from '~/logic/data/firestore/datas/Relations'
-import { getSchoolLabel } from '~/logic/profil/school/school-manager'
+import { getSchoolLabel, getSameSubjects, hasSameSubjects } from '~/logic/profil/school/school-manager'
 import { changeActiveChat } from '~/logic/pages/chat'
 
 const props = defineProps({
@@ -103,20 +106,28 @@ const publicUser = ref(<UserData>users.value.get(props.uid))
 const model = reactive({ day: '', start: '', end: '', subjects: [] })
 const router = useRouter()
 
+const setError = (e: string) => {
+  error.value = e
+  setTimeout(() => {error.value = ''}, 4000)
+}
+
 const f = async() => {
   toggleLoadingPage(true)
   users.value = await getForcedUsers()
   toggleLoadingPage(false)
   publicUser.value = <UserData>users.value.get(props.uid)
   if (!publicUser.value)
-    error.value = 'L\'utilisateur n\'existe pas, veuillez contacter un administrateur !'
+    setError('L\'utilisateur n\'existe pas, veuillez contacter un administrateur !')
 }
 if (users.value.size === 0 || !publicUser.value)
   f()
 
 const toggleIsRequesting = (force?: boolean) => {
   if (force && !publicUser.value.school.tutorat.helper.wish) {
-    error.value = 'L\'utilisateur ne désire pas aider, veuillez vous rendre sur un autre profil !'
+    return setError('L\'utilisateur ne désire pas aider, veuillez vous rendre sur un autre profil !')
+  }
+  if (!hasSameSubjects(user.value.school.tutorat.receiver.subjects, publicUser.value.school.tutorat.helper.subjects)) {
+    return setError('Vous n\'avez aucune matière en commune avec cette personne !')
   }
   isRequesting.value = force === undefined ? !isRequesting.value : force
 }
@@ -257,10 +268,6 @@ const onClick = async () => {
   }
   setTimeout(() => result.value = { statut: undefined, statement: '' }, 5000)
   isButtonLoading.value = ''
-}
-
-const chatRedirect = (id: string) => {
-  
 }
   
 const contact = async () => {

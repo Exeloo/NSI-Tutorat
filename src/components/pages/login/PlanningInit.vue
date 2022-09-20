@@ -25,13 +25,13 @@
       <InputSchedule v-model="model" />
     </div>
     <div class="planning-init-calendar-complete">
-      <Button id="complete" label="Terminer" styles="blurple" :options="{disabled: !isGoodSchedule(model)}" @click="onButtonClick" />
+      <Button id="complete" label="Terminer" styles="blurple" :options="{disabled: !isGoodSchedule(model, true)}" @click="onButtonClick" />
     </div>
   </div>
 </template>
 
 <script setup lang="ts">
-import { userLogin, user } from '~/logic/data/auth/auth-manager'
+import { user, userLogin } from '~/logic/data/auth/auth-manager'
 import { setUser } from '~/logic/data/auth/user'
 import { togglePageState } from '~/logic/pages/login'
 import { isGoodSchedule } from '~/logic/pages/login/planning.login'
@@ -41,7 +41,7 @@ const model = ref([[], [], [], [], [], [], []])
 const isButtonLoading = ref(false)
 
 const onButtonClick = async() => {
-  if (!isGoodSchedule(model.value)) return
+  if (!isGoodSchedule(model.value, true)) return
   isButtonLoading.value = true
   await setUser(user.value.uid, { planning: model.value.map((e) => { return { times: e } }) })
   togglePageState({ id: 'loading', value: '' })
