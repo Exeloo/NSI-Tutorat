@@ -237,10 +237,10 @@ export const setModels = (data: SchoolPreferencesType) => {
 export const options = reactive(getDefaultOptions())
 export const optionOptions = ref()
 
-export const getOption = (niveau: string, spe?: { a?: string; b?: string; c?: string }) => {
+export const getOption = (niveau: string, spe?: { a?: string; b?: string; c?: string }): unknown[] => {
   const options = selectOptions.option.get(niveau)
   const defaultOptions = <Option[]>selectOptions.option.get('default')
-  if (!options) return undefined
+  if (!options) return []
   const copyOptions = [...options]
   for (const defaultOption of defaultOptions)
     copyOptions.push(defaultOption)

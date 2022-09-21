@@ -1,4 +1,3 @@
-
 context('Basic', () => {
   beforeEach(() => {
     cy.visit('/')
@@ -12,9 +11,9 @@ context('Basic', () => {
       .should('exist')
 
     cy.get('#input')
-      .type('Tutorat{Enter}')
+      .type('Vitesse{Enter}')
       .url()
-      .should('eq', 'http://localhost:3333/hi/Tutorat')
+      .should('eq', 'http://localhost:3333/hi/Vitesse')
 
     cy.contains('[Default Layout]')
       .should('exist')
@@ -31,7 +30,7 @@ context('Basic', () => {
       .url()
       .should('eq', 'http://localhost:3333/about')
 
-    cy.get('pre.language-js')
+    cy.get('.shiki')
       .should('exist')
   })
 })

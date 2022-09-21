@@ -32,14 +32,14 @@
       <div>
         <Checkbox id="help" v-model="models.value.tutorat.helper.wish" styles="blurple" :label="t('firstLogin.forms.subjects.help.wish')" />
         <div v-if="models.value.tutorat.helper.wish && options.subjects.good">
-          <Select id="help" v-model="models.value.tutorat.helper.subjects" :label="t('firstLogin.forms.subjects.help.subject')" :options="options.subjects.helper" tags search @change="updateValidation" />
+          <Select id="help" v-model="models.value.tutorat.helper.subjects" :label="t('firstLogin.forms.subjects.help.subject')" :options="options.subjects.helper ?? []" tags search @change="updateValidation" />
           <Select id="goodSubject" v-model="models.value.subjects.good" :label="t('firstLogin.forms.subjects.good')" :options="options.subjects.good" tags search :required="false" @change="updateValidation" />
         </div>
       </div>
       <div>
         <Checkbox id="receive" v-model="models.value.tutorat.receiver.wish" styles="blurple" :label="t('firstLogin.forms.subjects.receive.wish')" />
         <div v-if="models.value.tutorat.receiver.wish && options.subjects.bad">
-          <Select id="receive" v-model="models.value.tutorat.receiver.subjects" :label="t('firstLogin.forms.subjects.receive.subject')" :options="options.subjects.receiver" tags search @change="updateValidation" />
+          <Select id="receive" v-model="models.value.tutorat.receiver.subjects" :label="t('firstLogin.forms.subjects.receive.subject')" :options="options.subjects.receiver ?? []" tags search @change="updateValidation" />
           <Select id="badSubject" v-model="models.value.subjects.bad" :label="t('firstLogin.forms.subjects.bad')" :options="options.subjects.bad" tags search :required="false" @change="updateValidation" />
         </div>
       </div>
@@ -53,18 +53,14 @@
 <script setup lang="ts">
 import { user, userLogin } from '~/logic/data/auth/auth-manager'
 import type { Option } from '~/logic/pages/login/school.login'
-import { getOption, getSubjects, models, optionOptions, options, selectOptions, setModels } from '~/logic/pages/login/school.login'
+import { getOption, getSubjects, models, optionOptions, options, selectOptions } from '~/logic/pages/login/school.login'
 import { isValidChoices } from '~/logic/profil/school/school-manager'
 import { setUser } from '~/logic/data/auth/user'
 import { togglePageState } from '~/logic/pages/login'
 
 const { t } = useI18n()
-const router = useRouter()
 
 const isButtonLoading = ref(false)
-const isPageLoading = ref(true)
-const isError = ref(false)
-const error = ref<string>()
 
 const isNotValid = ref(true)
 
@@ -76,7 +72,7 @@ const onButtonClick = async() => {
   isNotValid.value = !isValidChoices(models.value)
   if (isNotValid.value) return
   isButtonLoading.value = true
-  await setUser(user.value.uid, { school: models.value })
+  await setUser((<UserData>user.value).uid, { school: models.value })
   togglePageState({ id: 'loading', value: '' })
   await userLogin()
 }

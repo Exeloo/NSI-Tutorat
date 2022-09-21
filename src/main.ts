@@ -1,7 +1,8 @@
 import { ViteSSG } from 'vite-ssg'
-import generatedRoutes from 'virtual:generated-pages'
 import { setupLayouts } from 'virtual:generated-layouts'
 import App from './App.vue'
+import type { UserModule } from './types'
+import generatedRoutes from '~pages'
 
 import '@unocss/reset/tailwind.css'
 import './styles/main.css'
@@ -11,8 +12,6 @@ import './styles/planning.css'
 import 'uno.css'
 import { FirebaseSystem } from './logic/data/firebase-system'
 import { defineRedirect } from './logic/data/auth/auth-manager'
-// import { login, softLogin, user } from './logic/data/auth/auth-manager'
-// import { convsCache, getFirstConvId, initConvs } from './logic/data/firestore/datas/Conversations'
 
 const routes = setupLayouts(generatedRoutes)
 
@@ -24,7 +23,8 @@ export const createApp = ViteSSG(
   { routes, base: import.meta.env.BASE_URL },
   (ctx) => {
     // install all modules under `modules/`
-    Object.values(import.meta.globEager('./modules/*.ts')).forEach(i => i.install?.(ctx))
+    Object.values(import.meta.glob<{ install: UserModule }>('./modules/*.ts', { eager: true }))
+      .forEach(i => i.install?.(ctx))
   },
 )
 
