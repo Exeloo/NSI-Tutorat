@@ -11,8 +11,10 @@ export const unreadMessages = ref<Map<string, number>>(new Map<string, number>()
 export const inputContent = reactive({})
 export const isLooking = ref(true)
 
-export const changeActiveChat = (id: string, read = true) => {
-  activeChat.value = id
+export const changeActiveChat = (id?: string, read = true) => {
+  activeChat.value = id ?? ''
+  if (!id)
+    return
   if (read) {
     isLooking.value = true
     unreadMessages.value.set(id, 0)
@@ -21,7 +23,7 @@ export const changeActiveChat = (id: string, read = true) => {
   else { isLooking.value = false }
 }
 
-export const initConv = async(id: string, lastRead?: Timestamp, read = true) => {
+export const initConv = async (id: string, lastRead?: Timestamp, read = true) => {
   hasInitConvs.value.set(id, true)
   if (!activeChat.value)
     changeActiveChat(id, read)
@@ -35,7 +37,8 @@ export const initConv = async(id: string, lastRead?: Timestamp, read = true) => 
 }
 
 export const sendMessage = () => {
-  if (!inputContent[activeChat.value]) return
+  if (!inputContent[activeChat.value])
+    return
   createMessage(activeChat.value, <string>inputContent[activeChat.value])
   inputContent[activeChat.value] = ''
 }

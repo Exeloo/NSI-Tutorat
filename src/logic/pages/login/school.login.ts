@@ -41,6 +41,8 @@ export const selectOptions = {
       { value: '2nd7', label: '2nd7' },
       { value: '2nd8', label: '2nd8' },
       { value: '2nd9', label: '2nd9' },
+      { value: '2nd10', label: '2nd10' },
+      { value: '2nd11', label: '2nd11' },
     ]],
     ['premiere-g', [
       { value: '1g1', label: '1G1' },
@@ -49,6 +51,7 @@ export const selectOptions = {
       { value: '1g4', label: '1G4' },
       { value: '1g5', label: '1G5' },
       { value: '1g6', label: '1G6' },
+      { value: '1g7', label: '1G7' },
     ]],
     ['premiere-t', [
       { value: '1std2a', label: '1STDAA' },
@@ -61,6 +64,7 @@ export const selectOptions = {
       { value: 'tg4', label: 'TG4' },
       { value: 'tg5', label: 'TG5' },
       { value: 'tg6', label: 'TG6' },
+      { value: 'tg7', label: 'TG7' },
     ]],
     ['terminal-t', [
       { value: 'tstd2a', label: 'TSTD2A' },
@@ -104,8 +108,6 @@ export const selectOptions = {
     ['terminal-t', [
     ]],
     ['default', [
-      { value: 'ap-opt', label: 'Arts Plasitiques' },
-      { value: 'cav-opt', label: 'Cinéma AudioVisuel' },
     ]],
   ]),
   section: {
@@ -237,15 +239,19 @@ export const setModels = (data: SchoolPreferencesType) => {
 export const options = reactive(getDefaultOptions())
 export const optionOptions = ref()
 
-export const getOption = (niveau: string, spe?: { a?: string; b?: string; c?: string }): unknown[] => {
+export const getOption = (niveau: string, spe?: { a?: string; b?: string; c?: string }, model: string[] = []): unknown[] => {
   const options = selectOptions.option.get(niveau)
   const defaultOptions = <Option[]>selectOptions.option.get('default')
-  if (!options) return []
+  if (!options)
+    return []
   const copyOptions = [...options]
   for (const defaultOption of defaultOptions)
     copyOptions.push(defaultOption)
+  if (!model.includes('ap-opt'))
+    copyOptions.push({ value: 'cav-opt', label: 'Cinéma AudioVisuel' })
+  if (!model.includes('cav-opt'))
+    copyOptions.push({ value: 'ap-opt', label: 'Arts Plasitiques' })
   if (niveau === 'premiere-g' && spe) {
-    console.log(spe.b)
     if (spe.a !== 'maths-spe' && spe.b !== 'maths-spe' && spe.c !== 'maths-spe')
       copyOptions.push({ value: 'mathsSpe-opt', label: 'Mathématiques Spécifiques' })
   }
@@ -265,7 +271,8 @@ export const getSubjects = (models: SchoolPreferencesType) => {
 
   const niveauSubjects = selectOptions.subject.get(models.level)
   const defaultSubjects = selectOptions.subject.get('default')
-  if (!niveauSubjects || !defaultSubjects) return options
+  if (!niveauSubjects || !defaultSubjects)
+    return options
   options.push(...defaultSubjects, ...niveauSubjects)
 
   const lvSubjects = selectOptions.lv.filter((v: any) => Object.values(models.lv).includes(v.value))
@@ -286,7 +293,8 @@ export const getSubjects = (models: SchoolPreferencesType) => {
 
   const niveauOptions = selectOptions.option.get(models.level)
   const defaultOptions = selectOptions.option.get('default')
-  if (!niveauOptions || !defaultOptions) return options
+  if (!niveauOptions || !defaultOptions)
+    return options
   const optionSubjects = [...defaultOptions, ...niveauOptions, { value: 'maths-expert-opt', label: 'Mathématiques Expertes' }, { value: 'maths-compl-opt', label: 'Mathématiques Complémentaires' }].filter(
     opt => models.option.includes(opt.value),
   )

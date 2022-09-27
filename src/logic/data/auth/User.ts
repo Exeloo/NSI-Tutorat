@@ -7,11 +7,17 @@ export const setUser = (uid: string, data: PartialUserData) => {
   return store.setUser(data)
 }
 
-export const getUser = async(result: Firebase.User | null): Promise<{ result: false; error: string } | { result: true; data: UserData }> => {
-  if (!result || !result.displayName || !result.email) return { result: false, error: 'result' }
-  // if (!result.email.endsWith('@pedagogiefde.org')) return { result: false, error: 'email' }
+export const getUser = async (redirect: Firebase.User | null, current: Firebase.User | null): Promise<{ result: false; error: string } | { result: true; data: UserData }> => {
+  const result = redirect ?? current
+  if (!result || !result.displayName || !result.email)
+    return { result: false, error: 'result' }
+  if (!result.email.endsWith('@pedagogiefde.org'))
+    return { result: false, error: 'email' }
   const store = new User(result.uid)
   const data = await store.getUser()
+  if (!redirect && !data)
+    return { result: false, error: 'noAccount' }
+
   await setUser(result.uid, { ...data, uid: result.uid, displayName: result.displayName, email: result.email, avatar: result.photoURL ?? '' })
-  return { result: true, data }
+  return { result: true, data: { ...data, uid: result.uid, displayName: result.displayName, email: result.email, avatar: result.photoURL ?? '' } }
 }

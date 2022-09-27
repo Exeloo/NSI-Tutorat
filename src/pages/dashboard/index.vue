@@ -4,8 +4,8 @@
       <div class="title">
         Mes relations
       </div>
-      <div v-if="sortedRelations.request.length + sortedRelations.contact.length > 0" style="color: var(--color-danger)">
-        Vous avez {{ sortedRelations.request.length + sortedRelations.contact.length }} requête(s) en attente de votre réponse !
+      <div v-if="sortedRelations.request.length > 0" style="color: var(--color-danger)">
+        Vous avez {{ sortedRelations.request.length }} requête(s) en attente de votre réponse !
       </div>
       <div v-else-if="sortedRelations.pending.length > 0">
         Vous avez {{ sortedRelations.pending.length }} requête(s) en attente.
@@ -32,7 +32,13 @@
       <div class="chat-relations-title">
         Conversations
       </div>
-      <div class="chat-relations">
+      <div v-if="isConvsLoading" class="chat-messages-loading chat-relations-loading">
+        <Loading />
+        <div>
+          Chargement en cours, veuillez patienter...
+        </div>
+      </div>
+      <div v-else class="chat-relations">
         <div v-for="[k, v] in getSortedRelations()" :key="k" @click="redirectToChat(k)" >
           <div class="chat-relation-flex">
             <div v-if="v.subjects?.length > 0">
@@ -76,6 +82,8 @@ import { toggleLoadingPage } from '~/main'
 import { changeActiveChat, hasInitConvs, initConv, unreadMessages } from '~/logic/pages/chat';
 import { hasSameTimes } from '~/logic/profil/planning/planning-manager';
 import { hasSameSubjects, getSameSubjects } from '~/logic/profil/school/school-manager'
+import { isValidChoices } from '~/logic/profil/school/school-manager'
+import { isValidPlanning } from '~/logic/profil/planning/planning-manager'
 
 const isConvsLoading = ref(false)
 const relations = ref(new Map<string, RelationData>())
@@ -124,7 +132,9 @@ const getFilteredUsers = () => {
   const filteredList: UserData[] = []
   const u = <UserData> user.value
   for (const [_, p] of publicUsers.value) {
-    if (!u.school || !p.school)
+    if (!u.school || !p.school || !p.planning)
+      continue
+    if (!isValidChoices(p.school) || !isValidPlanning(p.planning))
       continue
     if (!p.school.tutorat.helper.wish)
       continue
@@ -176,6 +186,11 @@ const load = async () => {
       sortedRelations.value.accepted.push([k, v])
 
   }
+  const rs = getSortedRelations()
+  if (rs.size > 0)
+    changeActiveChat(rs.keys().next().value)
+  else
+    changeActiveChat()
   isConvsLoading.value = false
 }
 
@@ -314,6 +329,20 @@ setTimeout(() => {
   white-space: nowrap;
   gap: 0.5rem;
 }
+
+.chat-messages-loading {
+    text-align: center;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    width: 100%;
+    margin-bottom: 50px;
+  }
+
+  .chat-relations-loading {
+    margin-top: 200px;
+  }
 
 
 </style>

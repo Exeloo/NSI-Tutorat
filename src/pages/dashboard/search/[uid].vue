@@ -14,9 +14,8 @@
       </div>
       <LabelValue label="Classe" :value="publicUser.school.level" />
       <LabelValue label="Åge" :value="publicUser.birthday ? `${new Date(new Date().getTime() - publicUser.birthday.toDate().getTime()).getFullYear() - 1970} ans` : '-'" />
-      <LabelValue label="Genre" :value="publicUser.gender ?? '-'" />
-      <LabelValues label="Il/Elle veut aider en" :value="publicUser.school.tutorat.helper.subjects" prefix />
-      <LabelValues label="Il/Elle est aussi à l'aise en" :value="publicUser.school.subjects.good" prefix />
+      <LabelValues label="Veut aider en" :value="publicUser.school.tutorat.helper.subjects" prefix />
+      <LabelValues label="Est aussi à l'aise en" :value="publicUser.school.subjects.good" prefix />
       <LabelValue label="Description" :value="publicUser.description ?? '-'" class="search-user-w-high" />
       <LabelValue v-if="publicUser.school.level.endsWith('-t')" label="Filiaire Technologique" :value="publicUser.school.techno" />
       <LabelValues v-if="publicUser.school.level.endsWith('-g')" label="Spécialités" :value="[publicUser.school.spe.a, publicUser.school.spe.b, publicUser.school.spe.c]" :complete="publicUser.school.level.startsWith('terminal') ? ' (abandonnée)' : ''" />
@@ -58,7 +57,7 @@
               id="receive"
               v-model="model.subjects"
               label="Matières dans lesquels vous voulez recevoir de l'aide"
-              :options="getSameSubjects(user.school.tutorat.receiver.subjects, publicUser.school.tutorat.helper.subjects).map(e => { return { label: getSchoolLabel(e, true), value: e}})"
+              :options="getSameSubjects(publicUser.school.tutorat.helper.subjects, user.school.tutorat.receiver.subjects).map(e => { return { label: getSchoolLabel(e, true), value: e}})"
               tags
               search
               :required="false"
@@ -126,7 +125,7 @@ const toggleIsRequesting = (force?: boolean) => {
   if (force && !publicUser.value.school.tutorat.helper.wish) {
     return setError('L\'utilisateur ne désire pas aider, veuillez vous rendre sur un autre profil !')
   }
-  if (!hasSameSubjects(user.value.school.tutorat.receiver.subjects, publicUser.value.school.tutorat.helper.subjects)) {
+  if (!hasSameSubjects(publicUser.value.school.tutorat.helper.subjects, user.value.school.tutorat.receiver.subjects)) {
     return setError('Vous n\'avez aucune matière en commune avec cette personne !')
   }
   isRequesting.value = force === undefined ? !isRequesting.value : force

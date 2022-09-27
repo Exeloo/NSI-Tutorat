@@ -5,8 +5,8 @@
     </div>
     <div>
       <div class="relation-global">
-        <div v-if="sortedRelations.request.length + sortedRelations.contact.length > 0" style="color: var(--color-danger)">
-          Vous avez {{ sortedRelations.request.length + sortedRelations.contact.length }} requête(s) en attente de votre réponse !
+        <div v-if="sortedRelations.request.length > 0" style="color: var(--color-danger)">
+          Vous avez {{ sortedRelations.request.length }} requête(s) en attente de votre réponse !
         </div>
         <div v-if="sortedRelations.pending.length > 0">
           Vous avez {{ sortedRelations.pending.length }} requête(s) en attente de la réponse de quelqu'un d'autre.

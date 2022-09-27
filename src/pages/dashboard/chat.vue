@@ -4,7 +4,13 @@
       <div class="chat-relations-title">
         Conversations
       </div>
-      <div class="chat-relations">
+      <div v-if="isConvsLoading" class="chat-messages-loading chat-relations-loading">
+        <Loading />
+        <div>
+          Chargement en cours, veuillez patienter...
+        </div>
+      </div>
+      <div v-else class="chat-relations">
         <div v-for="[k, v] in getSortedRelations()" :key="k" @click="changeActiveChat(k)" >
           <div class="chat-relation-flex">
             <div v-if="v.subjects?.length > 0">
@@ -44,7 +50,7 @@
         Chargement en cours, veuillez patienter...
       </div>
     </div>
-    <div v-else-if="!activeChat" class="chat-messages-error">
+    <div v-else-if="!activeChat || getSortedRelations().length === 0" class="chat-messages-error">
       Aucun chat n'est séléctionné !
     </div>
     <div v-else-if="!activeChat" class="chat-messages-error">
@@ -61,7 +67,7 @@
             <div class="chat-message-title">
               {{ publicUsers.get(msg.author).displayName }}
             </div>
-            <div>
+            <div class="chat-message-text">
               {{ msg.message }}
             </div>
             
@@ -125,6 +131,11 @@ const load = async () => {
     if (!hasInitConvs.value.get(k))
       await initConv(k, entrant?.lastRead)
   }
+  const rs = getSortedRelations()
+  if (rs.size > 0)
+    changeActiveChat(rs.keys().next().value)
+  else
+    changeActiveChat()
   isConvsLoading.value = false
 }
 
@@ -184,6 +195,10 @@ setTimeout(() => {
     justify-content: space-between;
     cursor: pointer;
 
+  }
+
+  .chat-relations-loading {
+    margin-top: 200px;
   }
 
   .chat-relation-unread {
@@ -326,6 +341,12 @@ setTimeout(() => {
     left: 14px;
     right: 0;
     bottom: 7px;
+  }
+
+  .chat-message-text {
+    overflow-wrap: break-word;
+    overflow: hidden;
+    max-width: 400px;
   }
 
 

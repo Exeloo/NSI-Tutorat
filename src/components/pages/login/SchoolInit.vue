@@ -23,7 +23,7 @@
       <Select id="lva" v-model="models.value.lv.a" :label="t('firstLogin.forms.lv.a')" :options="options.lv.a" @change="onLvChange" />
       <Select id="lvb" v-model="models.value.lv.b" :label="t('firstLogin.forms.lv.b')" :options="options.lv.b" @change="onLvChange" />
     </div>
-    <Select v-if="models.value.level" id="options" v-model="models.value.option" :label="t('firstLogin.forms.option')" :options="getOption(models.value.level, models.value.spe)" tags :required="false" @change="updateValidation" />
+    <Select v-if="models.value.level" id="options" v-model="models.value.option" :label="t('firstLogin.forms.option')" :options="getOption(models.value.level, models.value.spe, models.value.option)" tags :required="false" @change="updateValidation" />
     <div v-if="models.value.lv.a || models.value.lv.b">
       <Select id="euro" v-model="models.value.section.lang" :label="t('firstLogin.forms.section.euro')" :options="options.section" :required="false" @change="updateValidation" />
       <Select v-if="models.value.section.lang === 'angl-euro' && models.value.level !== 'seconde'" id="dnl" v-model="models.value.section.dnl" :label="t('firstLogin.forms.section.dnl')" :options="selectOptions.section.dnl" @change="updateValidation" />
@@ -99,13 +99,29 @@ const onSpeChange = () => {
 const idToLang = (e: string) => e.split('-')[0]
 
 const onLvChange = () => {
-  options.lv.a = selectOptions.lv.filter(({ value }: Option) => models.value.lv.b !== value)
-  options.lv.b = selectOptions.lv.filter(({ value }: Option) => models.value.lv.a !== value)
+  options.lv.a = selectOptions.lv.filter(({ value }: Option) => models.value.lv.b !== value && (!models.value.lv.b || !(models.value.lv.b !== 'angl-lv' && value !== 'angl-lv')))
+  options.lv.b = selectOptions.lv.filter(({ value }: Option) => models.value.lv.a !== value && (!models.value.lv.a || !(models.value.lv.a !== 'angl-lv' && value !== 'angl-lv')))
   options.section = selectOptions.section.lang.filter(
     l => Object.values(models.value.lv)
+      .filter(id => !!id)
       .map(id => idToLang(id))
       .includes(idToLang(l.value)),
   )
+}
+
+const resetHideValues = () => {
+  if (!models.value.level) {
+    models.value.class = ''
+    models.value.option = []
+  }
+  if (!hasSpe(false))
+    models.value.spe = { a: '', b: '', c: '' }
+  if (!isTechno())
+    models.value.techno = ''
+  if (!models.value.lv.a && !models.value.lv.b)
+    models.value.section.lang = ''
+  if (models.value.section.lang !== 'angl-euro' || models.value.level === 'seconde')
+    models.value.section.dnl = ''
 }
 
 const updateSubjects = () => {
@@ -117,6 +133,7 @@ const updateSubjects = () => {
   options.subjects.receiver = subjects.filter(({ value }: Option) => ![...models.value.subjects.bad, ...models.value.subjects.good, ...models.value.tutorat.helper.subjects].includes(value) && !(value === 'fr' && models.value.level.startsWith('terminal')))
   options.subjects.good = subjects.filter(({ value }: Option) => ![...models.value.subjects.bad, ...models.value.tutorat.helper.subjects, ...models.value.tutorat.receiver.subjects].includes(value))
   options.subjects.bad = subjects.filter(({ value }: Option) => ![...models.value.subjects.good, ...models.value.tutorat.helper.subjects, ...models.value.tutorat.receiver.subjects].includes(value) && !(value === 'fr' && models.value.level.startsWith('terminal')))
+  resetHideValues()
 }
 
 const updateValidation = () => {

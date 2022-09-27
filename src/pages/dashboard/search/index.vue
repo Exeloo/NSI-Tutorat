@@ -42,11 +42,10 @@
             </div>
           </div>
           <LabelValue label="Classe" :value="publicUser.school.level" />
-          <LabelValues label="Il/Elle veut aider en" :value="publicUser.school.tutorat.helper.subjects" prefix />
-          <LabelValues label="Il/Elle est aussi à l'aise en" :value="publicUser.school.subjects.good" prefix />
+          <LabelValues label="Veut aider en" :value="publicUser.school.tutorat.helper.subjects" prefix />
+          <LabelValues label="Est aussi à l'aise en" :value="publicUser.school.subjects.good" prefix />
           <LabelValue label="Description" :value="publicUser.description" class="search-user-w-high" />
           <LabelValue label="Åge" :value="publicUser.birthday ? `${new Date(new Date().getTime() - publicUser.birthday.toDate().getTime()).getFullYear() - 1970} ans` : '-'" />
-          <LabelValue label="Genre" :value="publicUser.gender" />
         </div>
         <div class="search-user-button">
           <Button id="look" label="Voir le profil" styles="blurple" :options="{disabled: false}" @click="() => { router.push(`/dashboard/search/${publicUser.uid}`) }" />
@@ -66,6 +65,8 @@ import { toggleLoadingPage } from '~/main'
 import { user } from '~/logic/data/auth/auth-manager'
 import { hasSameTimes } from '~/logic/profil/planning/planning-manager';
 import { hasSameSubjects, getSameSubjects } from '~/logic/profil/school/school-manager'
+import { isValidChoices } from '~/logic/profil/school/school-manager'
+import { isValidPlanning } from '~/logic/profil/planning/planning-manager'
 
 const router = useRouter()
 
@@ -92,7 +93,9 @@ const getFilteredUsers = () => {
   const filteredList: UserData[] = []
   const u = <UserData> user.value
   for (const [_, p] of users.value) {
-    if (!u.school || !p.school)
+    if (!u.school || !p.school || !p.planning)
+      continue
+    if (!isValidChoices(p.school) || !isValidPlanning(p.planning))
       continue
     if (!p.school.tutorat.helper.wish)
       continue

@@ -1,10 +1,8 @@
-import firebase from 'firebase/compat'
+import type { Timestamp } from 'firebase/firestore'
 import { Store } from '../interface/Store'
 import type { FDocument } from '../interface/Document'
 import type { PlanningType } from '~/logic/profil/planning/planning-type'
 import type { PartialSchoolPreferencesType, SchoolPreferencesType } from '~/logic/profil/school/school-type'
-
-import Timestamp = firebase.firestore.Timestamp
 
 export interface UserData {
   avatar: string
@@ -12,7 +10,6 @@ export interface UserData {
   description: string
   displayName: string
   email: string
-  gender: string
   planning: PlanningType
   school: SchoolPreferencesType
   uid: string
@@ -24,7 +21,6 @@ export interface PartialUserData {
   description?: string
   displayName?: string
   email?: string
-  gender?: string
   planning?: PlanningType
   school?: PartialSchoolPreferencesType
   uid?: string
@@ -47,8 +43,8 @@ export class User {
   }
 }
 
-export const getForcedUsers = async(): Promise<Map<string, UserData>> => {
-  const query = await store.queryDocuments({ where: { param_1: 'school.tutorat.helper.wish', comparator: '==', param_2: true } })
+export const getForcedUsers = async (): Promise<Map<string, UserData>> => {
+  const query = await store.queryDocuments()
   query.docs.forEach((v) => {
     usersCache.set(v.id, <UserData>v.data())
   })

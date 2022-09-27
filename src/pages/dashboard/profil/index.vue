@@ -34,17 +34,6 @@
           <input v-model="model.birthday" type="date" class="profil-index-item-date" :min="`${now - 20}-01-01`" :max="`${now - 13}-01-01`">
         </div>
       </div>
-      <div class="profil-index-item">
-        <div class="profil-index-item-label">
-          Genre :
-        </div>
-        <div v-if="!updating" class="profil-index-item-value">
-          {{ user.gender ? getSchoolLabel(user.gender) : '-' }}
-        </div>
-        <div v-else class="profil-index-item-input profil-index-item-gender">
-          <Select id="genre" v-model="model.gender" label="" :options="genres" :required="false" />
-        </div>
-      </div>
     </div>
     <div class="profil-index-buttons">
       <div v-if="!updating">
@@ -67,14 +56,13 @@
 </template>
 
 <script lang="ts" setup>
-import firebase from 'firebase/compat'
+import type { Timestamp } from 'firebase/firestore'
 
 import { getSchoolLabel } from '~/logic/profil/school/school-manager'
 import { user } from '~/logic/data/auth/auth-manager'
 
 import { setUser } from '~/logic/data/auth/user'
 
-import Timestamp = firebase.firestore.Timestamp
 import { UserData } from '~/logic/data/firestore/datas/Users'
 
 const now = new Date().getFullYear()
@@ -96,13 +84,7 @@ const convertDate = (nb: number) => {
 const model = reactive({
   description: newUser.description ?? '',
   birthday: birth ? `${birth.getUTCFullYear()}-${convertDate(birth.getUTCMonth() + 1)}-${convertDate(birth.getUTCDate())}` : '',
-  gender: newUser.gender ?? '',
 })
-const genres = [
-  { label: 'Masculin', value: 'm' },
-  { label: 'Féminin', value: 'f' },
-  { label: 'Non précisé', value: 'n' },
-]
 
 const hasDifferencies = () => {
   const u = <UserData>user.value
@@ -116,7 +98,7 @@ const hasDifferencies = () => {
   const isDifferentDate = (u.birthday || model.birthday) && (
     (!u.birthday && model.birthday) || (u.birthday && !model.birthday) || new Date(model.birthday).getTime() !== u.birthday.toDate().getTime()
   )
-  return model.description !== u.description || model.gender !== u.gender || isDifferentDate
+  return model.description !== u.description || isDifferentDate
 }
 
 const onValidation = async() => {
@@ -146,7 +128,6 @@ const onUndo = () => {
   model.description = nUser.description
   if (birth)
   model.birthday = `${birth.getUTCFullYear()}-${convertDate(birth.getUTCMonth() + 1)}-${convertDate(birth.getUTCDate())}`
-  model.gender = nUser.gender
 }
 
 setTimeout(() => {
@@ -195,10 +176,6 @@ setTimeout(() => {
   border: solid 1px rgba(60,60,60,0.26);
   border-radius: 4px;
   padding: 3px 10px;
-}
-
-.profil-index-item-gender {
-  max-width: 200px;
 }
 
 .profil-index-item-input {

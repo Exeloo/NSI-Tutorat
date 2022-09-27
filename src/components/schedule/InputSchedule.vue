@@ -1,34 +1,3 @@
-<template>
-  <div class="input-schedule-container">
-    <div class="input-schedule-days">
-      <div v-for="(day, index) in days" :key="index" class="input-schedule-day" :class="{activeDay: activeDay === index}" @click="changeActiveDay(index)">
-        {{ day }}
-      </div>
-    </div>
-    <div class="input-schedule-content">
-      <div class="input-schedule-times">
-        <div v-for="(model, i) in value[activeDay]" :key="model" class="input-schedule-time">
-          <div v-if="model.statut !== 'tutorat'" class="input-schedule-inputs">
-            <div :class="{timeError: !isLegalTime(model, undefined)}">
-              <Select :id="`input-schedule-${activeDay}-${i}-start`" v-model="model.start" label="Début" :options="getRightTimes(model.start, model.end, i)[0]" :required="false" />
-            </div>
-            <div :class="{timeError: !isLegalTime(undefined, model)}">
-              <Select :id="`input-schedule-${activeDay}-${i}-end`" v-model="model.end" label="Fin" :options="getRightTimes(model.start, model.end, i)[1]" :required="false" />
-            </div>
-            <CheckboxSchedule :id="`input-schedule-${activeDay}-${i}-check`" v-model="model.statut" class="input-schedule-label" />
-            <div style="color: var(--color-danger); font-size: 30px; width: fit-content; display: flex; justify-content: center">
-              <div i="ic-round-close" style="cursor: pointer;" @click="removeTime(i)" />
-            </div>
-          </div>
-        </div>
-      </div>
-      <div class="input-schedule-buttons">
-        <Button id="h" label="Ajouter un horaire" styles="blurple" :options="{ disabled: value[activeDay].length > 10 }" @click="onButtonClick" />
-      </div>
-    </div>
-  </div>
-</template>
-
 <script setup lang="ts">
 import { getMinFormTime, getMinFormTimes, hasEnoughRange } from '~/logic/pages/login/planning.login'
 
@@ -127,7 +96,8 @@ const isLegalTime = (e1, e2) => {
   const e = e1 || e2
   const startMin = e.start?.split(':')[0] * 60 + e.start?.split(':')[1] * 1
   const endMin = e.end?.split(':')[0] * 60 + e.end?.split(':')[1] * 1
-  if (!startMin || !endMin) return false
+  if (!startMin || !endMin)
+    return false
 
   const partial = e1 ? [startMin, undefined] : [undefined, endMin]
 
@@ -149,7 +119,8 @@ const getRightTimes = (start?: string, end?: string, index: number) => {
 
   for (const e of detailedTimes) {
     for (const time of buisyList) {
-      if (!time) continue
+      if (!time)
+        continue
       const minE = getMinFormTime(e.value)
       if (time[0] < minE && minE < time[1]) {
         startList = startList.filter(v => getMinFormTime(v.value) !== minE)
@@ -168,13 +139,43 @@ const getRightTimes = (start?: string, end?: string, index: number) => {
   }
   return [startList, endList]
 }
-
 </script>
 
-<style scoped>
+<template>
+  <div class="input-schedule-container">
+    <div class="input-schedule-days">
+      <div v-for="(day, index) in days" :key="index" class="input-schedule-day" :class="{ activeDay: activeDay === index }" @click="changeActiveDay(index)">
+        {{ day }}
+      </div>
+    </div>
+    <div class="input-schedule-content">
+      <div class="input-schedule-times">
+        <div v-for="(model, i) in value[activeDay]" :key="model" class="input-schedule-time">
+          <div v-if="model.statut !== 'tutorat'" class="input-schedule-inputs">
+            <div :class="{ timeError: !isLegalTime(model, undefined) }">
+              <Select :id="`input-schedule-${activeDay}-${i}-start`" v-model="model.start" label="Début" :options="getRightTimes(model.start, model.end, i)[0]" :required="false" />
+            </div>
+            <div :class="{ timeError: !isLegalTime(undefined, model) }">
+              <Select :id="`input-schedule-${activeDay}-${i}-end`" v-model="model.end" label="Fin" :options="getRightTimes(model.start, model.end, i)[1]" :required="false" />
+            </div>
+            <CheckboxSchedule :id="`input-schedule-${activeDay}-${i}-check`" v-model="model.statut" class="input-schedule-label" />
+            <div style="color: var(--color-danger); font-size: 30px; width: fit-content; display: flex; justify-content: center">
+              <div i="ic-round-close" style="cursor: pointer;" @click="removeTime(i)" />
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="input-schedule-buttons">
+        <Button id="h" label="Ajouter un horaire" styles="blurple" :options="{ disabled: value[activeDay].length > 10 }" @click="onButtonClick" />
+      </div>
+    </div>
+  </div>
+</template>
 
+<style scoped>
 .input-schedule-container {
   margin-top: 20px;
+  min-width: 530px;
 }
 
 .input-schedule-days {
@@ -251,5 +252,4 @@ const getRightTimes = (start?: string, end?: string, index: number) => {
     gap: 0.8rem;
   }
 }
-
 </style>
