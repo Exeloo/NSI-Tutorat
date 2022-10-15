@@ -11,8 +11,8 @@ export const getUser = async (redirect: Firebase.User | null, current: Firebase.
   const result = redirect ?? current
   if (!result || !result.displayName || !result.email)
     return { result: false, error: 'result' }
-  if (!result.email.endsWith('@pedagogiefde.org'))
-    return { result: false, error: 'email' }
+  // if (!result.email.endsWith('@pedagogiefde.org'))
+  //   return { result: false, error: 'email' }
   const store = new User(result.uid)
   const data = await store.getUser()
   if (!redirect && !data)

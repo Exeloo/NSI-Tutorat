@@ -2,11 +2,12 @@ import { correspondingTable, labels } from './school-data'
 import type { PartialSchoolPreferencesType } from './school-type'
 
 export const isValidChoices = (choices?: PartialSchoolPreferencesType) => {
-  if (!choices) return false
+  if (!choices)
+    return false
   const hasLevel = !!choices.level
   const hasClasse = !!choices.class
   const hasLv = !!choices.lv?.a && !!choices.lv.b
-  const hasDnl = choices.section?.lang !== 'angl-euro' || !!choices.section.dnl || choices.class === 'seconde'
+  const hasDnl = choices.section?.lang !== 'angl-euro' || !!choices.section.dnl || choices.level === 'seconde'
 
   const needSpe = choices.level && ['premiere-g', 'terminal-g'].includes(choices.level)
   const hasSpe = !needSpe || (!!choices.spe?.a && !!choices.spe.b && !!choices.spe.c)

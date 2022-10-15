@@ -45,7 +45,7 @@
       </div>
     </div>
     <div class="school-init-submit">
-      <Button id="submit" :label="t('send')" styles="blurple" :options="buttonOptions" :loading="isButtonLoading" @click="onButtonClick" />
+      <Button id="submit" :label="t('next')" styles="blurple" :options="buttonOptions" :loading="isButtonLoading" @click="onButtonClick" />
     </div>
   </div>
 </template>
