@@ -54,7 +54,7 @@ export const selectOptions = {
       { value: '1g7', label: '1G7' },
     ]],
     ['premiere-t', [
-      { value: '1std2a', label: '1STDAA' },
+      { value: '1std2a', label: '1STD2A' },
       { value: '1stl', label: '1STL' },
     ]],
     ['terminal-g', [

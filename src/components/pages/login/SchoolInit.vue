@@ -20,8 +20,8 @@
     </div>
     <Select v-if="isTechno()" id="techno" v-model="models.value.techno" :label="t('firstLogin.forms.techno')" :options="selectOptions.techno" :search="true" />
     <div class="lv">
-      <Select id="lva" v-model="models.value.lv.a" :label="t('firstLogin.forms.lv.a')" :options="options.lv.a" @change="onLvChange" />
-      <Select id="lvb" v-model="models.value.lv.b" :label="t('firstLogin.forms.lv.b')" :options="options.lv.b" @change="onLvChange" />
+      <Select id="lva" v-model="models.value.lv.a" :label="t('firstLogin.forms.lv.a')" :options="options.lv.a" @change="updateSubjects" />
+      <Select id="lvb" v-model="models.value.lv.b" :label="t('firstLogin.forms.lv.b')" :options="options.lv.b" @change="updateSubjects" />
     </div>
     <Select v-if="models.value.level" id="options" v-model="models.value.option" :label="t('firstLogin.forms.option')" :options="getOption(models.value.level, models.value.spe, models.value.option)" tags :required="false" @change="updateValidation" />
     <div v-if="models.value.lv.a || models.value.lv.b">

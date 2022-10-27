@@ -25,10 +25,13 @@ export const hasEnoughRange = (start?: number, end?: number) => {
 export const isGoodSchedule = (schedule: { start: string; end: string; statut: string }[][], count = false): boolean => {
   let isCompleted = false
   for (const list of schedule) {
-    if (list.length === 0) continue
+    if (list.length === 0)
+      continue
     isCompleted = true
-    for (const item of list)
-      if (!item.start || !item.end || !['free', 'buisy', 'tutorat'].includes(item.statut) || !hasEnoughRange(getMinFormTime(item.start), getMinFormTime(item.end))) return false
+    for (const item of list) {
+      if (!item.start || !item.end || !['free', 'buisy', 'tutorat'].includes(item.statut) || !hasEnoughRange(getMinFormTime(item.start), getMinFormTime(item.end)))
+        return false
+    }
 
     const tempList = getMinFormTimes(list).sort((a, b) => a[0] - b[0])
     const buisyList = [tempList[0]]
@@ -40,13 +43,14 @@ export const isGoodSchedule = (schedule: { start: string; end: string; statut: s
       else
         buisyList.push(tempList[i])
     }
-    if (buisyList[0][0] < 7 * 60 || buisyList[buisyList.length - 1][1] > 19 * 60) return false
+    if (buisyList[0][0] < 7 * 60 || buisyList[buisyList.length - 1][1] > 19 * 60)
+      return false
   }
   const sTimes = getSeparatedTimes(schedule)
   let n = 0
   for (const times of sTimes) {
     for (const time of times) {
-      if (time.statut === 'free')
+      if (time.statut !== 'buisy')
         n += 1
     }
   }

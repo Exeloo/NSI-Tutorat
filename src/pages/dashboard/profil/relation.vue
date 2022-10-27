@@ -53,14 +53,14 @@
                 </div>
                 <div class="relation-user-infos-list-sub-value">
                   <div v-for="userId of v.entrants" :style="`color: ${!sortedRelations.contact.map(([key, value]) => key).includes(k) && getAdd(k, userId) ? getAdd(k, userId) !== ' ( N\'a pas répondu )' ? 'var(--color-danger)' : 'var(--color-orange)' : ''}`">
-                    <div v-if="userId === user.uid">
+                    <div v-if="userId === user?.uid">
                       - Vous | {{ v.helpers.includes(userId) ? 'Tutorant' : 'Tutoré(e)' }}{{ sortedRelations.contact.map(([key, value]) => key).includes(k) ? '' : getAdd(k, userId) }}
                     </div>
                     <div v-else-if="!publicUsers.get(userId)">
                       - Utilisateur introuvable {{ userId }} | {{ v.helpers.includes(userId) ? 'Tutorant' : 'Tutoré(e)' }}{{ sortedRelations.contact.map(([key, value]) => key).includes(k) ? '' : getAdd(k, userId) }}
                     </div>
                     <div v-else @click="redirectToProfile(userId)" class="relation-user-link">
-                      - {{ publicUsers.get(userId).displayName }} | {{ v.helpers.includes(userId) ? 'Tutorant' : 'Tutoré(e)' }}{{ sortedRelations.contact.map(([key, value]) => key).includes(k) ? '' : getAdd(k, userId) }}
+                      - {{ publicUsers.get(userId)?.displayName }} | {{ v.helpers.includes(userId) ? 'Tutorant' : 'Tutoré(e)' }}{{ sortedRelations.contact.map(([key, value]) => key).includes(k) ? '' : getAdd(k, userId) }}
                     </div>
                   </div>
                 </div>
@@ -75,7 +75,7 @@
               <Button id="accept" label="Accepter" styles="success" :options="{ disabled: !!isLoading }" :loading="`accept-${k}` === isLoading" @click="relationAccept(k)" />
               <Button id="deny" label="Refuser" styles="danger" :options="{ disabled: !!isLoading }" :loading="`deny-${k}` === isLoading" @click="relationDeny(k)" />
             </div>
-            <div v-else-if="sortedRelations.contact.map(([key, value]) => key).includes(k) && v.receivers.includes(user.uid)">
+            <div v-else-if="sortedRelations.contact.map(([key, value]) => key).includes(k) && v.receivers.includes(user?.uid || '')">
               <Button id="create" label="Créer une relation" styles="success" :options="{ disabled: !!isLoading || isDeleting === k || isAdding === k || isCreating === k }" :loading="`create-${k}` === isLoading" @click="initCreate(k)" />
               <Button id="abort" label="Supprimer la relation" styles="danger" :options="{ disabled: !!isLoading || isDeleting === k || isAdding === k || isCreating === k }" :loading="`abort-${k}` === isLoading" @click="relationAbort(k)" />
             </div>
@@ -147,7 +147,7 @@
                   id="receive"
                   v-model="model.subjects"
                   label="Matières dans lesquels vous voulez recevoir de l'aide"
-                  :options="user.school.tutorat.receiver.subjects.filter(e => publicUser.school.tutorat.helper.subjects.includes(e)).map(e => { return { label: getSchoolLabel(e, true), value: e}})"
+                  :options="user?.school.tutorat.receiver.subjects.filter(e => publicUser?.school.tutorat.helper.subjects.includes(e)).map(e => { return { label: getSchoolLabel(e, true), value: e}}) ?? []"
                   tags
                   search
                   :required="false"

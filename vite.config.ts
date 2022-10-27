@@ -1,4 +1,3 @@
-
 import path from 'path'
 import { defineConfig } from 'vite'
 import Vue from '@vitejs/plugin-vue'
@@ -95,8 +94,8 @@ export default defineConfig({
       registerType: 'autoUpdate',
       includeAssets: ['favicon.svg', 'safari-pinned-tab.svg'],
       manifest: {
-        name: 'Vitesse',
-        short_name: 'Vitesse',
+        name: 'Tutorat François d\'Estaing',
+        short_name: 'Tutorat-FdE',
         theme_color: '#ffffff',
         icons: [
           {

@@ -46,7 +46,7 @@ export interface PartialRelationEntrantData {
 const store = new Store().getCollection('relations')
 const relationsCache = new Map<string, RelationData>()
 
-export const getRelations = async() => {
+export const getRelations = async () => {
   if (relationsCache.size === 0) {
     store.onSnapshot((snapshots) => {
       snapshots.docChanges().forEach((snap) => {
@@ -73,7 +73,7 @@ export const relationSetUserStatut = (id: string, uid: string, data: PartialRela
   return store.getDocument(id).getCollection('entrants').getDocument(uid).set(data)
 }
 
-export const getEntrants = async(id: string) => {
+export const getEntrants = async (id: string) => {
   const map = new Map<string, RelationEntrantData>()
   const q = await store.getDocument(id).getCollection('entrants').queryDocuments()
   q.forEach((snapshot) => {
@@ -103,12 +103,13 @@ export const hasRelationLeft = (data?: RelationEntrantData) => {
   return !!data && !!data.statut && data.statut !== 'accepted' && data.statut !== 'pending'
 }
 
-export const getMessages = async(id: string) => {
+export const getMessages = async (id: string) => {
   const col = store.getDocument(id).getCollection('messages')
   const query = { orderBy: { name: 'timestamp', isDesc: true }, limit: 20 }
   col.onSnapshot((snapshot) => {
     const id = snapshot.docs[0]?.ref.parent.parent?.id
-    if (!id) return
+    if (!id)
+      return
     snapshot.docChanges().forEach((doc) => {
       if (!messages.value.has(id))
         messages.value.set(id, [])
@@ -128,9 +129,10 @@ export const getMessages = async(id: string) => {
   return array.reverse()
 }
 
-export const extandMessages = async(id: string) => {
+export const extandMessages = async (id: string) => {
   const currentArray = messages.value.get(id)
-  if (!currentArray) return
+  if (!currentArray)
+    return
   const col = store.getDocument(id).getCollection('messages')
   const q = await col.queryDocuments({ where: { param_1: 'timestamp', comparator: '<', param_2: currentArray[0][1].timestamp }, orderBy: { name: 'timestamp', isDesc: true }, limit: 20 })
   const array: [string, { timestamp: Timestamp; author: string; message: string }][] = []
@@ -140,7 +142,7 @@ export const extandMessages = async(id: string) => {
   messages.value.set(id, array.reverse().concat(currentArray))
 }
 
-export const createMessage = async(id: string, message: string) => {
+export const createMessage = async (id: string, message: string) => {
   const col = store.getDocument(id).getCollection('messages')
   col.createDocument({ timestamp: serverTimestamp(), author: <string>user.value?.uid, message })
 }
