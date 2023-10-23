@@ -1,3 +1,29 @@
+<script setup lang="ts">
+import { logout, user } from '~/logic/data/auth/auth-manager'
+import { activePopup, openPopup } from '~/logic/pages/dashboard'
+
+const router = useRouter()
+
+const onLogout = () => {
+  openPopup('')
+  logout()
+  router.push('/')
+}
+
+const changeRoute = (r: string, dashboard = true) => {
+  openPopup('')
+  const route = dashboard ? '/dashboard/' : '/'
+  router.push(route.concat(r))
+}
+
+const notifs = [
+  { id: '1', date: '', lvl: '1', name: 'new-message', content: 'Vous avez une nouveau message' },
+  { id: '2', date: '', lvl: '1', name: 'new-class', content: 'Cours ajouté pour le 16/09' },
+  { id: '3', date: '', lvl: '1', name: 'class-cancel', content: 'Votre cours du 15/03 a 10h est annulé' },
+  { id: '4', date: '', lvl: '1', name: 'new-message', content: 'Vous avez une nouveau message' },
+]
+</script>
+
 <template>
   <div class="TopBar">
     <div class="title">
@@ -10,7 +36,7 @@
       <button class="" @click="openPopup('profil')">
         <div class="icon" i="ic-round-account-circle" />
         <div class="text">
-          {{ user.displayName }}
+          {{ user?.displayName }}
         </div>
       </button>
     </div>
@@ -37,35 +63,7 @@
   </div>
 </template>
 
-<script setup lang="ts">
-import { logout, user } from '~/logic/data/auth/auth-manager'
-import { activePopup, openPopup } from '~/logic/pages/dashboard'
-
-const router = useRouter()
-
-const onLogout = () => {
-  openPopup('')
-  logout()
-  router.push('/')
-}
-
-const changeRoute = (r: string, dashboard = true) => {
-  openPopup('')
-  const route = dashboard ? '/dashboard/' : '/'
-  router.push(route.concat(r))
-}
-
-const notifs = [
-  { id: '1', date: '', lvl: '1', name: 'new-message', content: 'Vous avez une nouveau message' },
-  { id: '2', date: '', lvl: '1', name: 'new-class', content: 'Cours ajouté pour le 16/09' },
-  { id: '3', date: '', lvl: '1', name: 'class-cancel', content: 'Votre cours du 15/03 a 10h est annulé' },
-  { id: '4', date: '', lvl: '1', name: 'new-message', content: 'Vous avez une nouveau message' },
-]
-
-</script>
-
 <style scoped>
-
 .TopBar {
   display: flex;
   justify-content: space-between;
@@ -145,5 +143,4 @@ button {
   border-width: 0 0 0.5px 0;
   font-size: 2.5vh;
 }
-
 </style>

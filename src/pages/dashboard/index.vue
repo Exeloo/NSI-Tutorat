@@ -1,6 +1,6 @@
 <template>
   <div class="container">
-    <div class="profil" @click="redirect('profil/relation')">
+    <div class="profil" @click="redirect('profil/relation')"> 
       <div class="title">
         Mes relations
       </div>
@@ -18,7 +18,7 @@
       <div class="title">
         Trouver un tutorant
       </div>
-      <div v-if="user.school.tutorat.receiver.wish">
+      <div v-if="user?.school.tutorat.receiver.wish">
         Vous avez {{ getFilteredUsers().length }} propositions de partenaire pour le tutorat !
       </div>
       <div v-else>
@@ -50,12 +50,12 @@
               Premier contact
             </div>
             <div>
-              <div v-for="userId of v.entrants.filter(uid => uid !== user.uid)" class="chat-relation-item">
+              <div v-for="userId of v.entrants.filter(uid => uid !== user?.uid)" class="chat-relation-item">
                 <div v-if="!publicUsers.has(userId)">
                   Utilisateur introuvable
                 </div>
                 <div v-else @click="redirectToProfile(userId)">
-                  {{ publicUsers.get(userId).displayName }}
+                  {{ publicUsers.get(userId)?.displayName }}
                 </div>
               </div>
             </div>

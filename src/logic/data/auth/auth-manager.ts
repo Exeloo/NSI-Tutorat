@@ -1,5 +1,5 @@
 import type { User } from 'firebase/auth'
-import { getRedirectResult, signInWithRedirect, signOut } from 'firebase/auth'
+import { getRedirectResult, signInWithPopup, signInWithRedirect, signOut } from 'firebase/auth'
 import { ref } from 'vue'
 import { setupLayouts } from 'layouts-generated'
 import { auth, provider } from '../firebase'
@@ -10,7 +10,7 @@ import { isValidChoices } from '~/logic/profil/school/school-manager'
 import { isValidPlanning } from '~/logic/profil/planning/planning-manager'
 
 export const user = ref<UserData>()
-export const result = ref<{ result: false; error: string } | { result: true }>({ result: false, error: 'noResult' })
+export const result = ref<{ result: false; error: string } | { result: true; data: UserData }>({ result: false, error: 'noResult' })
 export const redirectResult = ref()
 
 export const logout = () => {
@@ -21,33 +21,29 @@ export const updateUser = (d: UserData) => {
   user.value = d
 }
 
-const login = async (forceNoRedirect = false, isLogout = true, isF = false): Promise<{ result: false; error: string } | { result: true }> => {
-  if (isF && !redirectResult.value && !auth.currentUser)
-    return { result: false, error: 'cookies' }
-  const userResult = await getUser(redirectResult.value, auth.currentUser)
-  if (!userResult.result) {
-    if (userResult.error === 'noAccount') {
-      await signInWithRedirect(auth, provider)
-      return userResult
-    }
-
-    if (userResult.error === 'result') {
-      if (!forceNoRedirect)
-        await signInWithRedirect(auth, provider)
-      return userResult
-    }
+const login = async (forceNoRedirect = false, isLogout = true, isF = false): Promise<{ result: false; error: string } | { result: true; data: UserData }> => {
+  result.value = await getUser(auth.currentUser ?? redirectResult.value)
+  if (!result.value.result && !forceNoRedirect) {
+    const r = await signInWithPopup(auth, provider)
+    result.value = await getUser(r.user)
+  }
+  if (!result.value.result) {
+    if (!['/', '/terms', '/about', '/faq', '/admin', '/login'].includes(window.location.pathname))
+      window.location.replace('/login')
     if (isLogout)
       await logout()
-    return userResult
+    return result.value
   }
-  if (!userResult.data)
+  if (!result.value.data)
     return { result: false, error: 'school' }
-  user.value = userResult.data
-  if (!isValidChoices(userResult.data.school))
+  user.value = result.value.data
+  if (!isValidChoices(result.value.data.school))
     return { result: false, error: 'school' }
-  if (!isValidPlanning(userResult.data.planning))
+  if (!isValidPlanning(result.value.data.planning))
     return { result: false, error: 'planning' }
-  return { result: true }
+  if (['/', '/login'].includes(window.location.pathname))
+    window.location.replace('/dashboard')
+  return { result: true, data: result.value.data }
 }
 
 export const userLogin = async () => {
@@ -59,6 +55,7 @@ export const defineRedirect = () => {
     .then(async (u) => {
       if (u)
         redirectResult.value = u.user
+
       setTimeout(async () => {
         result.value = (await login(true, false, true))
         if (!result.value.result && !['/', '/terms', '/about', '/faq', '/admin', '/login'].includes(window.location.pathname))

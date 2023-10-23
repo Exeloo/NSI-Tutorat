@@ -56,7 +56,7 @@
 </template>
 
 <script lang="ts" setup>
-import type { Timestamp } from 'firebase/firestore'
+import { Timestamp } from 'firebase/firestore'
 
 import { getSchoolLabel } from '~/logic/profil/school/school-manager'
 import { user } from '~/logic/data/auth/auth-manager'

@@ -1,33 +1,3 @@
-<template>
-  <div class="schedule">
-    <div class="time-ground">
-      <ul>
-        <li v-for="time in times" :key="time">
-          <span>{{ time }}</span>
-          <p style="width: 98%" />
-        </li>
-      </ul>
-    </div>
-    <div class="task-ground">
-      <ul>
-        <li v-for="(day, index) in days" :key="index" class="task-list">
-          <p :id="day">
-            <span>{{ day }}</span>
-          </p>
-          <ul style="height: 500px">
-            <li
-              v-for="(detail, detailIndex) in getLegalTimes(value[index])"
-              :key="detailIndex"
-              class="task-list-item"
-              :style="{...taskStyle[index][detailIndex], 'background-color': detail.statut === 'free' ? 'var(--color-success)' : detail.statut === 'buisy' ? 'var(--color-danger)' : 'var(--color-orange)'}"
-            />
-          </ul>
-        </li>
-      </ul>
-    </div>
-  </div>
-</template>
-
 <script setup lang="ts">
 const props = defineProps({
   options: {
@@ -122,14 +92,44 @@ const isLegalTime = (e) => {
 
 const getLegalTimes = (array) => {
   const newArray = []
-  for (let j = 0; j < array.length; j++) {
+  for (let j = 0; j < array?.length; j++) {
     if (isLegalTime(array[j]))
       newArray.push(array[j])
   }
   return newArray
 }
-
 </script>
+
+<template>
+  <div class="schedule">
+    <div class="time-ground">
+      <ul>
+        <li v-for="time in times" :key="time">
+          <span>{{ time }}</span>
+          <p style="width: 98%" />
+        </li>
+      </ul>
+    </div>
+    <div class="task-ground">
+      <ul>
+        <li v-for="(day, index) in days" :key="index" class="task-list">
+          <p :id="day">
+            <span>{{ day }}</span>
+          </p>
+          <ul style="height: 500px">
+            <li
+              v-for="(detail, detailIndex) in getLegalTimes(value[index])"
+              :key="detailIndex"
+              class="task-list-item"
+              :style="{ ...taskStyle[index][detailIndex], 'background-color': detail.statut === 'free' ? 'var(--color-success)' : detail.statut === 'buisy' ? 'var(--color-danger)' : 'var(--color-orange)' }"
+            />
+          </ul>
+        </li>
+      </ul>
+    </div>
+  </div>
+</template>
+
 <style scoped>
 .schedule{
   max-width: 800px;

@@ -1,3 +1,24 @@
+<script lang="ts" setup>
+import { userLogin } from '~/logic/data/auth/auth-manager'
+
+defineProps({
+  color: {
+    type: String,
+    default: 'white',
+    required: false,
+  },
+})
+
+const runAuth = (router: any) => {
+  router.push('login')
+  // setTimeout(() => {
+  //   userLogin()
+  // }, 1000)
+}
+
+const router = useRouter()
+</script>
+
 <template>
   <div class="google-auth" :class="color">
     <!-- <div v-if="authLoading" class="loading">
@@ -29,30 +50,7 @@
   </div>
 </template>
 
-<script lang="ts" setup>
-import { userLogin } from '~/logic/data/auth/auth-manager'
-
-defineProps({
-  color: {
-    type: String,
-    default: 'white',
-    required: false,
-  },
-})
-
-const runAuth = (router: any) => {
-  router.push('login')
-  setTimeout(() => {
-    userLogin()
-  }, 1000)
-}
-
-const router = useRouter()
-
-</script>
-
 <style scoped>
-
 .google-auth {
   display: flex;
   align-items: center;
@@ -118,5 +116,4 @@ const router = useRouter()
     display: flex;
   }
 }
-
 </style>

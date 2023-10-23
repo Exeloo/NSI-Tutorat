@@ -1,3 +1,23 @@
+<script setup lang="ts">
+import { user, userLogin } from '~/logic/data/auth/auth-manager'
+import { setUser } from '~/logic/data/auth/user'
+import { togglePageState } from '~/logic/pages/login'
+import { isGoodSchedule } from '~/logic/pages/login/planning.login'
+
+const emits = defineEmits(['update'])
+const model = ref([[], [], [], [], [], [], []])
+const isButtonLoading = ref(false)
+
+const onButtonClick = async () => {
+  if (!isGoodSchedule(model.value, true))
+    return
+  isButtonLoading.value = true
+  await setUser(user.value.uid, { planning: model.value.map((e) => { return { times: e } }) })
+  togglePageState({ id: 'loading', value: '' })
+  emits('update')
+}
+</script>
+
 <template>
   <div class="planning-init-container">
     <div class="planning-init-top">
@@ -25,30 +45,10 @@
       <InputSchedule v-model="model" />
     </div>
     <div class="planning-init-calendar-complete">
-      <Button id="complete" label="Terminer" styles="blurple" :options="{disabled: !isGoodSchedule(model, true)}" @click="onButtonClick" />
+      <Button id="complete" label="Terminer" styles="blurple" :options="{ disabled: !isGoodSchedule(model, true) }" @click="onButtonClick" />
     </div>
   </div>
 </template>
-
-<script setup lang="ts">
-import { user, userLogin } from '~/logic/data/auth/auth-manager'
-import { setUser } from '~/logic/data/auth/user'
-import { togglePageState } from '~/logic/pages/login'
-import { isGoodSchedule } from '~/logic/pages/login/planning.login'
-
-const model = ref([[], [], [], [], [], [], []])
-
-const isButtonLoading = ref(false)
-
-const onButtonClick = async() => {
-  if (!isGoodSchedule(model.value, true)) return
-  isButtonLoading.value = true
-  await setUser(user.value.uid, { planning: model.value.map((e) => { return { times: e } }) })
-  togglePageState({ id: 'loading', value: '' })
-  await userLogin()
-}
-
-</script>
 
 <style scoped>
 .planning-init-container {
@@ -126,5 +126,4 @@ const onButtonClick = async() => {
   }
 
 }
-
 </style>

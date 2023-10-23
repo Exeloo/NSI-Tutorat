@@ -80,8 +80,10 @@ export const getSameTimes = (userSchedule: Schedule, publicUserSchedule: Schedul
 
 export const hasSameTimes = (userSchedule: Schedule, publicUserSchedule: Schedule): boolean => {
   const sameTimes = getSameTimes(userSchedule, publicUserSchedule)
-  for (const day of sameTimes)
-    if (day.some(day => day.statut === 'free' || day.statut === 'tutorat')) return true
+  for (const day of sameTimes) {
+    if (day.some(day => day.statut === 'free' || day.statut === 'tutorat'))
+      return true
+  }
   return false
 }
 

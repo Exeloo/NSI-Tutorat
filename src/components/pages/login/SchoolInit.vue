@@ -59,6 +59,7 @@ import { setUser } from '~/logic/data/auth/user'
 import { togglePageState } from '~/logic/pages/login'
 
 const { t } = useI18n()
+const emits = defineEmits(['update'])
 
 const isButtonLoading = ref(false)
 
@@ -74,7 +75,7 @@ const onButtonClick = async() => {
   isButtonLoading.value = true
   await setUser((<UserData>user.value).uid, { school: models.value })
   togglePageState({ id: 'loading', value: '' })
-  await userLogin()
+  emits('update')
 }
 
 const hasSpe = (third: boolean) => {
