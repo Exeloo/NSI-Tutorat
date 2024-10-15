@@ -96,9 +96,9 @@ const onNiveauChange = () => {
 }
 
 const onSpeChange = () => {
-  options.spe.a = selectOptions.spe.filter(({ value }: Option) => ![models.value.spe.b, models.value.spe.c].includes(value) && !(([models.value.spe.b, models.value.spe.c].includes('ap-spe') || [models.value.spe.b, models.value.spe.c].includes('cav-spe')) && ['ap-spe', 'cav-spe'].includes(value)) && !(models.value.option.includes('mathsSpe-opt') && value === 'maths-spe'))
-  options.spe.b = selectOptions.spe.filter(({ value }: Option) => ![models.value.spe.a, models.value.spe.c].includes(value) && !(([models.value.spe.a, models.value.spe.c].includes('ap-spe') || [models.value.spe.a, models.value.spe.c].includes('cav-spe')) && ['ap-spe', 'cav-spe'].includes(value)) && !(models.value.option.includes('mathsSpe-opt') && value === 'maths-spe'))
-  options.spe.c = selectOptions.spe.filter(({ value }: Option) => ![models.value.spe.a, models.value.spe.b].includes(value) && !(([models.value.spe.a, models.value.spe.b].includes('ap-spe') || [models.value.spe.a, models.value.spe.b].includes('cav-spe')) && ['ap-spe', 'cav-spe'].includes(value)) && !(models.value.option.includes('mathsSpe-opt') && value === 'maths-spe'))
+  options.spe.a = selectOptions.spe.filter(({ value }: Option) => ![models.value.spe.b, models.value.spe.c].includes(value) && !(([models.value.spe.b, models.value.spe.c].includes('ap-spe') || [models.value.spe.b, models.value.spe.c].includes('cav-spe')) && ['ap-spe', 'cav-spe'].includes(value)))
+  options.spe.b = selectOptions.spe.filter(({ value }: Option) => ![models.value.spe.a, models.value.spe.c].includes(value) && !(([models.value.spe.a, models.value.spe.c].includes('ap-spe') || [models.value.spe.a, models.value.spe.c].includes('cav-spe')) && ['ap-spe', 'cav-spe'].includes(value)))
+  options.spe.c = selectOptions.spe.filter(({ value }: Option) => ![models.value.spe.a, models.value.spe.b].includes(value) && !(([models.value.spe.a, models.value.spe.b].includes('ap-spe') || [models.value.spe.a, models.value.spe.b].includes('cav-spe')) && ['ap-spe', 'cav-spe'].includes(value)))
 }
 
 const idToLang = (e: string) => e.split('-')[0]

@@ -51,9 +51,9 @@
 </template>
 
 <script setup lang="ts">
-import { user, userLogin } from '~/logic/data/auth/auth-manager'
+import { user } from '~/logic/data/auth/auth-manager'
 import type { Option } from '~/logic/pages/login/school.login'
-import { getOption, getSubjects, models, optionOptions, options, selectOptions } from '~/logic/pages/login/school.login'
+import { getOption, getSubjects, models, options, selectOptions } from '~/logic/pages/login/school.login'
 import { isValidChoices } from '~/logic/profil/school/school-manager'
 import { setUser } from '~/logic/data/auth/user'
 import { togglePageState } from '~/logic/pages/login'
@@ -92,9 +92,9 @@ const onNiveauChange = () => {
 }
 
 const onSpeChange = () => {
-  options.spe.a = selectOptions.spe.filter(({ value }: Option) => ![models.value.spe.b, models.value.spe.c].includes(value) && !(([models.value.spe.b, models.value.spe.c].includes('ap-spe') || [models.value.spe.b, models.value.spe.c].includes('cav-spe')) && ['ap-spe', 'cav-spe'].includes(value)) && !(models.value.option.includes('mathsSpe-opt') && value === 'maths-spe'))
-  options.spe.b = selectOptions.spe.filter(({ value }: Option) => ![models.value.spe.a, models.value.spe.c].includes(value) && !(([models.value.spe.a, models.value.spe.c].includes('ap-spe') || [models.value.spe.a, models.value.spe.c].includes('cav-spe')) && ['ap-spe', 'cav-spe'].includes(value)) && !(models.value.option.includes('mathsSpe-opt') && value === 'maths-spe'))
-  options.spe.c = selectOptions.spe.filter(({ value }: Option) => ![models.value.spe.a, models.value.spe.b].includes(value) && !(([models.value.spe.a, models.value.spe.b].includes('ap-spe') || [models.value.spe.a, models.value.spe.b].includes('cav-spe')) && ['ap-spe', 'cav-spe'].includes(value)) && !(models.value.option.includes('mathsSpe-opt') && value === 'maths-spe'))
+  options.spe.a = selectOptions.spe.filter(({ value }: Option) => ![models.value.spe.b, models.value.spe.c].includes(value) && !(([models.value.spe.b, models.value.spe.c].includes('ap-spe') || [models.value.spe.b, models.value.spe.c].includes('cav-spe')) && ['ap-spe', 'cav-spe'].includes(value)))
+  options.spe.b = selectOptions.spe.filter(({ value }: Option) => ![models.value.spe.a, models.value.spe.c].includes(value) && !(([models.value.spe.a, models.value.spe.c].includes('ap-spe') || [models.value.spe.a, models.value.spe.c].includes('cav-spe')) && ['ap-spe', 'cav-spe'].includes(value)))
+  options.spe.c = selectOptions.spe.filter(({ value }: Option) => ![models.value.spe.a, models.value.spe.b].includes(value) && !(([models.value.spe.a, models.value.spe.b].includes('ap-spe') || [models.value.spe.a, models.value.spe.b].includes('cav-spe')) && ['ap-spe', 'cav-spe'].includes(value)))
 }
 
 const idToLang = (e: string) => e.split('-')[0]

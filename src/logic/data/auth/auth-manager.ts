@@ -1,7 +1,5 @@
-import type { User } from 'firebase/auth'
-import { getRedirectResult, signInWithPopup, signInWithRedirect, signOut } from 'firebase/auth'
+import { getRedirectResult, signInWithPopup, signOut } from 'firebase/auth'
 import { ref } from 'vue'
-import { setupLayouts } from 'layouts-generated'
 import { auth, provider } from '../firebase'
 import type { UserData } from '../firestore/datas/Users'
 import { getUser } from './user'

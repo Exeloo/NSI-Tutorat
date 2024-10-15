@@ -251,10 +251,6 @@ export const getOption = (niveau: string, spe?: { a?: string; b?: string; c?: st
     copyOptions.push({ value: 'cav-opt', label: 'Cinéma AudioVisuel' })
   if (!model.includes('cav-opt'))
     copyOptions.push({ value: 'ap-opt', label: 'Arts Plasitiques' })
-  if (niveau === 'premiere-g' && spe) {
-    if (spe.a !== 'maths-spe' && spe.b !== 'maths-spe' && spe.c !== 'maths-spe')
-      copyOptions.push({ value: 'mathsSpe-opt', label: 'Mathématiques Spécifiques' })
-  }
 
   if (niveau === 'terminal-g' && spe) {
     if (spe.c === 'maths-spe')
@@ -273,7 +269,12 @@ export const getSubjects = (models: SchoolPreferencesType) => {
   const defaultSubjects = selectOptions.subject.get('default')
   if (!niveauSubjects || !defaultSubjects)
     return options
+
   options.push(...defaultSubjects, ...niveauSubjects)
+  if (models.level === 'premiere-g' && models.spe) {
+    if (models.spe.a !== 'maths-spe' && models.spe.b !== 'maths-spe' && models.spe.c !== 'maths-spe')
+      options.push({ value: 'mathsSpe', label: 'Mathématiques Spécifiques' })
+  }
 
   const lvSubjects = selectOptions.lv.filter((v: any) => Object.values(models.lv).includes(v.value))
   options.push(...lvSubjects)
