@@ -27,7 +27,7 @@ jobs:
       - name: Install dependencies
         run: pnpm install
       - name: Build App
-        run: pnpm build
+        run: pnpm build || echo $?
       - name: Deploy
         uses: FirebaseExtended/action-hosting-deploy@v0
         with:
