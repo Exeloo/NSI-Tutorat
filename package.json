@@ -4,7 +4,6 @@
   "description": "Website for the François d'Estaing's tutorat",
   "readme": "README.md",
   "private": true,
-  "packageManager": "pnpm@7.8.0",
   "type": "module",
   "scripts": {
     "build": "vite-ssg build",
